@@ -17,7 +17,7 @@ export function Welcome() {
       </h1>
       <p className={styles.tag}>Cuida tu carro como un experto, sin serlo.</p>
       <div className={styles.rdflag}>
-        <DrFlag size={13} /> Hecho para República Dominicana
+        <DrFlag size={17} /> Hecho para República Dominicana
       </div>
       <div className={styles.spacer} />
       <div className={styles.actions}>

@@ -103,9 +103,11 @@ export function Maintenance() {
             <div className={styles.blockHead} style={{ color: PRIORITY_META[group.priority].color }}>
               {PRIORITY_META[group.priority].icon} {PRIORITY_META[group.priority].label}
             </div>
-            {group.items.map((rec) => (
-              <PriorityCard key={rec.item.id} recommendation={rec} onMarkDone={() => markDone(rec)} />
-            ))}
+            <div className={styles.cardGrid}>
+              {group.items.map((rec) => (
+                <PriorityCard key={rec.item.id} recommendation={rec} onMarkDone={() => markDone(rec)} />
+              ))}
+            </div>
           </div>
         ))}
 

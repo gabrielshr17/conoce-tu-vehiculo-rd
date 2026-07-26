@@ -137,6 +137,8 @@ export function History() {
     <div>
       <TopBar title="Historial" subtitle="La hoja de vida de tu carro" icon="📋" gradient />
       <div className={styles.body}>
+      <div className={`${styles.grid} ${showForm ? styles.gridWithForm : ''}`}>
+      <div className={styles.colMain}>
         {sorted.length > 0 && (
           <div className={styles.lastEntry}>
             <div className={styles.specKey}>Último registro</div>
@@ -207,8 +209,10 @@ export function History() {
             ＋ Agregar registro
           </button>
         )}
+      </div>
 
         {showForm && (
+          <div className={styles.colForm}>
           <div className={styles.form}>
             <div className={styles.formTitle}>{editingId ? 'Editar registro' : 'Nuevo registro'}</div>
 
@@ -275,7 +279,9 @@ export function History() {
               <Button onClick={submitForm}>Guardar</Button>
             </div>
           </div>
+          </div>
         )}
+      </div>
       </div>
     </div>
   );

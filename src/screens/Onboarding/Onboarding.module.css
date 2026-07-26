@@ -28,3 +28,15 @@
 .navrow > * {
   flex: 1;
 }
+
+@media (min-width: 768px) {
+  .body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+
+  .qbig {
+    font-size: 26px;
+  }
+}

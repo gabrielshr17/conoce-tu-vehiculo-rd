@@ -66,3 +66,21 @@
   text-align: center;
   padding: 20px 0;
 }
+
+/* En pantallas anchas, la lista de opciones pasa a grid — no tiene
+   sentido dejar una sola columna angosta cuando sobra espacio. */
+@media (min-width: 768px) {
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 9px;
+  }
+
+  .opt {
+    margin-bottom: 0;
+  }
+
+  .empty {
+    grid-column: 1 / -1;
+  }
+}

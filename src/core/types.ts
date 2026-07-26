@@ -1,10 +1,17 @@
 export type FuelType = 'gasolina' | 'diesel';
 
-/** Una entrada del catálogo semilla: un modelo específico y sus versiones. */
+export type VehicleCategory = 'sedan' | 'hatchback' | 'suv' | 'pickup';
+
+/**
+ * Una entrada del catálogo semilla: un modelo específico y sus versiones.
+ * `trims` va de la más básica a la más equipada — ese orden se usa para
+ * saber si el usuario tiene la versión base (ver data/accessories.ts).
+ */
 export interface CatalogModel {
   id: string;
   make: string;
   model: string;
+  category: VehicleCategory;
   trims: string[];
   fuelType: FuelType;
 }

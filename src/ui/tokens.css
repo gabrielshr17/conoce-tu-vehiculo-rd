@@ -28,35 +28,21 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
-}
-
 body {
   margin: 0;
   font-family: var(--font);
   color: var(--tinta);
-  background: #dbe3ee;
+  background: var(--fondo);
   -webkit-tap-highlight-color: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
 }
 
-/* La app se muestra como una columna tipo celular: ancho fijo en pantallas
-   anchas (no se estira a lo ancho — el diseño se hizo mobile-first), y alto
-   limitado a un tamaño de teléfono real en pantallas muy altas (si no,
-   pantallas como la de Bienvenida dejan un hueco enorme antes del botón). */
+/* Los contenedores de pantalla completa usan min-height:100vh (no
+   height:100%) — así no dependen de una cadena de alturas porcentuales
+   por html/body/#root, y crecen bien si el contenido es más alto que
+   el viewport. Breakpoint de escritorio: 768px en toda la app. */
 #root {
-  width: 100%;
-  max-width: 480px;
-  height: 100vh;
-  max-height: 900px;
+  min-height: 100vh;
   background: var(--fondo);
-  box-shadow: 0 0 40px rgba(19, 32, 46, 0.1);
-  overflow: hidden;
 }
 
 button {

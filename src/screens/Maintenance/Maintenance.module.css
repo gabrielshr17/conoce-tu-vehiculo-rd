@@ -2,6 +2,12 @@
   padding: 18px;
 }
 
+.cardGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
 .ask {
   font-size: 19px;
   font-weight: 800;
@@ -86,5 +92,19 @@
   color: var(--gris);
   line-height: 1.5;
   margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+
+  .cardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
 }
 

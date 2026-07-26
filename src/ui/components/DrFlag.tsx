@@ -22,7 +22,13 @@ export function DrFlag({ size = 16, className }: DrFlagProps) {
       viewBox={`0 0 ${w} ${h}`}
       className={className}
       aria-hidden="true"
-      style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0 }}
+      style={{
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        flexShrink: 0,
+        borderRadius: 1,
+        boxShadow: '0 0 0 0.75px rgba(0,0,0,0.35)',
+      }}
     >
       <rect width={w} height={h} fill="#fff" />
       <rect x={0} y={0} width={halfW} height={half} fill="#002D62" />
