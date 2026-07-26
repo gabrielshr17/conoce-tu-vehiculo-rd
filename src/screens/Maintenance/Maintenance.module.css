@@ -1,0 +1,90 @@
+.body {
+  padding: 18px;
+}
+
+.ask {
+  font-size: 19px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.muted {
+  color: var(--gris);
+  font-size: 13px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.kmInput {
+  width: 100%;
+  border: 1.5px solid var(--linea);
+  border-radius: var(--radio-sm);
+  padding: 13px 15px;
+  font-size: 16px;
+  margin-bottom: 14px;
+  font-family: inherit;
+  color: var(--tinta);
+}
+
+.noticeTip {
+  background: var(--azul-claro);
+  color: var(--azul-osc);
+  border-radius: var(--radio-md);
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.block {
+  margin-bottom: 16px;
+}
+
+.blockHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 9px;
+}
+
+.seasonalTip {
+  background: linear-gradient(135deg, #fff5e6, #ffe9cc);
+  border: 1px solid #ffd9a0;
+  border-radius: var(--radio-md);
+  padding: 13px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 6px;
+}
+
+.seasonalIcon {
+  font-size: 20px;
+}
+
+.seasonalTitle {
+  font-size: 12px;
+  font-weight: 800;
+  color: #9a5b00;
+}
+
+.seasonalDesc {
+  font-size: 12.5px;
+  color: #7a4d10;
+  margin-top: 2px;
+  line-height: 1.45;
+}
+
+.legalReminder {
+  background: #fff;
+  border: 1px dashed var(--linea);
+  border-radius: var(--radio-md);
+  padding: 12px 14px;
+  font-size: 12.5px;
+  color: var(--gris);
+  line-height: 1.5;
+  margin-top: 10px;
+}
+

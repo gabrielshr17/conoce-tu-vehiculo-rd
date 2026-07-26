@@ -56,14 +56,24 @@ recommend(vehicle, history, specs, today) → Recommendation[]
 `today` se pasa como parámetro (no `new Date()` adentro) para que las pruebas sean
 deterministas.
 
-### 2.1 Tipos de item
+### 2.1 Tipos de item — **implementado más simple de lo planeado**
 
-| Tipo | Se calcula por | Ejemplo |
+Al construir el motor, `milestone`/`inspection`/`recurring` resultaron ser matemáticamente
+idénticos (todos son "intervalo por km y/o por meses, lo que llegue primero" — la
+diferencia era solo de nombre/copy, no de cálculo). `MaintenanceItem` quedó unificado:
+todo item tiene `intervalKm?` y/o `intervalMonths?`, y el nombre (`"Cambio de aceite"`,
+`"Correa de tiempo"`) ya comunica el tipo sin necesitar un enum aparte.
+
+`legal` (marbete, seguro) se **sacó del motor calculado**: requeriría pedirle al usuario
+la fecha exacta de vencimiento, algo que no se recolecta en ningún punto de la app todavía.
+En vez de fabricar un cálculo con datos que no tenemos, el MVP los muestra como
+recordatorio estático en la pantalla de Mantenimiento. Se retoma cuando exista un lugar
+natural en la UX para pedir esas fechas (candidato: Fase 2).
+
+| Concepto | Se calcula por | Ejemplo |
 |---|---|---|
-| `recurring` | Km **o** meses — lo que llegue primero | Aceite: 5,000 km / 6 meses |
-| `milestone` | Un umbral único de odómetro | Correa de tiempo: 120,000 km |
-| `inspection` | Revisión periódica, no reemplazo | Suspensión, frenos |
-| `legal` | Solo fecha | Marbete, seguro |
+| Item con intervalo | Km **y/o** meses — lo que llegue primero | Aceite: 5,000 km / 6 meses · Batería: solo meses |
+| Legal (fuera del motor) | Solo fecha, no implementado aún | Marbete, seguro → recordatorio estático |
 
 ### 2.2 Cálculo
 
@@ -82,42 +92,56 @@ progreso = max( kmDesde / intervaloEfectivoKm ,  mesesDesde / intervaloMeses )
 | ≥ 0.8 | 🟡 **Pronto** |
 | < 0.8 | 🟢 **Más adelante** |
 
-**Si nunca se hizo** y no hay historial: se asume vencido y se le pide al usuario que
-confirme o registre la última vez. Nunca se inventa una fecha.
+**Si nunca se hizo** y no hay historial: se calcula "como si el carro fuera nuevo" (0 km /
+año del vehículo) — no se inventa una fecha de último servicio. `hasHistory: false` viaja
+en cada `Recommendation` para que la UI lo señale (ver hallazgo en §2.4).
 
 ### 2.3 Modificadores RD
 
-El factor acorta el intervalo efectivo. Valores **iniciales, a validar** con mecánicos locales:
+El factor acorta el intervalo efectivo. Valores **iniciales, a validar** con mecánicos
+locales. Implementado en `rdModifiers.ts`, con un modificador por cada item afectado
+(no por categoría genérica, para no aplicarlo de más a items no relacionados):
 
-| Factor | Items afectados | Factor |
+| Factor | Item afectado | Factor |
 |---|---|---|
-| ☀️ Calor y humedad | Batería, A/C, correas, mangueras | 0.75 |
-| 🕳️ Hoyos y badenes | Amortiguadores, alineación, gomas | 0.70 |
-| ⛽ Calidad de combustible | Inyectores, bujías, filtro de combustible | 0.80 |
-| 🌧️ Lluvias (may–nov) | Frenos, limpiaparabrisas | Aviso estacional, no factor |
-| 🔧 GLP/gas | Válvulas, sistema de gas | Plan aparte |
+| ☀️ Calor y humedad | Batería | 0.75 |
+| 🕳️ Hoyos y badenes | Gomas, alineación | 0.70 |
+| ⛽ Calidad de combustible | Bujías | 0.80 |
+| 🌧️ Lluvias (may–nov) | Aviso estacional (frenos/limpiaparabrisas) — no ajusta intervalos, solo un tip en pantalla | — |
+| 🔧 GLP/gas | No implementado — la app no sabe si el vehículo fue convertido (ver nota abajo) | — |
+
+**GLP/gas:** ninguna pantalla recolecta todavía si el dueño convirtió su carro a gas (es
+una modificación posterior, no un dato del catálogo). Queda como hueco conocido para una
+futura pantalla de "información adicional del vehículo".
 
 Ejemplo real: batería estándar 4 años × 0.75 = **3 años en RD** — coincide con lo que
 muestra el prototipo.
 
-### 2.4 Casos de prueba (M3 no está listo sin esto)
+### 2.4 Casos de prueba — verificados en `engine.test.ts` (6 pruebas, todas pasan)
 
 ```
-Corolla 2015, 98,500 km, aceite hecho a los 97,300 km hace 5 meses
-  → progreso = 1,200/5,000 = 0.24 → 🟢
+Corolla 2015, 98,500 km, aceite hecho a los 97,300 km hace 3 meses
+  → km: 1,200/5,000=0.24, meses: 3/6=0.5 → progreso=max(0.24,0.5)=0.5 → 🟢
 
 Mismo carro, aceite hecho a los 92,000 km hace 8 meses
-  → km: 6,500/5,000 = 1.30 → 🔴 Urgente (vencido por km)
+  → km: 6,500/5,000=1.30, meses: 8/6=1.33 → progreso=1.33 → 🔴 Urgente
 
-Batería instalada hace 3 años y 1 mes
-  → meses: 37/36 (48 × 0.75) = 1.03 → 🔴  ← el modificador RD la adelantó
+Batería instalada hace 3 años y 1 mes (37 meses)
+  → sin modificador: 37/48=0.77 (later) — con modificador RD (0.75): 37/36=1.03 → 🔴
+  ← el modificador es lo que cambia el resultado, ese es el punto de la prueba
 
-Correa de tiempo, umbral 120,000 km, carro en 98,500
-  → milestone lejano → 🟢
-
-Marbete vencido el mes pasado
-  → legal, por fecha → 🔴
+Correa de tiempo en un carro 2023 con 30,000 km, sin historial
+  → km: 30,000/100,000=0.30, meses (desde 2023): 42/84=0.5 → progreso=0.5 → 🟢
+  hasHistory=false ✓
 ```
+
+**Hallazgo al implementar:** para un carro *viejo* sin ningún historial, la fórmula
+"asumir desde el año del vehículo" hace que TODO salga 🔴 a la vez (11 años > cualquier
+intervalo). Matemáticamente correcto, pero se siente como una alarma falsa/poco confiable
+para alguien que recién termina el onboarding. Se resolvió en la UI (Maintenance.tsx), no
+en el motor: un banner explica la situación ("como es la primera vez, asumimos que nunca
+se le ha hecho mantenimiento...") e invita a registrar el historial real para afinar. El
+motor y sus pruebas se dejaron intactos — es un problema de presentación, no de cálculo.
 
 ---
 
@@ -171,20 +195,35 @@ que sí es conversacional y no se puede pre-generar.
 
 ## 5. Milestones y tareas
 
-### M0 — Fundación
-- [ ] `npm create vite` con React + TypeScript en la raíz del repo
-- [ ] Extraer colores y tipografía del prototipo a `ui/tokens.css`
-- [ ] Componentes base: `Button`, `Card`, `Chip`, `Stepper`
-- [ ] Rutas y shell de navegación (tab bar inferior)
+### M0 — Fundación ✅
+- [x] `npm create vite` con React + TypeScript en la raíz del repo
+- [x] Extraer colores y tipografía del prototipo a `ui/tokens.css`
+- [x] Componentes base: `Button`, `Card`, `Chip`, `Stepper`
+- [x] Rutas y shell de navegación (tab bar inferior)
 - **Listo cuando:** la shell corre en el navegador y se ve como el prototipo
 
-### M1 — Catálogo + Onboarding
-- [ ] Tipos en `core/types.ts`
-- [ ] Catálogo semilla en `data/catalog/`
-- [ ] Pantalla de Bienvenida
-- [ ] Los 4 pasos (Año → Marca → Modelo → Versión), todo por lista, con búsqueda
-- [ ] `storage/repository.ts` + implementación en localStorage
+### M1 — Catálogo + Onboarding ✅
+- [x] Tipos en `core/types.ts`
+- [x] Catálogo semilla en `data/catalog/`
+- [x] Pantalla de Bienvenida
+- [x] Los 4 pasos (Año → Marca → Modelo → Versión), todo por lista, con búsqueda
+- [x] `storage/repository.ts` + implementación en localStorage
 - **Listo cuando:** selecciono mi carro y sobrevive al refresh
+
+### M3 — Motor de Mantenimiento ⭐ ✅
+- [x] `catalog.ts` con los items genéricos
+- [x] `rdModifiers.ts`
+- [x] `engine.ts` con `recommend()`
+- [x] **Pruebas unitarias** con los casos de §2.4 (6 pruebas, ver hallazgo documentado ahí)
+- [x] Pantalla de Mantenimiento: prioridades por color, costos, tip RD estacional
+- **Listo cuando:** las pruebas pasan y las prioridades cambian bien según km y edad
+
+### M4 — Historial ✅
+- [x] Alta y edición de registros (fecha, km, tipo, costo, taller)
+- [x] Línea de tiempo + total gastado
+- [x] **Realimentación:** registrar algo reordena las recomendaciones (verificado en navegador)
+- [x] Acción "Marcar hecho" desde Mantenimiento crea el registro
+- **Listo cuando:** marco un cambio de aceite y esa tarjeta pasa de 🔴 a 🟢
 
 ### M2 — Perfil del Vehículo
 - [ ] Fichas curadas de los modelos semilla en `data/specs/`
@@ -193,26 +232,12 @@ que sí es conversacional y no se puede pre-generar.
 - [ ] Estado honesto para vehículos fuera de la semilla
 - **Listo cuando:** veo mi carro descrito en lenguaje humano, sin jerga
 
-### M3 — Motor de Mantenimiento ⭐
-- [ ] `catalog.ts` con los items genéricos
-- [ ] `rdModifiers.ts`
-- [ ] `engine.ts` con `recommend()`
-- [ ] **Pruebas unitarias** con los casos de §2.4
-- [ ] Pantalla de Mantenimiento: prioridades por color, costos, tip RD estacional
-- **Listo cuando:** las pruebas pasan y las prioridades cambian bien según km y edad
-
-### M4 — Historial
-- [ ] Alta y edición de registros (fecha, km, tipo, costo, taller)
-- [ ] Línea de tiempo + total gastado
-- [ ] **Realimentación:** registrar algo reordena las recomendaciones
-- [ ] Acción "Marcar hecho" desde Mantenimiento crea el registro
-- **Listo cuando:** marco un cambio de aceite y esa tarjeta pasa de 🔴 a 🟢
-
 ### M5 — Pulido
 - [ ] Responsive (móvil primero) y estados vacíos
 - [ ] Revisión de **todos** los textos: cero jerga
 - [ ] Accesibilidad: contraste, tamaños táctiles, navegación por teclado
-- [ ] Validar precios RD$ con talleres reales
+- [ ] Validar precios RD$ con talleres reales — **no se puede hacer sin contacto real
+      con talleres**; queda marcado como estimado sin validar en toda la UI
 - **Listo cuando:** pasa la prueba del §6
 
 ---

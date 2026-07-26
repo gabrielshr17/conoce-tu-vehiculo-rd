@@ -14,9 +14,10 @@ no saben nada de carros. Ingresas año, marca, modelo y versión, y recibes:
 
 ```
 src/            App web (React + Vite + TypeScript)
-  core/           Tipos de dominio (Vehicle, CatalogModel, FuelType)
+  core/           Tipos de dominio + motor de mantenimiento puro (recommend())
+    maintenance/    catalog.ts, rdModifiers.ts, engine.ts + pruebas (vitest)
   data/catalog/   Catálogo semilla de ~20 modelos comunes en RD
-  storage/        Persistencia del vehículo (localStorage)
+  storage/        Persistencia del vehículo + historial (localStorage)
   ui/             tokens.css, componentes base, layout con tab bar
   screens/        Welcome, Onboarding, Profile, Maintenance, History
 prototipo/      Prototipo visual clickeable (HTML/CSS)
@@ -48,6 +49,11 @@ npx serve prototipo -l 4321
 cd presentacion && npm install && node build.js
 ```
 
+**Correr las pruebas del motor de mantenimiento:**
+```bash
+npm test
+```
+
 ## Estado
 
 - **M0 (Fundación):** shell de React Router con tab bar inferior, tokens de diseño
@@ -56,5 +62,11 @@ cd presentacion && npm install && node build.js
   sobre un catálogo semilla de ~20 modelos, con búsqueda en cada paso. El vehículo elegido
   se guarda en localStorage y sobrevive al refresh; sin vehículo guardado, el shell
   redirige automáticamente a la Bienvenida.
+- **M3 (Motor de Mantenimiento):** `recommend()` puro y testeado (6 pruebas) con
+  modificadores del contexto RD (calor, hoyos, combustible) y tip estacional de lluvias.
+  Pantalla de Mantenimiento con prioridades por color y prompt de odómetro.
+- **M4 (Historial):** alta, edición y borrado de registros con línea de tiempo y gasto
+  total. "Marcar hecho" desde Mantenimiento crea un registro y **reordena las
+  recomendaciones al instante** (verificado en navegador).
 
-Siguiente: M3, el motor de mantenimiento (ver [MVP.md](MVP.md)).
+Siguiente: M2, el Perfil del Vehículo con contenido curado (ver [MVP.md](MVP.md)).
