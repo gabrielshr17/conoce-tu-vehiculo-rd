@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "prototipo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "serve", "prototipo", "-l", "4321"],
+      "port": 4321
+    }
+  ]
+}

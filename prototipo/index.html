@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Conoce tu Vehículo RD — Prototipo</title>
+<style>
+  :root{
+    --azul:#1565C0; --azul-osc:#0D3D7A; --azul-claro:#E8F1FB;
+    --rojo:#E53935; --amarillo:#FB8C00; --verde:#2E9E5B;
+    --tinta:#13202E; --gris:#6B7A8D; --linea:#E3E9F0; --fondo:#F4F7FB;
+    --rd-rojo:#CE1126; --rd-azul:#002D62;
+    --sombra:0 12px 30px rgba(19,32,46,.12);
+    --r:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #1e6fd9 0%, transparent 55%),
+      radial-gradient(1200px 600px at 110% 10%, #0a2a5e 0%, transparent 45%),
+      #0c1830;
+    color:var(--tinta);min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;padding:32px 16px 64px;
+  }
+  .header{text-align:center;color:#fff;margin-bottom:26px;max-width:680px}
+  .header h1{font-size:26px;font-weight:800;letter-spacing:.3px;display:flex;gap:10px;justify-content:center;align-items:center}
+  .header p{opacity:.8;font-size:14px;margin-top:8px}
+  .badge-rd{display:inline-flex;gap:6px;align-items:center;background:rgba(255,255,255,.12);
+    padding:5px 12px;border-radius:999px;font-size:12px;margin-top:14px;backdrop-filter:blur(6px)}
+
+  /* Gallery of phones */
+  .gallery{display:flex;flex-wrap:wrap;gap:30px;justify-content:center;max-width:1200px}
+
+  .phone{
+    width:300px;height:640px;background:#fff;border-radius:38px;
+    box-shadow:var(--sombra), 0 0 0 10px #0f1d33, 0 0 0 12px #20324f;
+    position:relative;overflow:hidden;display:flex;flex-direction:column;
+  }
+  .phone .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:120px;height:24px;background:#0f1d33;border-radius:0 0 16px 16px;z-index:30}
+  .screen{flex:1;overflow-y:auto;overflow-x:hidden;display:none;flex-direction:column;background:var(--fondo)}
+  .screen.active{display:flex;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .screen::-webkit-scrollbar{width:0}
+
+  .label{position:absolute;bottom:-26px;left:0;right:0;text-align:center;color:#cdd9ec;font-size:12.5px;font-weight:600}
+  .phone-wrap{position:relative;margin-bottom:30px}
+
+  /* Generic UI */
+  .topbar{background:var(--azul);color:#fff;padding:34px 20px 16px;display:flex;align-items:center;gap:12px}
+  .topbar.grad{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-osc) 100%)}
+  .topbar .back{font-size:20px;opacity:.9}
+  .topbar h2{font-size:16px;font-weight:700}
+  .topbar .sub{font-size:11.5px;opacity:.85;margin-top:2px}
+  .body{padding:18px 18px 26px;flex:1}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px}
+  .btn{display:block;width:100%;background:var(--azul);color:#fff;border:none;
+    padding:14px;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;
+    box-shadow:0 8px 18px rgba(21,101,192,.35);transition:.15s}
+  .btn:active{transform:scale(.98)}
+  .btn.ghost{background:transparent;color:var(--azul);box-shadow:none;border:1.5px solid var(--linea)}
+  .muted{color:var(--gris);font-size:13px;line-height:1.5}
+
+  /* ---------- Screen 1: Bienvenida ---------- */
+  .welcome{background:linear-gradient(160deg,#1565C0 0%,#0D3D7A 60%,#0a2a5e 100%);
+    color:#fff;height:100%;padding:60px 26px 30px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .welcome .logo{font-size:74px;margin:30px 0 6px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.3))}
+  .welcome h1{font-size:27px;font-weight:800;line-height:1.15;margin-top:10px}
+  .welcome .tag{opacity:.85;font-size:14px;margin-top:14px;line-height:1.5;max-width:230px}
+  .welcome .rdflag{margin-top:22px;font-size:13px;background:rgba(255,255,255,.12);padding:7px 14px;border-radius:999px}
+  .welcome .spacer{flex:1}
+  .welcome .btn{background:#fff;color:var(--azul)}
+  .welcome .link{color:#fff;opacity:.85;font-size:13.5px;margin-top:16px}
+
+  /* ---------- Screen 2: Onboarding ---------- */
+  .steps{display:flex;gap:7px;margin-bottom:20px}
+  .dot{height:6px;flex:1;background:var(--linea);border-radius:99px}
+  .dot.on{background:var(--azul)}
+  .qbig{font-size:21px;font-weight:800;margin-bottom:4px}
+  .search{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--linea);
+    border-radius:12px;padding:11px 13px;margin:16px 0 14px;color:var(--gris);font-size:14px}
+  .opt{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1.5px solid var(--linea);
+    border-radius:12px;padding:13px 15px;margin-bottom:9px;font-size:15px;font-weight:600;cursor:pointer;transition:.15s}
+  .opt.sel{border-color:var(--azul);background:var(--azul-claro);color:var(--azul-osc)}
+  .opt .chk{color:var(--azul);font-weight:800}
+  .navrow{display:flex;gap:10px;margin-top:18px}
+  .navrow .btn{flex:1}
+
+  /* ---------- Screen 3: Perfil ---------- */
+  .hero-car{background:linear-gradient(135deg,#1565C0,#0D3D7A);color:#fff;padding:34px 20px 22px;text-align:center}
+  .hero-car .emoji{font-size:54px}
+  .hero-car h2{font-size:20px;font-weight:800;margin-top:6px}
+  .hero-car .ver{opacity:.85;font-size:13px;margin-top:3px}
+  .quote{background:#fff;border-left:4px solid var(--azul);border-radius:0 12px 12px 0;
+    padding:14px 15px;margin:16px 0;font-size:14px;line-height:1.55;font-style:italic;color:#33465a;box-shadow:0 4px 14px rgba(19,32,46,.05)}
+  .secttl{font-size:12px;font-weight:800;color:var(--gris);text-transform:uppercase;letter-spacing:.6px;margin:18px 0 10px}
+  .card{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:13px 14px;margin-bottom:9px;display:flex;gap:11px;align-items:flex-start}
+  .card .ic{font-size:22px;line-height:1}
+  .card .t{font-size:14px;font-weight:700}
+  .card .d{font-size:12.5px;color:var(--gris);margin-top:2px;line-height:1.45}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+  .chip{background:var(--azul-claro);color:var(--azul-osc);font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px}
+  .specs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:4px}
+  .spec{background:#fff;border:1px solid var(--linea);border-radius:12px;padding:11px 12px}
+  .spec .k{font-size:10.5px;color:var(--gris);font-weight:700;text-transform:uppercase}
+  .spec .v{font-size:14.5px;font-weight:800;margin-top:3px}
+
+  /* ---------- Screen 4: Mantenimiento ---------- */
+  .mt-block{margin-bottom:16px}
+  .mt-head{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;margin-bottom:9px}
+  .mt-card{background:#fff;border-radius:14px;padding:13px 14px;margin-bottom:9px;border:1px solid var(--linea);position:relative;overflow:hidden}
+  .mt-card .bar{position:absolute;left:0;top:0;bottom:0;width:5px}
+  .mt-card .t{font-size:14.5px;font-weight:700;padding-left:6px}
+  .mt-card .meta{font-size:12px;color:var(--gris);margin-top:3px;padding-left:6px}
+  .mt-card .row{display:flex;justify-content:space-between;align-items:center;margin-top:9px;padding-left:6px}
+  .cost{font-weight:800;font-size:14px;color:var(--tinta)}
+  .mini{font-size:12px;font-weight:700;padding:6px 13px;border-radius:9px;border:1.5px solid var(--azul);color:var(--azul);background:#fff;cursor:pointer}
+  .rd-tip{background:linear-gradient(135deg,#fff5e6,#ffe9cc);border:1px solid #ffd9a0;border-radius:14px;
+    padding:13px 14px;display:flex;gap:10px;align-items:flex-start;margin-top:6px}
+  .rd-tip .ic{font-size:20px}
+  .rd-tip .t{font-size:12px;font-weight:800;color:#9a5b00}
+  .rd-tip .d{font-size:12.5px;color:#7a4d10;margin-top:2px;line-height:1.45}
+
+  /* ---------- Screen 5: Historial ---------- */
+  .timeline{position:relative;padding-left:22px;margin-top:6px}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--linea)}
+  .tl{position:relative;margin-bottom:16px}
+  .tl::before{content:"";position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--azul);border:3px solid #fff;box-shadow:0 0 0 2px var(--azul-claro)}
+  .tl .date{font-size:11px;color:var(--gris);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+  .tl .ev{background:#fff;border:1px solid var(--linea);border-radius:12px;padding:11px 13px;margin-top:6px;display:flex;justify-content:space-between;align-items:center}
+  .tl .ev .t{font-size:14px;font-weight:700}
+  .tl .ev .sub{font-size:11.5px;color:var(--gris);margin-top:2px}
+  .tl .ev .c{font-weight:800;font-size:13px}
+  .add-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--azul-claro);
+    color:var(--azul-osc);border:1.5px dashed var(--azul);border-radius:12px;padding:13px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px}
+
+  /* Bottom tab bar */
+  .tabbar{display:flex;background:#fff;border-top:1px solid var(--linea);padding:8px 4px 12px}
+  .tab{flex:1;text-align:center;font-size:10px;color:var(--gris);font-weight:600;cursor:pointer}
+  .tab .i{font-size:19px;display:block;margin-bottom:2px;filter:grayscale(1);opacity:.6}
+  .tab.on{color:var(--azul)}
+  .tab.on .i{filter:none;opacity:1}
+
+  .hint{color:#9fb2cc;font-size:13px;text-align:center;margin-top:14px;max-width:620px}
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🚗 Conoce tu Vehículo RD 🇩🇴</h1>
+    <p>Prototipo visual del MVP — 5 pantallas. Toca los botones dentro de cada teléfono para navegar.</p>
+    <div class="badge-rd">🇩🇴 Pensado para el contexto dominicano · Noob friendly</div>
+  </div>
+
+  <div class="gallery">
+
+    <!-- ============ PHONE 1: Bienvenida + Onboarding ============ -->
+    <div class="phone-wrap">
+      <div class="phone" data-phone="1">
+        <div class="notch"></div>
+
+        <!-- Bienvenida -->
+        <div class="screen active" data-screen="welcome">
+          <div class="welcome">
+            <div class="logo">🚗💨</div>
+            <h1>Conoce tu<br>Vehículo RD</h1>
+            <div class="tag">Cuida tu carro como un experto, sin serlo.</div>
+            <div class="rdflag">🇩🇴 Hecho para República Dominicana</div>
+            <div class="spacer"></div>
+            <button class="btn" onclick="go(1,'onboarding')">Empezar →</button>
+            <div class="link">Ya tengo cuenta</div>
+          </div>
+        </div>
+
+        <!-- Onboarding -->
+        <div class="screen" data-screen="onboarding">
+          <div class="topbar"><span class="back" onclick="go(1,'welcome')">←</span>
+            <div><h2>Identifica tu vehículo</h2><div class="sub">Paso 2 de 4</div></div>
+          </div>
+          <div class="body">
+            <div class="steps"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+            <div class="qbig">¿Cuál es la marca?</div>
+            <div class="muted">Elígela de la lista, no hace falta escribir.</div>
+            <div class="search">🔍 Buscar marca...</div>
+            <div class="opt sel" onclick="pick(this)">Toyota <span class="chk">✓</span></div>
+            <div class="opt" onclick="pick(this)">Honda</div>
+            <div class="opt" onclick="pick(this)">Hyundai</div>
+            <div class="opt" onclick="pick(this)">Kia</div>
+            <div class="opt" onclick="pick(this)">Nissan</div>
+            <div class="navrow">
+              <button class="btn ghost" onclick="go(1,'welcome')">← Atrás</button>
+              <button class="btn" onclick="go(1,'perfilP1')">Siguiente →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- mini-perfil reachable from phone 1 -->
+        <div class="screen" data-screen="perfilP1">
+          <div class="hero-car"><div class="emoji">🚙</div><h2>Toyota Corolla 2015</h2><div class="ver">LE · Gasolina</div></div>
+          <div class="body" style="text-align:center">
+            <div class="quote" style="text-align:left">"Confiable, económico y fácil de mantener. Un excelente carro para el día a día en RD."</div>
+            <p class="muted">Esta es tu ficha. Mira el teléfono del centro para el perfil completo.</p>
+            <button class="btn" style="margin-top:16px" onclick="go(1,'welcome')">↺ Reiniciar demo</button>
+          </div>
+        </div>
+
+        <div class="label">1 · Bienvenida + Identificación</div>
+      </div>
+    </div>
+
+    <!-- ============ PHONE 2: Perfil del vehículo ============ -->
+    <div class="phone-wrap">
+      <div class="phone" data-phone="2">
+        <div class="notch"></div>
+        <div class="screen active" data-screen="perfil">
+          <div class="hero-car">
+            <div class="emoji">🚙</div>
+            <h2>Toyota Corolla 2015</h2>
+            <div class="ver">LE · Gasolina · 98,500 km</div>
+          </div>
+          <div class="body">
+            <div class="secttl">Tu carro en pocas palabras</div>
+            <div class="quote">"Confiable, económico y fácil de mantener. Sus piezas se consiguen fácil en RD y aguanta bien el uso diario. Un compañero sin dramas."</div>
+
+            <div class="secttl">✅ Cómo tratarlo bien</div>
+            <div class="card"><div class="ic">🛢️</div><div><div class="t">Aceite a tiempo</div><div class="d">Cada 5,000 km. Es lo que más alarga la vida del motor.</div></div></div>
+            <div class="card"><div class="ic">🌡️</div><div><div class="t">Ojo con el calor</div><div class="d">Revisa el refrigerante seguido; el clima de RD exige más al motor.</div></div></div>
+
+            <div class="secttl">💪 Mejor rendimiento</div>
+            <div class="card"><div class="ic">🛞</div><div><div class="t">Presión de gomas correcta</div><div class="d">Ahorra combustible y evita desgaste por los hoyos.</div></div></div>
+
+            <div class="secttl">🛠️ Accesorios recomendados</div>
+            <div class="chips"><span class="chip">Tapa-sol parabrisas</span><span class="chip">Alfombras de goma</span><span class="chip">Cargador USB</span><span class="chip">Filtro de aire K&N</span></div>
+
+            <div class="secttl">👥 Comunidades</div>
+            <div class="card"><div class="ic">📘</div><div><div class="t">Corolla Club RD</div><div class="d">Grupo de Facebook · 12k miembros</div></div></div>
+
+            <div class="secttl">📋 Datos clave</div>
+            <div class="specs">
+              <div class="spec"><div class="k">Combustible</div><div class="v">Gasolina</div></div>
+              <div class="spec"><div class="k">Aceite</div><div class="v">4.4 L · 5W-30</div></div>
+              <div class="spec"><div class="k">Gomas</div><div class="v">195/65 R15</div></div>
+              <div class="spec"><div class="k">Presión</div><div class="v">32 psi</div></div>
+            </div>
+
+            <button class="btn" style="margin-top:18px">Ver mantenimiento →</button>
+          </div>
+          <div class="tabbar">
+            <div class="tab on"><span class="i">🚙</span>Perfil</div>
+            <div class="tab"><span class="i">🛠️</span>Mantenim.</div>
+            <div class="tab"><span class="i">📋</span>Historial</div>
+            <div class="tab"><span class="i">🤖</span>Mecánico</div>
+          </div>
+        </div>
+        <div class="label">2 · Perfil del Vehículo</div>
+      </div>
+    </div>
+
+    <!-- ============ PHONE 3: Mantenimiento ============ -->
+    <div class="phone-wrap">
+      <div class="phone" data-phone="3">
+        <div class="notch"></div>
+        <div class="screen active" data-screen="mant">
+          <div class="topbar grad">
+            <div><h2>🛠️ Mantenimiento</h2><div class="sub">Corolla 2015 · 98,500 km · 11 años</div></div>
+          </div>
+          <div class="body">
+            <div class="mt-block">
+              <div class="mt-head" style="color:var(--rojo)">🔴 URGENTE</div>
+              <div class="mt-card">
+                <div class="bar" style="background:var(--rojo)"></div>
+                <div class="t">Cambio de aceite</div>
+                <div class="meta">Vencido hace 1,200 km</div>
+                <div class="row"><span class="cost">~RD$ 2,500</span><button class="mini">Marcar hecho</button></div>
+              </div>
+            </div>
+
+            <div class="mt-block">
+              <div class="mt-head" style="color:var(--amarillo)">🟡 PRONTO</div>
+              <div class="mt-card">
+                <div class="bar" style="background:var(--amarillo)"></div>
+                <div class="t">Gomas delanteras</div>
+                <div class="meta">Desgaste acelerado por los hoyos</div>
+                <div class="row"><span class="cost">~RD$ 16,000</span><button class="mini">Ver detalle</button></div>
+              </div>
+              <div class="mt-card">
+                <div class="bar" style="background:var(--amarillo)"></div>
+                <div class="t">Batería</div>
+                <div class="meta">3 años · el calor de RD la desgasta</div>
+                <div class="row"><span class="cost">~RD$ 4,500</span><button class="mini">Ver detalle</button></div>
+              </div>
+            </div>
+
+            <div class="mt-block">
+              <div class="mt-head" style="color:var(--verde)">🟢 MÁS ADELANTE</div>
+              <div class="mt-card">
+                <div class="bar" style="background:var(--verde)"></div>
+                <div class="t">Correa de tiempo</div>
+                <div class="meta">Programado para 120,000 km</div>
+                <div class="row"><span class="cost">~RD$ 9,000</span><button class="mini">Ver detalle</button></div>
+              </div>
+            </div>
+
+            <div class="rd-tip">
+              <div class="ic">🇩🇴</div>
+              <div><div class="t">TIP REPÚBLICA DOMINICANA</div>
+              <div class="d">Empezó la época de lluvias: revisa tus frenos y limpiaparabrisas antes de mayo.</div></div>
+            </div>
+          </div>
+          <div class="tabbar">
+            <div class="tab"><span class="i">🚙</span>Perfil</div>
+            <div class="tab on"><span class="i">🛠️</span>Mantenim.</div>
+            <div class="tab"><span class="i">📋</span>Historial</div>
+            <div class="tab"><span class="i">🤖</span>Mecánico</div>
+          </div>
+        </div>
+        <div class="label">3 · Mantenimiento Inteligente</div>
+      </div>
+    </div>
+
+    <!-- ============ PHONE 4: Historial ============ -->
+    <div class="phone-wrap">
+      <div class="phone" data-phone="4">
+        <div class="notch"></div>
+        <div class="screen active" data-screen="hist">
+          <div class="topbar grad">
+            <div><h2>📋 Historial</h2><div class="sub">La hoja de vida de tu carro</div></div>
+          </div>
+          <div class="body">
+            <div class="specs" style="margin-bottom:16px">
+              <div class="spec"><div class="k">Gasto total</div><div class="v">RD$ 23k</div></div>
+              <div class="spec"><div class="k">Registros</div><div class="v">3</div></div>
+            </div>
+            <div class="timeline">
+              <div class="tl"><div class="date">Marzo 2026</div>
+                <div class="ev"><div><div class="t">🛢️ Cambio de aceite</div><div class="sub">Taller Marte · 97,300 km</div></div><div class="c">RD$2,500</div></div>
+              </div>
+              <div class="tl"><div class="date">Enero 2026</div>
+                <div class="ev"><div><div class="t">🛞 Gomas nuevas (x4)</div><div class="sub">Goodyear · 94,000 km</div></div><div class="c">RD$16,000</div></div>
+              </div>
+              <div class="tl"><div class="date">Noviembre 2025</div>
+                <div class="ev"><div><div class="t">🔋 Batería</div><div class="sub">Tropigas · 90,500 km</div></div><div class="c">RD$4,500</div></div>
+              </div>
+            </div>
+            <div class="add-btn">＋ Agregar registro</div>
+          </div>
+          <div class="tabbar">
+            <div class="tab"><span class="i">🚙</span>Perfil</div>
+            <div class="tab"><span class="i">🛠️</span>Mantenim.</div>
+            <div class="tab on"><span class="i">📋</span>Historial</div>
+            <div class="tab"><span class="i">🤖</span>Mecánico</div>
+          </div>
+        </div>
+        <div class="label">4 · Historial</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hint">💡 Las pantallas 2–4 muestran el flujo principal. El teléfono 1 es interactivo: pulsa "Empezar" y "Siguiente" para recorrer el onboarding.</div>
+
+<script>
+  function go(phone, screen){
+    document.querySelectorAll('.phone[data-phone="'+phone+'"] .screen').forEach(s=>s.classList.remove('active'));
+    document.querySelector('.phone[data-phone="'+phone+'"] .screen[data-screen="'+screen+'"]').classList.add('active');
+  }
+  function pick(el){
+    el.parentNode.querySelectorAll('.opt').forEach(o=>{o.classList.remove('sel');o.querySelector('.chk')?.remove();});
+    el.classList.add('sel');
+    if(!el.querySelector('.chk')){const s=document.createElement('span');s.className='chk';s.textContent='✓';el.appendChild(s);}
+  }
+</script>
+</body>
+</html>

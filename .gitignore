@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# QA render output (regenerated on demand)
+presentacion/qa/
+
+# Intermediate capture (regenerated from capture.html)
+prototipo/shots/full.png
+
+# OS junk
+Thumbs.db
+.DS_Store
