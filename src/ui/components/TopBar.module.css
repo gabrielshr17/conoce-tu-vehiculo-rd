@@ -18,8 +18,13 @@
   border: none;
   color: #fff;
   cursor: pointer;
-  padding: 0;
   line-height: 1;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -12px 0 -12px -12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {

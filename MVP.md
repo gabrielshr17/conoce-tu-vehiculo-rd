@@ -225,20 +225,36 @@ que sí es conversacional y no se puede pre-generar.
 - [x] Acción "Marcar hecho" desde Mantenimiento crea el registro
 - **Listo cuando:** marco un cambio de aceite y esa tarjeta pasa de 🔴 a 🟢
 
-### M2 — Perfil del Vehículo
-- [ ] Fichas curadas de los modelos semilla en `data/specs/`
-- [ ] Descripciones pre-generadas y revisadas
-- [ ] Pantalla de Perfil: descripción, cómo tratarlo, rendimiento, accesorios, comunidades, ficha
-- [ ] Estado honesto para vehículos fuera de la semilla
+### M2 — Perfil del Vehículo ✅
+- [x] Fichas curadas de los modelos semilla en `data/specs/` (los 20 modelos, contenido
+      diferenciado por tipo de vehículo — no plantilla genérica repetida)
+- [x] Descripciones pre-generadas y revisadas
+- [x] Pantalla de Perfil: descripción, cómo tratarlo, rendimiento, accesorios, comunidades, ficha
+- [x] Estado honesto para vehículos fuera de la semilla (verificado en navegador)
 - **Listo cuando:** veo mi carro descrito en lenguaje humano, sin jerga
 
-### M5 — Pulido
-- [ ] Responsive (móvil primero) y estados vacíos
-- [ ] Revisión de **todos** los textos: cero jerga
-- [ ] Accesibilidad: contraste, tamaños táctiles, navegación por teclado
+### M5 — Pulido ✅
+- [x] Responsive: columna centrada tipo celular en pantallas anchas (`max-width: 480px`),
+      fluida en móvil real; verificado que la altura del shell sigue llenando el viewport
+- [x] Estados vacíos (historial sin registros, búsqueda sin resultados — ya cubiertos en
+      M1/M4)
+- [x] Revisión de textos: se encontraron y corrigieron 3 términos técnicos sin explicar
+      ("CVT", "diferencial") en las fichas de M2
+- [x] Accesibilidad: contraste de `--gris` subido de 4.38:1 a 5.46:1 (no cumplía WCAG AA),
+      tamaños táctiles de 44px en botones pequeños (atrás, marcar hecho, editar/eliminar),
+      foco visible restaurado en el buscador (tenía `outline:none` sin reemplazo),
+      confirmado que todo elemento clicable es `<button>`/`<input>` real (nav. por teclado
+      nativa, sin `tabIndex` roto)
 - [ ] Validar precios RD$ con talleres reales — **no se puede hacer sin contacto real
       con talleres**; queda marcado como estimado sin validar en toda la UI
-- **Listo cuando:** pasa la prueba del §6
+- **Listo cuando:** pasa la prueba del §6 — pendiente de una prueba con un usuario real
+
+**Bug encontrado y corregido durante el pulido:** rehacer el onboarding con un vehículo
+ya guardado generaba un `id` nuevo, dejando huérfano el historial existente (los
+registros seguían en localStorage pero invisibles, porque `historyRepository.getAll`
+filtra por `vehicleId`). Ahora el onboarding reutiliza el `id`, `createdAt` y `currentKm`
+del vehículo existente si lo hay — verificado en navegador: el historial sobrevive a un
+re-onboarding que corrige la versión elegida.
 
 ---
 

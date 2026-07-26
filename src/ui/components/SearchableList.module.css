@@ -11,6 +11,10 @@
   font-size: 14px;
 }
 
+.search:focus-within {
+  border-color: var(--azul);
+}
+
 .searchInput {
   border: none;
   outline: none;

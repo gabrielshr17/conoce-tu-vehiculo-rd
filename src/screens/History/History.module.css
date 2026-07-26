@@ -106,14 +106,16 @@
 
 .eventActions {
   display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 4px;
+  margin-top: 4px;
+  margin-left: -10px;
 }
 
 .linkBtn {
   background: none;
   border: none;
-  padding: 0;
+  padding: 10px;
+  min-height: 40px;
   font-size: 12px;
   font-weight: 700;
   color: var(--azul);

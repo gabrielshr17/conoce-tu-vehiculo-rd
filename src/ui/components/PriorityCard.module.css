@@ -55,7 +55,8 @@
 .mini {
   font-size: 12px;
   font-weight: 700;
-  padding: 6px 13px;
+  padding: 10px 16px;
+  min-height: 40px;
   border-radius: 9px;
   border: 1.5px solid var(--azul);
   color: var(--azul);

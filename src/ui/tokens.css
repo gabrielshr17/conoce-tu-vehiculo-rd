@@ -7,7 +7,7 @@
   --amarillo: #fb8c00;
   --verde: #2e9e5b;
   --tinta: #13202e;
-  --gris: #6b7a8d;
+  --gris: #5b6b7e; /* oscurecido desde #6b7a8d para cumplir contraste WCAG AA (4.5:1) */
   --linea: #e3e9f0;
   --fondo: #f4f7fb;
   --rd-rojo: #ce1126;
@@ -38,10 +38,25 @@ body {
   margin: 0;
   font-family: var(--font);
   color: var(--tinta);
-  background: var(--fondo);
+  background: #dbe3ee;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* En pantallas anchas, la app se muestra como una columna centrada tipo
+   celular en vez de estirarse a lo ancho — el diseño se hizo mobile-first. */
+#root {
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--fondo);
+  box-shadow: 0 0 40px rgba(19, 32, 46, 0.1);
+}
+
 button {
+  font-family: inherit;
+}
+
+input,
+textarea {
   font-family: inherit;
 }

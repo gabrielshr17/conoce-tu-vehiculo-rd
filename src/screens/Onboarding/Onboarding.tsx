@@ -49,15 +49,19 @@ export function Onboarding() {
     }
     if (!year || !make || !model || !trim) return;
 
+    // Si ya había un vehículo, se reutiliza su id y km — así no se huerfana
+    // el historial existente al corregir una selección del onboarding.
+    const existing = vehicleRepository.get();
     const catalogModel = findCatalogModel(make, model);
     const vehicle: Vehicle = {
-      id: crypto.randomUUID(),
+      id: existing?.id ?? crypto.randomUUID(),
       year,
       make,
       model,
       trim,
       fuelType: catalogModel?.fuelType ?? 'gasolina',
-      createdAt: new Date().toISOString(),
+      createdAt: existing?.createdAt ?? new Date().toISOString(),
+      currentKm: existing?.currentKm,
     };
     vehicleRepository.save(vehicle);
     navigate('/perfil');
