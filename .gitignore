@@ -1,6 +1,15 @@
 # Dependencies
 node_modules/
 
+# App build output
+dist/
+dist-ssr/
+*.local
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+
 # QA render output (regenerated on demand)
 presentacion/qa/
 

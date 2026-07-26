@@ -1,0 +1,37 @@
+.btn {
+  display: block;
+  width: 100%;
+  background: var(--azul);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: var(--radio-md);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(21, 101, 192, 0.35);
+  transition: transform 0.15s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ghost {
+  background: transparent;
+  color: var(--azul);
+  box-shadow: none;
+  border: 1.5px solid var(--linea);
+}
+
+.inverse {
+  background: #fff;
+  color: var(--azul);
+  box-shadow: none;
+}

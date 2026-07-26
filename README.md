@@ -13,6 +13,9 @@ no saben nada de carros. Ingresas año, marca, modelo y versión, y recibes:
 ## Estructura
 
 ```
+src/            App web (React + Vite + TypeScript)
+  ui/             tokens.css, componentes base, layout con tab bar
+  screens/        Welcome, Onboarding, Profile, Maintenance, History
 prototipo/      Prototipo visual clickeable (HTML/CSS)
   index.html      Galería de las 5 pantallas del MVP
   capture.html    Página usada para generar capturas
@@ -20,9 +23,17 @@ prototipo/      Prototipo visual clickeable (HTML/CSS)
 presentacion/   Presentación del proyecto
   build.js         Genera el .pptx con pptxgenjs
   *.pptx / *.pdf   Presentación exportada
+PLAN.md         Visión, arquitectura y decisiones del proyecto
+MVP.md          Plan de ejecución del MVP, milestone por milestone
 ```
 
 ## Uso
+
+**Correr la app:**
+```bash
+npm install
+npm run dev
+```
 
 **Ver el prototipo:**
 ```bash
@@ -36,6 +47,6 @@ cd presentacion && npm install && node build.js
 
 ## Estado
 
-Fase de diseño / prototipo. MVP enfocado: Onboarding → Perfil → Mantenimiento → Historial.
-Siguiente paso: scaffold de la app web real (React + Vite) reutilizable hacia móvil (Expo),
-con motor híbrido de recomendaciones (base curada + IA).
+**M0 (Fundación) completo:** shell de React Router con tab bar inferior, tokens de diseño
+portados del prototipo, y componentes base (Button, Card, Chip, Stepper, TopBar). Las 5
+pantallas ya rutean correctamente; su contenido real se construye en M1–M4 (ver [MVP.md](MVP.md)).

@@ -1,0 +1,10 @@
+.card {
+  background: #fff;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-md);
+  padding: 13px 14px;
+}
+
+.pad {
+  padding: 18px;
+}

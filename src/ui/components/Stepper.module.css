@@ -1,0 +1,15 @@
+.steps {
+  display: flex;
+  gap: 7px;
+}
+
+.dot {
+  height: 6px;
+  flex: 1;
+  background: var(--linea);
+  border-radius: 99px;
+}
+
+.on {
+  background: var(--azul);
+}

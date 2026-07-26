@@ -1,0 +1,47 @@
+/* Tokens de diseño — portados de prototipo/index.html. Mantener en sync. */
+:root {
+  --azul: #1565c0;
+  --azul-osc: #0d3d7a;
+  --azul-claro: #e8f1fb;
+  --rojo: #e53935;
+  --amarillo: #fb8c00;
+  --verde: #2e9e5b;
+  --tinta: #13202e;
+  --gris: #6b7a8d;
+  --linea: #e3e9f0;
+  --fondo: #f4f7fb;
+  --rd-rojo: #ce1126;
+  --rd-azul: #002d62;
+
+  --sombra: 0 12px 30px rgba(19, 32, 46, 0.12);
+  --sombra-sm: 0 4px 14px rgba(19, 32, 46, 0.05);
+  --radio: 20px;
+  --radio-md: 14px;
+  --radio-sm: 12px;
+
+  --font: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--tinta);
+  background: var(--fondo);
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font-family: inherit;
+}
