@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
+import { vehicleRepository } from '../../storage';
 import { Button } from '../../ui/components';
 import styles from './Welcome.module.css';
 
 export function Welcome() {
   const navigate = useNavigate();
+  const vehicle = vehicleRepository.get();
 
   return (
     <div className={styles.welcome}>
@@ -20,9 +22,15 @@ export function Welcome() {
         <Button variant="inverse" onClick={() => navigate('/onboarding')}>
           Empezar →
         </Button>
-        <button type="button" className={styles.link}>
-          Ya tengo cuenta
-        </button>
+        {vehicle ? (
+          <button type="button" className={styles.link} onClick={() => navigate('/perfil')}>
+            Continuar con tu {vehicle.make} {vehicle.model} →
+          </button>
+        ) : (
+          <button type="button" className={styles.link}>
+            Ya tengo cuenta
+          </button>
+        )}
       </div>
     </div>
   );

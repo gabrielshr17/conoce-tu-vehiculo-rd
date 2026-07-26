@@ -1,0 +1,30 @@
+.body {
+  padding: 18px 18px 26px;
+}
+
+.stepperWrap {
+  margin-bottom: 20px;
+}
+
+.qbig {
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.muted {
+  color: var(--gris);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.navrow {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.navrow > * {
+  flex: 1;
+}

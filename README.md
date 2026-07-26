@@ -14,6 +14,9 @@ no saben nada de carros. Ingresas año, marca, modelo y versión, y recibes:
 
 ```
 src/            App web (React + Vite + TypeScript)
+  core/           Tipos de dominio (Vehicle, CatalogModel, FuelType)
+  data/catalog/   Catálogo semilla de ~20 modelos comunes en RD
+  storage/        Persistencia del vehículo (localStorage)
   ui/             tokens.css, componentes base, layout con tab bar
   screens/        Welcome, Onboarding, Profile, Maintenance, History
 prototipo/      Prototipo visual clickeable (HTML/CSS)
@@ -47,6 +50,11 @@ cd presentacion && npm install && node build.js
 
 ## Estado
 
-**M0 (Fundación) completo:** shell de React Router con tab bar inferior, tokens de diseño
-portados del prototipo, y componentes base (Button, Card, Chip, Stepper, TopBar). Las 5
-pantallas ya rutean correctamente; su contenido real se construye en M1–M4 (ver [MVP.md](MVP.md)).
+- **M0 (Fundación):** shell de React Router con tab bar inferior, tokens de diseño
+  portados del prototipo, y componentes base (Button, Card, Chip, Stepper, TopBar).
+- **M1 (Catálogo + Onboarding):** flujo real de 4 pasos (Año → Marca → Modelo → Versión)
+  sobre un catálogo semilla de ~20 modelos, con búsqueda en cada paso. El vehículo elegido
+  se guarda en localStorage y sobrevive al refresh; sin vehículo guardado, el shell
+  redirige automáticamente a la Bienvenida.
+
+Siguiente: M3, el motor de mantenimiento (ver [MVP.md](MVP.md)).

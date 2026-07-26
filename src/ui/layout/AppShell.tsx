@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Navigate, Outlet } from 'react-router-dom';
+import { vehicleRepository } from '../../storage';
 import styles from './AppShell.module.css';
 
 const TABS = [
@@ -8,6 +9,11 @@ const TABS = [
 ];
 
 export function AppShell() {
+  // Sin vehículo identificado no hay nada que mostrar en estas pantallas.
+  if (!vehicleRepository.get()) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className={styles.shell}>
       <div className={styles.content}>
