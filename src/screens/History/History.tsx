@@ -137,14 +137,23 @@ export function History() {
     <div>
       <TopBar title="Historial" subtitle="La hoja de vida de tu carro" icon="📋" gradient />
       <div className={styles.body}>
-        <div className={styles.specs}>
-          <div className={styles.spec}>
-            <div className={styles.specKey}>Gasto total</div>
-            <div className={styles.specValue}>{formatCurrency(total)}</div>
+        {sorted.length > 0 && (
+          <div className={styles.lastEntry}>
+            <div className={styles.specKey}>Último registro</div>
+            <div className={styles.specValue}>{sorted[0].description}</div>
+            <div className={styles.lastEntryMeta}>
+              {formatKm(sorted[0].km)} · {monthLabel(sorted[0].date).toLowerCase()}
+            </div>
           </div>
+        )}
+        <div className={styles.specs}>
           <div className={styles.spec}>
             <div className={styles.specKey}>Registros</div>
             <div className={styles.specValue}>{entries.length}</div>
+          </div>
+          <div className={styles.spec}>
+            <div className={styles.specKey}>Gasto total</div>
+            <div className={styles.specValue}>{formatCurrency(total)}</div>
           </div>
         </div>
 

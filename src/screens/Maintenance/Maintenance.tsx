@@ -4,7 +4,7 @@ import { recommend } from '../../core/maintenance/engine';
 import { getSeasonalTip } from '../../core/maintenance/rdModifiers';
 import type { HistoryEntry, Priority, Recommendation, Vehicle } from '../../core/types';
 import { historyRepository, vehicleRepository } from '../../storage';
-import { Button, PriorityCard, TopBar } from '../../ui/components';
+import { Button, DrFlag, PriorityCard, TopBar } from '../../ui/components';
 import styles from './Maintenance.module.css';
 
 const PRIORITY_META: Record<Priority, { label: string; icon: string; color: string }> = {
@@ -39,7 +39,7 @@ export function Maintenance() {
       <div>
         <TopBar title="Mantenimiento" icon="🛠️" gradient />
         <div className={styles.body}>
-          <p className={styles.ask}>¿Cuántos kilómetros tiene tu carro ahorita?</p>
+          <p className={styles.ask}>¿Cuántos kilómetros tiene tu carro ahora?</p>
           <p className={styles.muted}>Lo necesitamos para saber qué le toca y para cuándo.</p>
           <input
             className={styles.kmInput}
@@ -111,7 +111,9 @@ export function Maintenance() {
 
         {seasonalTip && (
           <div className={styles.seasonalTip}>
-            <span className={styles.seasonalIcon}>🇩🇴</span>
+            <span className={styles.seasonalIcon}>
+              <DrFlag size={18} />
+            </span>
             <div>
               <div className={styles.seasonalTitle}>TIP REPÚBLICA DOMINICANA</div>
               <div className={styles.seasonalDesc}>{seasonalTip}</div>

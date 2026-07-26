@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { vehicleRepository } from '../../storage';
-import { Button } from '../../ui/components';
+import { Button, DrFlag } from '../../ui/components';
 import styles from './Welcome.module.css';
 
 export function Welcome() {
@@ -16,7 +16,9 @@ export function Welcome() {
         Vehículo RD
       </h1>
       <p className={styles.tag}>Cuida tu carro como un experto, sin serlo.</p>
-      <div className={styles.rdflag}>🇩🇴 Hecho para República Dominicana</div>
+      <div className={styles.rdflag}>
+        <DrFlag size={13} /> Hecho para República Dominicana
+      </div>
       <div className={styles.spacer} />
       <div className={styles.actions}>
         <Button variant="inverse" onClick={() => navigate('/onboarding')}>

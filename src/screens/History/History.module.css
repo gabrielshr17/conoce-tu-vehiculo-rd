@@ -2,6 +2,24 @@
   padding: 18px;
 }
 
+.lastEntry {
+  background: var(--azul-claro);
+  border-radius: var(--radio-sm);
+  padding: 12px 14px;
+  margin-bottom: 9px;
+}
+
+.lastEntry .specKey {
+  color: var(--azul-osc);
+}
+
+.lastEntryMeta {
+  font-size: 12px;
+  color: var(--azul-osc);
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
 .specs {
   display: grid;
   grid-template-columns: 1fr 1fr;

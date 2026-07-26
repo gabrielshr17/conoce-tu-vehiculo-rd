@@ -1,5 +1,5 @@
 import { findCatalogModel } from '../../data/catalog';
-import { findVehicleSpec } from '../../data/specs';
+import { communitySearchUrl, findVehicleSpec } from '../../data/specs';
 import { vehicleRepository } from '../../storage';
 import { Chip, TopBar } from '../../ui/components';
 import styles from './Profile.module.css';
@@ -74,14 +74,24 @@ export function Profile() {
           ))}
         </div>
 
-        <div className={styles.sectionTitle}>👥 Comunidad</div>
-        <div className={styles.communityCard}>
-          <div>📘</div>
-          <div>
-            <div className={styles.tipTitle}>{spec.community.name}</div>
-            <div className={styles.tipDesc}>{spec.community.platform}</div>
-          </div>
+        <div className={styles.sectionTitle}>
+          👥 {spec.communities.length > 1 ? 'Comunidades' : 'Comunidad'}
         </div>
+        {spec.communities.map((c) => (
+          <a
+            key={c.name}
+            href={communitySearchUrl(c.name)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.communityCard}
+          >
+            <div>📘</div>
+            <div>
+              <div className={styles.tipTitle}>{c.name}</div>
+              <div className={styles.tipDesc}>{c.platform} · buscar grupo →</div>
+            </div>
+          </a>
+        ))}
 
         <div className={styles.sectionTitle}>📋 Datos clave</div>
         <div className={styles.specs}>

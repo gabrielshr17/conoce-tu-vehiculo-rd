@@ -8,13 +8,19 @@ export interface CareTip {
   description: string;
 }
 
+export interface Community {
+  name: string;
+  platform: string;
+}
+
 export interface VehicleSpec {
   modelId: string; // debe coincidir con CatalogModel.id
   description: string;
   careTips: CareTip[];
   performanceTips: CareTip[];
   accessories: string[];
-  community: { name: string; platform: string };
+  /** Puede haber más de una — se muestran todas. */
+  communities: Community[];
   oilCapacity: string;
   oilType: string;
   tireSize: string;
