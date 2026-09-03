@@ -85,3 +85,9 @@
   cursor: pointer;
   font-family: inherit;
 }
+
+.googleButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}

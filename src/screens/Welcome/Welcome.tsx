@@ -1,11 +1,22 @@
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { vehicleRepository } from '../../storage';
+import { renderGoogleSignInButton } from '../../auth/google';
+import { sessionRepository, vehicleRepository } from '../../storage';
 import { Button, DrFlag } from '../../ui/components';
 import styles from './Welcome.module.css';
 
 export function Welcome() {
   const navigate = useNavigate();
   const vehicle = vehicleRepository.get();
+  const googleButtonRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (vehicle || !googleButtonRef.current) return;
+    renderGoogleSignInButton(googleButtonRef.current, (profile) => {
+      sessionRepository.save(profile);
+      navigate('/onboarding');
+    });
+  }, [vehicle, navigate]);
 
   return (
     <div className={styles.welcome}>
@@ -29,9 +40,7 @@ export function Welcome() {
             Continuar con tu {vehicle.make} {vehicle.model} →
           </button>
         ) : (
-          <button type="button" className={styles.link}>
-            Ya tengo cuenta
-          </button>
+          <div className={styles.googleButton} ref={googleButtonRef} />
         )}
       </div>
     </div>

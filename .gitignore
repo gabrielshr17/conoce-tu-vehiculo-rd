@@ -6,6 +6,11 @@ dist/
 dist-ssr/
 *.local
 
+# Env files (contain per-environment config; .env.example documents the shape)
+.env
+.env.*
+!.env.example
+
 # Editor
 .vscode/*
 !.vscode/extensions.json
