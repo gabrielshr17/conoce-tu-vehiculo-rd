@@ -8,15 +8,16 @@ import styles from './Welcome.module.css';
 export function Welcome() {
   const navigate = useNavigate();
   const vehicle = vehicleRepository.get();
+  const session = sessionRepository.get();
   const googleButtonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (vehicle || !googleButtonRef.current) return;
+    if (session || !googleButtonRef.current) return;
     renderGoogleSignInButton(googleButtonRef.current, (profile) => {
       sessionRepository.save(profile);
-      navigate('/onboarding');
+      navigate(vehicleRepository.get() ? '/perfil' : '/onboarding');
     });
-  }, [vehicle, navigate]);
+  }, [session, navigate]);
 
   return (
     <div className={styles.welcome}>
@@ -32,15 +33,19 @@ export function Welcome() {
       </div>
       <div className={styles.spacer} />
       <div className={styles.actions}>
-        <Button variant="inverse" onClick={() => navigate('/onboarding')}>
-          Empezar →
-        </Button>
-        {vehicle ? (
-          <button type="button" className={styles.link} onClick={() => navigate('/perfil')}>
+        {!session ? (
+          <>
+            <p className={styles.tag}>Inicia sesión con Google para empezar.</p>
+            <div className={styles.googleButton} ref={googleButtonRef} />
+          </>
+        ) : vehicle ? (
+          <Button variant="inverse" onClick={() => navigate('/perfil')}>
             Continuar con tu {vehicle.make} {vehicle.model} →
-          </button>
+          </Button>
         ) : (
-          <div className={styles.googleButton} ref={googleButtonRef} />
+          <Button variant="inverse" onClick={() => navigate('/onboarding')}>
+            Empezar →
+          </Button>
         )}
       </div>
     </div>
