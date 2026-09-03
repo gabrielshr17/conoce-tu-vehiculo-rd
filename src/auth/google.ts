@@ -5,30 +5,39 @@ export interface GoogleProfile {
   picture?: string;
 }
 
-interface CredentialResponse {
-  credential: string;
+interface TokenResponse {
+  access_token: string;
+  error?: string;
 }
 
-interface GoogleAccountsId {
-  initialize(config: { client_id: string; callback: (response: CredentialResponse) => void }): void;
-  renderButton(parent: HTMLElement, options: Record<string, unknown>): void;
+interface TokenClient {
+  requestAccessToken(overridable?: { prompt?: string }): void;
+}
+
+interface GoogleOAuth2 {
+  initTokenClient(config: {
+    client_id: string;
+    scope: string;
+    prompt?: string;
+    callback: (response: TokenResponse) => void;
+  }): TokenClient;
 }
 
 declare global {
   interface Window {
-    google?: { accounts: { id: GoogleAccountsId } };
+    google?: { accounts: { oauth2: GoogleOAuth2 } };
   }
 }
 
-function waitForGoogleIdentity(timeoutMs = 5000): Promise<GoogleAccountsId | null> {
-  if (window.google) return Promise.resolve(window.google.accounts.id);
+function waitForGoogleIdentity(timeoutMs = 5000): Promise<GoogleOAuth2 | null> {
+  if (window.google) return Promise.resolve(window.google.accounts.oauth2);
 
   return new Promise((resolve) => {
     const start = Date.now();
     const interval = setInterval(() => {
       if (window.google) {
         clearInterval(interval);
-        resolve(window.google.accounts.id);
+        resolve(window.google.accounts.oauth2);
       } else if (Date.now() - start > timeoutMs) {
         clearInterval(interval);
         resolve(null);
@@ -37,42 +46,39 @@ function waitForGoogleIdentity(timeoutMs = 5000): Promise<GoogleAccountsId | nul
   });
 }
 
-function profileFromCredential(credential: string): GoogleProfile {
-  const payload = credential.split('.')[1];
-  const json = decodeURIComponent(
-    atob(payload.replace(/-/g, '+').replace(/_/g, '/'))
-      .split('')
-      .map((c) => `%${c.charCodeAt(0).toString(16).padStart(2, '0')}`)
-      .join(''),
-  );
-  const claims = JSON.parse(json) as { sub: string; email: string; name: string; picture?: string };
-  return { id: claims.sub, email: claims.email, name: claims.name, picture: claims.picture };
+async function fetchProfile(accessToken: string): Promise<GoogleProfile> {
+  const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  const data = (await res.json()) as { sub: string; email: string; name: string; picture?: string };
+  return { id: data.sub, email: data.email, name: data.name, picture: data.picture };
 }
 
 /**
- * Monta el botón oficial de Google en `container`. Simular un clic sobre un
- * botón renderizado por Google no funciona (vive en un iframe de otro origen),
- * así que el botón real es la única UI de entrada soportada.
+ * El botón declarativo "Sign In With Google" (renderButton) reutiliza en
+ * silencio la sesión de Google ya activa en el navegador —tanto con FedCM
+ * como con su alternativa por iframe— sin mostrar nunca un selector. El flujo
+ * OAuth2 con `prompt: 'select_account'` es la única vía documentada que
+ * garantiza el selector de cuentas de Google en cada clic.
  */
-export async function renderGoogleSignInButton(
-  container: HTMLElement,
-  onSuccess: (profile: GoogleProfile) => void,
+export async function signInWithGoogle(
+  onSuccess: (profile: GoogleProfile, accessToken: string) => void,
 ): Promise<void> {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
   if (!clientId) return;
 
-  const accountsId = await waitForGoogleIdentity();
-  if (!accountsId) return;
+  const oauth2 = await waitForGoogleIdentity();
+  if (!oauth2) return;
 
-  accountsId.initialize({
+  const client = oauth2.initTokenClient({
     client_id: clientId,
-    callback: (response) => onSuccess(profileFromCredential(response.credential)),
+    scope: 'email profile',
+    prompt: 'select_account',
+    callback: async (response) => {
+      if (response.error || !response.access_token) return;
+      const profile = await fetchProfile(response.access_token);
+      onSuccess(profile, response.access_token);
+    },
   });
-  accountsId.renderButton(container, {
-    type: 'standard',
-    theme: 'filled_blue',
-    size: 'large',
-    text: 'continue_with',
-    shape: 'pill',
-  });
+  client.requestAccessToken();
 }

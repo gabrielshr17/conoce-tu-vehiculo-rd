@@ -1,23 +1,24 @@
-import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { renderGoogleSignInButton } from '../../auth/google';
+import { signInWithGoogle } from '../../auth/google';
+import { sendWelcomeEmail } from '../../auth/welcomeEmail';
 import { sessionRepository, vehicleRepository } from '../../storage';
-import { Button, DrFlag } from '../../ui/components';
+import { Button, DrFlag, GoogleIcon } from '../../ui/components';
 import styles from './Welcome.module.css';
+
+const GOOGLE_PASSWORD_RECOVERY_URL = 'https://accounts.google.com/signin/recovery';
 
 export function Welcome() {
   const navigate = useNavigate();
   const vehicle = vehicleRepository.get();
   const session = sessionRepository.get();
-  const googleButtonRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (session || !googleButtonRef.current) return;
-    renderGoogleSignInButton(googleButtonRef.current, (profile) => {
+  function handleGoogleSignIn() {
+    signInWithGoogle((profile, accessToken) => {
       sessionRepository.save(profile);
+      sendWelcomeEmail(accessToken);
       navigate(vehicleRepository.get() ? '/perfil' : '/onboarding');
     });
-  }, [session, navigate]);
+  }
 
   return (
     <div className={styles.welcome}>
@@ -36,7 +37,17 @@ export function Welcome() {
         {!session ? (
           <>
             <p className={styles.tag}>Inicia sesión con Google para empezar.</p>
-            <div className={styles.googleButton} ref={googleButtonRef} />
+            <Button variant="inverse" className={styles.googleButton} onClick={handleGoogleSignIn}>
+              <GoogleIcon size={18} className={styles.googleIcon} /> Iniciar sesión con Google
+            </Button>
+            <a
+              className={styles.link}
+              href={GOOGLE_PASSWORD_RECOVERY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ¿Olvidaste tu contraseña?
+            </a>
           </>
         ) : vehicle ? (
           <Button variant="inverse" onClick={() => navigate('/perfil')}>

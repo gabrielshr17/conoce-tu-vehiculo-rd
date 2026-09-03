@@ -3,6 +3,7 @@ export { Card } from './Card';
 export { Chip } from './Chip';
 export { ComingSoon } from './ComingSoon';
 export { DrFlag } from './DrFlag';
+export { GoogleIcon } from './GoogleIcon';
 export { PriorityCard } from './PriorityCard';
 export { SearchableList } from './SearchableList';
 export { Stepper } from './Stepper';

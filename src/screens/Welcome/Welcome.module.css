@@ -75,19 +75,19 @@
   max-width: 320px;
 }
 
+.googleButton {
+  margin-top: 16px;
+}
+
+.googleIcon {
+  margin-right: 8px;
+}
+
 .link {
+  display: inline-block;
   color: #fff;
   opacity: 0.85;
   font-size: 13.5px;
   margin-top: 16px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.googleButton {
-  display: flex;
-  justify-content: center;
-  margin-top: 16px;
+  text-decoration: none;
 }

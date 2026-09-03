@@ -12,3 +12,20 @@ services:
       - path: /*
         name: X-Frame-Options
         value: DENY
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://conoce-tu-vehiculo-rd-api.onrender.com
+
+  - type: web
+    name: conoce-tu-vehiculo-rd-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GMAIL_USER
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
