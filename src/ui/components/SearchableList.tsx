@@ -1,3 +1,4 @@
+import { Check, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import styles from './SearchableList.module.css';
 
@@ -29,7 +30,7 @@ export function SearchableList<T>({
   return (
     <div>
       <div className={styles.search}>
-        🔍
+        <Search size={16} />
         <input
           className={styles.searchInput}
           type="text"
@@ -51,7 +52,11 @@ export function SearchableList<T>({
               onClick={() => onSelect(item)}
             >
               {getLabel(item)}
-              {isSelected && <span className={styles.chk}>✓</span>}
+              {isSelected && (
+                <span className={styles.chk}>
+                  <Check size={16} />
+                </span>
+              )}
             </button>
           );
         })}

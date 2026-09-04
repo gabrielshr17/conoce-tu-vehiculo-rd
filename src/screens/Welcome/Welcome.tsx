@@ -1,3 +1,4 @@
+import { Car } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithGoogle } from '../../auth/google';
 import { sendWelcomeEmail } from '../../auth/welcomeEmail';
@@ -22,7 +23,9 @@ export function Welcome() {
 
   return (
     <div className={styles.welcome}>
-      <div className={styles.logo}>🚗💨</div>
+      <div className={styles.logo}>
+        <Car size={56} strokeWidth={1.75} />
+      </div>
       <h1 className={styles.title}>
         Conoce tu
         <br />

@@ -1,28 +1,28 @@
 .body {
-  padding: 18px 18px 26px;
+  padding: var(--space-5) var(--space-5) var(--space-6);
 }
 
 .stepperWrap {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 }
 
 .qbig {
-  font-size: 21px;
+  font-size: var(--text-xl);
   font-weight: 800;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .muted {
   color: var(--gris);
-  font-size: 13px;
+  font-size: var(--text-base-sm);
   line-height: 1.5;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .navrow {
   display: flex;
-  gap: 10px;
-  margin-top: 18px;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
 }
 
 .navrow > * {
@@ -33,10 +33,10 @@
   .body {
     max-width: 900px;
     margin: 0 auto;
-    padding: 32px;
+    padding: var(--space-8);
   }
 
   .qbig {
-    font-size: 26px;
+    font-size: var(--text-2xl);
   }
 }

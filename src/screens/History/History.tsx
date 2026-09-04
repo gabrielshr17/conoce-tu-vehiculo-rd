@@ -1,3 +1,4 @@
+import { ClipboardList, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { formatCurrency, formatKm } from '../../core/format';
 import { MAINTENANCE_CATALOG } from '../../core/maintenance/catalog';
@@ -135,7 +136,12 @@ export function History() {
 
   return (
     <div>
-      <TopBar title="Historial" subtitle="La hoja de vida de tu carro" icon="📋" gradient />
+      <TopBar
+        title="Historial"
+        subtitle="La hoja de vida de tu carro"
+        icon={<ClipboardList size={20} />}
+        gradient
+      />
       <div className={styles.body}>
       <div className={`${styles.grid} ${showForm ? styles.gridWithForm : ''}`}>
       <div className={styles.colMain}>
@@ -206,7 +212,7 @@ export function History() {
 
         {!showForm && (
           <button type="button" className={styles.addBtn} onClick={openAdd}>
-            ＋ Agregar registro
+            <Plus size={16} /> Agregar registro
           </button>
         )}
       </div>

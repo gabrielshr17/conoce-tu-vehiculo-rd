@@ -1,11 +1,12 @@
+import { Car, ClipboardList, LogOut, Wrench } from 'lucide-react';
 import { NavLink, Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { sessionRepository, vehicleRepository } from '../../storage';
 import styles from './AppShell.module.css';
 
 const TABS = [
-  { to: '/perfil', label: 'Perfil', icon: '🚙' },
-  { to: '/mantenimiento', label: 'Mantenim.', icon: '🛠️' },
-  { to: '/historial', label: 'Historial', icon: '📋' },
+  { to: '/perfil', label: 'Perfil', icon: Car },
+  { to: '/mantenimiento', label: 'Mantenim.', icon: Wrench },
+  { to: '/historial', label: 'Historial', icon: ClipboardList },
 ];
 
 export function AppShell() {
@@ -33,12 +34,16 @@ export function AppShell() {
             to={tab.to}
             className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}
           >
-            <span className={styles.icon}>{tab.icon}</span>
+            <span className={styles.icon}>
+              <tab.icon size={19} />
+            </span>
             {tab.label}
           </NavLink>
         ))}
         <button type="button" className={styles.tab} onClick={handleSignOut}>
-          <span className={styles.icon}>🚪</span>
+          <span className={styles.icon}>
+            <LogOut size={19} />
+          </span>
           Salir
         </button>
       </nav>

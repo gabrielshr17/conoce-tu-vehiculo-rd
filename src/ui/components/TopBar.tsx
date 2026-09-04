@@ -19,7 +19,8 @@ export function TopBar({ title, subtitle, gradient, onBack, icon }: TopBarProps)
       )}
       <div>
         <h2 className={styles.title}>
-          {icon} {title}
+          {icon}
+          <span>{title}</span>
         </h2>
         {subtitle && <div className={styles.sub}>{subtitle}</div>}
       </div>

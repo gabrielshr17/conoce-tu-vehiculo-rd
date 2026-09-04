@@ -1,31 +1,75 @@
-/* Tokens de diseño — portados de prototipo/index.html. Mantener en sync. */
+/* Tokens de diseño — identidad racing (negro, rojo, fibra de carbono). Ver DESIGN.md. */
 :root {
-  --azul: #1565c0;
-  --azul-osc: #0d3d7a;
-  --azul-claro: #e8f1fb;
-  --rojo: #e53935;
-  --amarillo: #fb8c00;
-  --verde: #2e9e5b;
-  --tinta: #13202e;
-  --gris: #5b6b7e; /* oscurecido desde #6b7a8d para cumplir contraste WCAG AA (4.5:1) */
-  --linea: #e3e9f0;
-  --fondo: #f4f7fb;
-  --rd-rojo: #ce1126;
-  --rd-azul: #002d62;
+  --fondo: #0c0c0d;
+  --superficie: #1c1c1f;
+  --superficie-alta: #242427;
+  --linea: rgba(255, 255, 255, 0.1);
 
-  --sombra: 0 12px 30px rgba(19, 32, 46, 0.12);
-  --sombra-sm: 0 4px 14px rgba(19, 32, 46, 0.05);
+  --tinta: #f2f2f0;
+  --gris: #9ca0a8; /* 7.3:1 sobre --fondo, 6.3:1 sobre --superficie */
+
+  --rojo: #e10600; /* relleno: botones, barras, bordes — no usar como texto */
+  --rojo-osc: #8f0000; /* pressed/hover */
+  --rojo-brillante: #ff5b52; /* texto/íconos rojos sobre fondo oscuro (6.4:1 sobre --fondo) */
+  --rojo-tint: #2a1012; /* superficie roja oscura: chips, fila seleccionada */
+
+  --amarillo: #ffc400;
+  --verde: #00c853;
+
+  --carbon-bg: linear-gradient(27deg, #202023 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #202023 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #28282b 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #28282b 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1a1a1c 10px, transparent 10px),
+    linear-gradient(#161618 25%, #131315 25%, #131315 50%, #161618 50%, #161618 75%, #131315 75%, #131315);
+  --carbon-size: 20px 20px;
+
+  --sombra: 0 12px 30px rgba(0, 0, 0, 0.45);
+  --sombra-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --sombra-rojo: 0 8px 18px rgba(225, 6, 0, 0.35);
   --radio: 20px;
   --radio-md: 14px;
   --radio-sm: 12px;
 
+  /* Escala de espaciado — base-8 con un medio-paso en 4px. Todo padding/
+     margin/gap del sistema se elige de esta lista, no de un valor suelto. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Escala tipográfica — un tamaño de cuerpo (14px) y pasos definidos hacia
+     arriba/abajo. Nada de valores sueltos como 12.5px o 14.5px. */
+  --text-2xs: 10px;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base-sm: 13px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 32px;
+  --text-4xl: 40px;
+
   --font: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  --font-display: 'Rajdhani', var(--font);
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
@@ -52,4 +96,9 @@ button {
 input,
 textarea {
   font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--rojo-brillante);
+  outline-offset: 2px;
 }
