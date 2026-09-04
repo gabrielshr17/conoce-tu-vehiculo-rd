@@ -1,25 +1,25 @@
 .search {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: #fff;
+  gap: var(--space-2);
+  background: var(--superficie);
   border: 1.5px solid var(--linea);
   border-radius: var(--radio-sm);
-  padding: 11px 13px;
-  margin: 16px 0 14px;
+  padding: var(--space-3);
+  margin: var(--space-4) 0 var(--space-3);
   color: var(--gris);
-  font-size: 14px;
+  font-size: var(--text-base);
 }
 
 .search:focus-within {
-  border-color: var(--azul);
+  border-color: var(--rojo);
 }
 
 .searchInput {
   border: none;
   outline: none;
   flex: 1;
-  font-size: 14px;
+  font-size: var(--text-base);
   font-family: inherit;
   color: var(--tinta);
   background: transparent;
@@ -35,12 +35,12 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background: #fff;
+  background: var(--superficie);
   border: 1.5px solid var(--linea);
   border-radius: var(--radio-sm);
-  padding: 13px 15px;
-  margin-bottom: 9px;
-  font-size: 15px;
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-md);
   font-weight: 600;
   font-family: inherit;
   color: var(--tinta);
@@ -50,21 +50,21 @@
 }
 
 .sel {
-  border-color: var(--azul);
-  background: var(--azul-claro);
-  color: var(--azul-osc);
+  border-color: var(--rojo);
+  background: var(--rojo-tint);
+  color: var(--rojo-brillante);
 }
 
 .chk {
-  color: var(--azul);
+  color: var(--rojo-brillante);
   font-weight: 800;
 }
 
 .empty {
   color: var(--gris);
-  font-size: 13px;
+  font-size: var(--text-base-sm);
   text-align: center;
-  padding: 20px 0;
+  padding: var(--space-5) 0;
 }
 
 /* En pantallas anchas, la lista de opciones pasa a grid — no tiene
@@ -73,7 +73,7 @@
   .list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 9px;
+    gap: var(--space-2);
   }
 
   .opt {

@@ -1,3 +1,4 @@
+import { Car, CircleCheck, ClipboardList, Gauge, Users, Wrench } from 'lucide-react';
 import { getAccessoryGroups } from '../../data/accessories';
 import { findCatalogModel } from '../../data/catalog';
 import { communitySearchUrl, findVehicleSpec } from '../../data/specs';
@@ -21,7 +22,7 @@ export function Profile() {
         <TopBar
           title={`${vehicle.make} ${vehicle.model} ${vehicle.year}`}
           subtitle={`${vehicle.trim} · ${fuelLabel}`}
-          icon="🚙"
+          icon={<Car size={20} />}
           gradient
         />
         <div className={styles.body}>
@@ -31,7 +32,9 @@ export function Profile() {
             recomendaciones generales.
           </p>
 
-          <div className={styles.sectionTitle}>🛠️ Accesorios recomendados</div>
+          <div className={styles.sectionTitle}>
+            <Wrench size={13} /> Accesorios recomendados
+          </div>
           {accessoryGroups.map((group) => (
             <div key={group.title} className={styles.accessoryGroup}>
               <p className={styles.accessoryGroupTitle}>{group.title}</p>
@@ -52,7 +55,7 @@ export function Profile() {
       <TopBar
         title={`${vehicle.make} ${vehicle.model} ${vehicle.year}`}
         subtitle={`${vehicle.trim} · ${fuelLabel}`}
-        icon="🚙"
+        icon={<Car size={20} />}
         gradient
       />
       <div className={styles.body}>
@@ -61,7 +64,9 @@ export function Profile() {
             <div className={styles.sectionTitle}>Tu carro en pocas palabras</div>
             <blockquote className={styles.quote}>"{spec.description}"</blockquote>
 
-            <div className={styles.sectionTitle}>✅ Cómo tratarlo bien</div>
+            <div className={styles.sectionTitle}>
+              <CircleCheck size={13} /> Cómo tratarlo bien
+            </div>
             {spec.careTips.map((tip) => (
               <div key={tip.title} className={styles.tipCard}>
                 <div className={styles.tipIcon}>{tip.icon}</div>
@@ -72,7 +77,9 @@ export function Profile() {
               </div>
             ))}
 
-            <div className={styles.sectionTitle}>💪 Mejor rendimiento</div>
+            <div className={styles.sectionTitle}>
+              <Gauge size={13} /> Mejor rendimiento
+            </div>
             {spec.performanceTips.map((tip) => (
               <div key={tip.title} className={styles.tipCard}>
                 <div className={styles.tipIcon}>{tip.icon}</div>
@@ -85,7 +92,9 @@ export function Profile() {
           </div>
 
           <div className={styles.colRight}>
-            <div className={styles.sectionTitle}>🛠️ Accesorios recomendados</div>
+            <div className={styles.sectionTitle}>
+            <Wrench size={13} /> Accesorios recomendados
+          </div>
             {accessoryGroups.map((group) => (
               <div key={group.title} className={styles.accessoryGroup}>
                 <p className={styles.accessoryGroupTitle}>{group.title}</p>
@@ -98,7 +107,7 @@ export function Profile() {
             ))}
 
             <div className={styles.sectionTitle}>
-              👥 {spec.communities.length > 1 ? 'Comunidades' : 'Comunidad'}
+              <Users size={13} /> {spec.communities.length > 1 ? 'Comunidades' : 'Comunidad'}
             </div>
             {spec.communities.map((c) => (
               <a
@@ -108,7 +117,9 @@ export function Profile() {
                 rel="noopener noreferrer"
                 className={styles.communityCard}
               >
-                <div>📘</div>
+                <div className={styles.communityIcon}>
+                  <Users size={16} />
+                </div>
                 <div>
                   <div className={styles.tipTitle}>{c.name}</div>
                   <div className={styles.tipDesc}>{c.platform} · buscar grupo →</div>
@@ -116,7 +127,9 @@ export function Profile() {
               </a>
             ))}
 
-            <div className={styles.sectionTitle}>📋 Datos clave</div>
+            <div className={styles.sectionTitle}>
+              <ClipboardList size={13} /> Datos clave
+            </div>
             <div className={styles.specs}>
               <div className={styles.spec}>
                 <div className={styles.specKey}>Combustible</div>

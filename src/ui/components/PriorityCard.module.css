@@ -1,7 +1,7 @@
 .card {
-  background: #fff;
+  background: var(--superficie);
   border-radius: var(--radio-md);
-  padding: 13px 14px;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--linea);
   position: relative;
   overflow: hidden;
@@ -16,53 +16,53 @@
 }
 
 .title {
-  font-size: 14.5px;
+  font-size: var(--text-base);
   font-weight: 700;
-  padding-left: 6px;
+  padding-left: 6px; /* alinea con el ancho de .bar, no es espaciado de escala */
 }
 
 .meta {
-  font-size: 12px;
+  font-size: var(--text-sm);
   color: var(--gris);
-  margin-top: 3px;
+  margin-top: var(--space-1);
   padding-left: 6px;
 }
 
 .tip {
-  font-size: 12px;
-  color: var(--azul-osc);
-  background: var(--azul-claro);
+  font-size: var(--text-sm);
+  color: var(--rojo-brillante);
+  background: var(--rojo-tint);
   border-radius: 8px;
-  padding: 6px 8px;
-  margin: 8px 0 0 6px;
+  padding: var(--space-2);
+  margin: var(--space-2) 0 0 6px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 9px;
+  margin-top: var(--space-2);
   padding-left: 6px;
 }
 
 .cost {
   font-weight: 800;
-  font-size: 14px;
+  font-size: var(--text-base);
   color: var(--tinta);
 }
 
 .mini {
-  font-size: 12px;
+  font-size: var(--text-sm);
   font-weight: 700;
-  padding: 10px 16px;
-  min-height: 40px;
+  padding: var(--space-3) var(--space-4);
+  min-height: var(--space-10);
   border-radius: 9px;
-  border: 1.5px solid var(--azul);
-  color: var(--azul);
-  background: #fff;
+  border: 1.5px solid var(--rojo);
+  color: var(--rojo-brillante);
+  background: transparent;
   cursor: pointer;
   font-family: inherit;
 }

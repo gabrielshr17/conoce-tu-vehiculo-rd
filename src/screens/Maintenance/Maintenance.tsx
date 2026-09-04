@@ -1,3 +1,4 @@
+import { Circle, FileText, Wrench } from 'lucide-react';
 import { useState } from 'react';
 import { formatKm } from '../../core/format';
 import { recommend } from '../../core/maintenance/engine';
@@ -7,10 +8,10 @@ import { historyRepository, vehicleRepository } from '../../storage';
 import { Button, DrFlag, PriorityCard, TopBar } from '../../ui/components';
 import styles from './Maintenance.module.css';
 
-const PRIORITY_META: Record<Priority, { label: string; icon: string; color: string }> = {
-  urgent: { label: 'URGENTE', icon: '🔴', color: 'var(--rojo)' },
-  soon: { label: 'PRONTO', icon: '🟡', color: 'var(--amarillo)' },
-  later: { label: 'MÁS ADELANTE', icon: '🟢', color: 'var(--verde)' },
+const PRIORITY_META: Record<Priority, { label: string; color: string }> = {
+  urgent: { label: 'URGENTE', color: 'var(--rojo)' },
+  soon: { label: 'PRONTO', color: 'var(--amarillo)' },
+  later: { label: 'MÁS ADELANTE', color: 'var(--verde)' },
 };
 
 const PRIORITY_ORDER: Priority[] = ['urgent', 'soon', 'later'];
@@ -37,7 +38,7 @@ export function Maintenance() {
   if (currentKm === undefined) {
     return (
       <div>
-        <TopBar title="Mantenimiento" icon="🛠️" gradient />
+        <TopBar title="Mantenimiento" icon={<Wrench size={20} />} gradient />
         <div className={styles.body}>
           <p className={styles.ask}>¿Cuántos kilómetros tiene tu carro ahora?</p>
           <p className={styles.muted}>Lo necesitamos para saber qué le toca y para cuándo.</p>
@@ -87,7 +88,7 @@ export function Maintenance() {
       <TopBar
         title="Mantenimiento"
         subtitle={`${vehicle.make} ${vehicle.model} ${vehicle.year} · ${formatKm(currentKm)}`}
-        icon="🛠️"
+        icon={<Wrench size={20} />}
         gradient
       />
       <div className={styles.body}>
@@ -101,7 +102,7 @@ export function Maintenance() {
         {groups.map((group) => (
           <div key={group.priority} className={styles.block}>
             <div className={styles.blockHead} style={{ color: PRIORITY_META[group.priority].color }}>
-              {PRIORITY_META[group.priority].icon} {PRIORITY_META[group.priority].label}
+              <Circle size={10} fill="currentColor" /> {PRIORITY_META[group.priority].label}
             </div>
             <div className={styles.cardGrid}>
               {group.items.map((rec) => (
@@ -124,8 +125,9 @@ export function Maintenance() {
         )}
 
         <div className={styles.legalReminder}>
-          📄 No olvides tus trámites anuales: <strong>marbete</strong> y <strong>seguro</strong>.
-          Todavía no calculamos su vencimiento exacto — anótalo tú mismo por ahora.
+          <FileText size={14} /> No olvides tus trámites anuales: <strong>marbete</strong> y{' '}
+          <strong>seguro</strong>. Todavía no calculamos su vencimiento exacto — anótalo tú mismo
+          por ahora.
         </div>
       </div>
     </div>
