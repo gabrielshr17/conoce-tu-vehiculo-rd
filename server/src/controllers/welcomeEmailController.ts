@@ -1,8 +1,9 @@
 import type { Request, Response } from 'express';
-import type { EmailService } from '../services/emailService.js';
+import { enqueueWelcomeEmail } from '../queues/emailQueue.js';
+import type { EmailQueue } from '../queues/emailQueue.js';
 import { InvalidAccessTokenError, verifyAccessTokenAndGetProfile } from '../services/googleAuthService.js';
 
-export function createWelcomeEmailController(emailService: EmailService, googleClientId: string) {
+export function createWelcomeEmailController(emailQueue: EmailQueue, googleClientId: string) {
   return async function handleWelcomeEmail(req: Request, res: Response): Promise<void> {
     const { accessToken } = req.body ?? {};
     if (!accessToken) {
@@ -28,11 +29,11 @@ export function createWelcomeEmailController(emailService: EmailService, googleC
     }
 
     try {
-      await emailService.sendWelcomeEmail({ toEmail: email, toName: profile.name ?? email });
-      res.json({ ok: true });
+      const job = await enqueueWelcomeEmail(emailQueue, { toEmail: email, toName: profile.name ?? email });
+      res.status(202).json({ ok: true, jobId: job.id });
     } catch (err) {
-      console.error('welcome email failed', err);
-      res.status(502).json({ error: 'email send failed' });
+      console.error('failed to enqueue welcome email', err);
+      res.status(502).json({ error: 'failed to enqueue welcome email' });
     }
   };
 }

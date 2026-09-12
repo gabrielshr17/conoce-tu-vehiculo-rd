@@ -25,7 +25,34 @@ services:
     envVars:
       - key: GOOGLE_CLIENT_ID
         sync: false
+      - key: BULL_BOARD_USER
+        sync: false
+      - key: BULL_BOARD_PASSWORD
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          name: conoce-tu-vehiculo-rd-redis
+          type: redis
+          property: connectionString
+
+  - type: worker
+    name: conoce-tu-vehiculo-rd-email-worker
+    runtime: node
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm run worker
+    envVars:
       - key: GMAIL_USER
         sync: false
       - key: GMAIL_APP_PASSWORD
         sync: false
+      - key: REDIS_URL
+        fromService:
+          name: conoce-tu-vehiculo-rd-redis
+          type: redis
+          property: connectionString
+
+  - type: redis
+    name: conoce-tu-vehiculo-rd-redis
+    plan: free
+    ipAllowList: []
