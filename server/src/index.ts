@@ -2,16 +2,18 @@ import { createApp } from './app.js';
 
 const {
   GOOGLE_CLIENT_ID = '',
-  GMAIL_USER = '',
-  GMAIL_APP_PASSWORD = '',
+  REDIS_URL = 'redis://localhost:6380',
+  BULL_BOARD_USER = '',
+  BULL_BOARD_PASSWORD = '',
   ALLOWED_ORIGINS = 'https://conoce-tu-vehiculo-rd.onrender.com,http://localhost:5173',
   PORT = '3001',
 } = process.env;
 
 const app = createApp({
   googleClientId: GOOGLE_CLIENT_ID,
-  gmailUser: GMAIL_USER,
-  gmailAppPassword: GMAIL_APP_PASSWORD,
+  redisUrl: REDIS_URL,
+  bullBoardUser: BULL_BOARD_USER,
+  bullBoardPassword: BULL_BOARD_PASSWORD,
   allowedOrigins: ALLOWED_ORIGINS.split(','),
 });
 
