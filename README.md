@@ -79,3 +79,26 @@ usuario real del §6 de [MVP.md](MVP.md).
 
 **Siguiente fase** (ver [PLAN.md](PLAN.md)): Mecánico Virtual (IA), recordatorios,
 estimador de costos, Mi Garaje (multi-vehículo), y eventualmente la versión móvil (Expo).
+
+## Docker
+
+```bash
+cp .env.example .env   # fill in the values; .env is gitignored and never enters an image
+docker compose up -d --build
+```
+
+| Service | Image | Port (host → container) |
+|---|---|---|
+| frontend | multistage: `node:22-alpine` build, `nginx-unprivileged:alpine` serve | 8080 → 8080 |
+| api | `node:22-alpine` (`server/Dockerfile`) | 3001 → 3001 |
+| worker | same image as api, `node dist/worker.js` | none |
+| db | `postgres:17-alpine`, volume `db-data` | 127.0.0.1:5433 → 5432 |
+| redis | `redis:7-alpine`, volume `redis-data` | 6380 → 6379 |
+
+All services share the `app-net` network and have healthchecks; `GET /health` on the api checks Postgres and Redis.
+
+Variables (see `.env.example`): `VITE_API_BASE_URL`, `VITE_GOOGLE_CLIENT_ID` (frontend, baked at build time),
+`GOOGLE_CLIENT_ID`, `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `BULL_BOARD_USER`, `BULL_BOARD_PASSWORD`,
+`ALLOWED_ORIGINS`, `POSTGRES_USER`, `POSTGRES_PASSWORD` (required, no special URL characters), `POSTGRES_DB`.
+`REDIS_URL` and `DATABASE_URL` are assembled by compose. Add `http://localhost:8080` to the Google OAuth
+authorized origins to sign in against the containerized frontend.
