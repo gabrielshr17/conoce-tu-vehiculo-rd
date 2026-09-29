@@ -257,7 +257,7 @@
 
 .seasonalDesc {
   font-size: var(--text-base-sm);
-  color: #f3d9a4;
+  color: var(--amarillo-suave);
   margin-top: 2px;
   line-height: 1.5;
 }

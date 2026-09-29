@@ -29,6 +29,7 @@
 | `--rojo-brillante` | `#ff6b6b` | Rojo **para texto** sobre fondo oscuro (6.4–7.0:1) |
 | `--rojo-tint` | `#2a1618` | Superficie roja oscura (chips, badge urgente, avisos) |
 | `--amarillo` / `--amarillo-tint` | `#f59e0b` / `#2a1e10` | Prioridad "pronto" (7.6:1 texto sobre tint) |
+| `--amarillo-suave` | `#f3d9a4` | Texto de tips RD sobre `--amarillo-tint` (11.8:1) |
 | `--verde` / `--verde-texto` / `--verde-tint` | `#10b981` / `#34d399` / `#10261e` | Prioridad "más adelante" / estado al día / éxito |
 
 **Correcciones de contraste respecto a `design.pen`** (verificadas con la fórmula WCAG 2.x):
@@ -94,7 +95,7 @@ en mayúsculas con tracking (1–1.5px) — es parte de la identidad del pen, pe
   el color del estado y conteo de pendientes. Reemplaza el "92% Óptimo" del pen, que no tiene
   fórmula real detrás.
 - **Card de servicio** (`PriorityCard`): caja de ícono por categoría, título, badge de
-  prioridad, tip RD, fila inferior con ícono `Timer` + `dueReason` y costo estimado del
+  prioridad, tip RD en ámbar (mismo tratamiento que el tip de temporada — el rojo es solo urgencia), fila inferior con ícono `Timer` + `dueReason` y costo estimado del
   catálogo, botón "Marcar hecho". Conserva la **franja izquierda de 3px** con el semáforo:
   `--rojo` urgente, `--amarillo` pronto, `--verde` más adelante. Es la codificación de color funcional
   de la app — se acompaña siempre de texto (badge + `dueReason`).
