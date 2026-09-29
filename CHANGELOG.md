@@ -17,7 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update your odometer at any time with **Editar km** on Servicios.
 - Vehículo screen now previews your next two services, with a link to see them all.
 - **Deshacer** after marking a service done, in case of a mis-tap.
-- Change your vehicle from the Vehículo screen; your history and odometer are kept.
+- Change your vehicle from the Vehículo screen. Fixing the year or version keeps your history
+  and odometer; switching to a different car starts fresh.
+- Tap the status pill or an upcoming service on Vehículo to open Servicios.
 - Add the app to your phone's home screen.
 - Historial asks before deleting a record and explains what to fix when a field is invalid.
 
