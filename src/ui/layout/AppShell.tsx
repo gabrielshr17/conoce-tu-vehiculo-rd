@@ -26,9 +26,9 @@ export function AppShell() {
 
   return (
     <div className={styles.shell}>
-      <div className={styles.content}>
+      <main className={styles.content}>
         <Outlet context={{ onSignOut: handleSignOut } satisfies ShellContext} />
-      </div>
+      </main>
       <nav className={styles.tabbar} aria-label="Principal">
         <div className={styles.brand}>
           <span className={styles.crest}>RD</span>

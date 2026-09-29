@@ -18,10 +18,10 @@ export function TopBar({ title, subtitle, onBack, icon, actions }: TopBarProps) 
         </button>
       )}
       <div className={styles.heading}>
-        <h2 className={styles.title}>
+        <h1 className={styles.title}>
           {icon}
           <span>{title}</span>
-        </h2>
+        </h1>
         {subtitle && <div className={styles.sub}>{subtitle}</div>}
       </div>
       {actions && <div className={styles.actions}>{actions}</div>}

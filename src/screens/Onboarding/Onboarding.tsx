@@ -77,13 +77,13 @@ export function Onboarding() {
   const chosen = [year, make, model].slice(0, step - 1).filter((v) => v !== undefined);
 
   return (
-    <div>
+    <main>
       <TopBar title="Identifica tu vehículo" subtitle={`Paso ${step} de ${TOTAL_STEPS}`} onBack={handleBack} />
       <div className={styles.body}>
         <div className={styles.stepperWrap}>
           <Stepper total={TOTAL_STEPS} current={step} />
         </div>
-        <h1 className={styles.qbig}>{question}</h1>
+        <h2 className={styles.qbig}>{question}</h2>
         {chosen.length > 0 ? (
           <p className={styles.chosen}>{chosen.join(' · ')}</p>
         ) : (
@@ -151,6 +151,6 @@ export function Onboarding() {
           </Button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

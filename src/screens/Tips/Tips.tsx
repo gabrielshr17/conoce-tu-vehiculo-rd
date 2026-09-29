@@ -17,9 +17,9 @@ export function Tips() {
 
   const accessories = (
     <>
-      <h3 className={styles.sectionTitle}>
+      <h2 className={styles.sectionTitle}>
         <Wrench size={14} /> Accesorios recomendados
-      </h3>
+      </h2>
       {accessoryGroups.map((group) => (
         <div key={group.title} className={styles.accessoryGroup}>
           <p className={styles.accessoryGroupTitle}>{group.title}</p>
@@ -53,9 +53,9 @@ export function Tips() {
         ) : (
           <div className={styles.grid}>
             <div>
-              <h3 className={styles.sectionTitle}>
+              <h2 className={styles.sectionTitle}>
                 <CircleCheck size={14} /> Cómo tratarlo bien
-              </h3>
+              </h2>
               {spec.careTips.map((tip) => (
                 <div key={tip.title} className={styles.tipCard}>
                   <div className={styles.tipIcon}>{tip.icon}</div>
@@ -66,9 +66,9 @@ export function Tips() {
                 </div>
               ))}
 
-              <h3 className={styles.sectionTitle}>
+              <h2 className={styles.sectionTitle}>
                 <Gauge size={14} /> Mejor rendimiento
-              </h3>
+              </h2>
               {spec.performanceTips.map((tip) => (
                 <div key={tip.title} className={styles.tipCard}>
                   <div className={styles.tipIcon}>{tip.icon}</div>
@@ -83,9 +83,9 @@ export function Tips() {
             <div>
               {accessories}
 
-              <h3 className={styles.sectionTitle}>
+              <h2 className={styles.sectionTitle}>
                 <Users size={14} /> {spec.communities.length > 1 ? 'Comunidades' : 'Comunidad'}
-              </h3>
+              </h2>
               {spec.communities.map((c) => (
                 <a
                   key={c.name}
