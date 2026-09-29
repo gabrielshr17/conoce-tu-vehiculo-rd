@@ -1,13 +1,14 @@
 import { Clock, FileText, Gauge, ShieldCheck, TriangleAlert, Wrench, type LucideIcon } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
+import { useCallback, useState, type FormEvent } from 'react';
 import { toLocalIsoDate } from '../../core/date';
 import { formatKm } from '../../core/format';
 import { recommend } from '../../core/maintenance/engine';
 import { getSeasonalTip } from '../../core/maintenance/rdModifiers';
 import { summarizeRecommendations, type VehicleStatus } from '../../core/maintenance/summary';
+import { validateOdometer } from '../../core/odometer';
 import type { HistoryEntry, Priority, Recommendation, Vehicle } from '../../core/types';
 import { historyRepository, vehicleRepository } from '../../storage';
-import { Button, DrFlag, PRIORITY_LABEL, PriorityCard, TopBar } from '../../ui/components';
+import { Button, DrFlag, PRIORITY_LABEL, PriorityCard, Toast, TopBar } from '../../ui/components';
 import styles from './Maintenance.module.css';
 
 type Filter = 'all' | Priority;
@@ -20,11 +21,6 @@ const STATUS_HEADLINE: Record<VehicleStatus, { title: string; icon: LucideIcon }
   urgent: { title: 'Requiere atención', icon: TriangleAlert },
 };
 
-function parseKm(value: string): number | undefined {
-  const km = Number(value);
-  return Number.isFinite(km) && km > 0 ? km : undefined;
-}
-
 export function Maintenance() {
   const maybeVehicle = vehicleRepository.get();
   const [currentKm, setCurrentKm] = useState(maybeVehicle?.currentKm);
@@ -34,6 +30,9 @@ export function Maintenance() {
   const [history, setHistory] = useState<HistoryEntry[]>(() =>
     maybeVehicle ? historyRepository.getAll(maybeVehicle.id) : [],
   );
+  const [kmError, setKmError] = useState<string | null>(null);
+  const [lastDone, setLastDone] = useState<HistoryEntry | null>(null);
+  const dismissToast = useCallback(() => setLastDone(null), []);
 
   // AppShell garantiza que exista un vehículo antes de renderizar esta ruta.
   if (!maybeVehicle) return null;
@@ -41,13 +40,28 @@ export function Maintenance() {
 
   function saveOdometer(event?: FormEvent) {
     event?.preventDefault();
-    const km = parseKm(kmInput);
-    if (km === undefined) return;
-    vehicleRepository.save({ ...vehicle, currentKm: km });
-    setCurrentKm(km);
+    const result = validateOdometer(kmInput, history);
+    if (!result.ok) {
+      setKmError(result.error);
+      return;
+    }
+    vehicleRepository.save({ ...vehicle, currentKm: result.km });
+    setCurrentKm(result.km);
     setKmInput('');
+    setKmError(null);
     setEditingKm(false);
   }
+
+  function updateKmInput(value: string) {
+    setKmInput(value);
+    setKmError(null);
+  }
+
+  const kmErrorNode = kmError && (
+    <p id="km-error" className={styles.kmError}>
+      {kmError}
+    </p>
+  );
 
   if (currentKm === undefined) {
     return (
@@ -62,10 +76,13 @@ export function Maintenance() {
             inputMode="numeric"
             placeholder="Ej. 98500"
             aria-label="Kilometraje actual"
+            aria-invalid={kmError ? true : undefined}
+            aria-describedby={kmError ? 'km-error' : undefined}
             value={kmInput}
-            onChange={(e) => setKmInput(e.target.value)}
+            onChange={(e) => updateKmInput(e.target.value)}
           />
-          <Button type="submit" disabled={parseKm(kmInput) === undefined}>
+          {kmErrorNode}
+          <Button type="submit" disabled={!kmInput.trim()}>
             Ver mi mantenimiento
           </Button>
         </form>
@@ -94,6 +111,14 @@ export function Maintenance() {
     };
     historyRepository.add(entry);
     setHistory((prev) => [...prev, entry]);
+    setLastDone(entry);
+  }
+
+  function undoLastDone() {
+    if (!lastDone) return;
+    historyRepository.remove(lastDone.id);
+    setHistory((prev) => prev.filter((e) => e.id !== lastDone.id));
+    setLastDone(null);
   }
 
   const missingHistoryCount = recommendations.filter((r) => !r.hasHistory).length;
@@ -116,7 +141,10 @@ export function Maintenance() {
             type="button"
             className={styles.editKm}
             aria-expanded={editingKm}
-            onClick={() => setEditingKm((v) => !v)}
+            onClick={() => {
+              setEditingKm((v) => !v);
+              setKmError(null);
+            }}
           >
             <Gauge size={14} /> Editar km
           </button>
@@ -124,20 +152,25 @@ export function Maintenance() {
       />
       <div className={styles.body}>
         {editingKm && (
-          <form className={styles.kmForm} onSubmit={saveOdometer}>
-            <input
-              className={styles.kmInput}
-              type="number"
-              inputMode="numeric"
-              placeholder={String(currentKm)}
-              aria-label="Nuevo kilometraje"
-              value={kmInput}
-              onChange={(e) => setKmInput(e.target.value)}
-              autoFocus
-            />
-            <button type="submit" className={styles.kmSave} disabled={parseKm(kmInput) === undefined}>
-              Guardar
-            </button>
+          <form className={styles.kmEdit} onSubmit={saveOdometer}>
+            <div className={styles.kmForm}>
+              <input
+                className={styles.kmInput}
+                type="number"
+                inputMode="numeric"
+                placeholder={String(currentKm)}
+                aria-label="Nuevo kilometraje"
+                aria-invalid={kmError ? true : undefined}
+                aria-describedby={kmError ? 'km-error' : undefined}
+                value={kmInput}
+                onChange={(e) => updateKmInput(e.target.value)}
+                autoFocus
+              />
+              <button type="submit" className={styles.kmSave} disabled={!kmInput.trim()}>
+                Guardar
+              </button>
+            </div>
+            {kmErrorNode}
           </form>
         )}
 
@@ -203,6 +236,14 @@ export function Maintenance() {
           por ahora.
         </div>
       </div>
+      {lastDone && (
+        <Toast
+          message={`${lastDone.description} registrado en Historial`}
+          actionLabel="Deshacer"
+          onAction={undoLastDone}
+          onDismiss={dismissToast}
+        />
+      )}
     </div>
   );
 }

@@ -11,3 +11,4 @@ export { TopBar } from './TopBar';
 export { Badge } from './Badge';
 export { CarSilhouette } from './CarSilhouette';
 export { CATEGORY_ICON, PRIORITY_LABEL, PRIORITY_TONE, STATUS_LABEL, STATUS_TONE } from './maintenanceMeta';
+export { Toast } from './Toast';

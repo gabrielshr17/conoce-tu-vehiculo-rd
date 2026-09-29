@@ -61,6 +61,17 @@
   gap: var(--space-2);
 }
 
+.kmError {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--rojo-brillante);
+}
+
+.kmInput[aria-invalid='true'] {
+  border-color: var(--rojo-brillante);
+}
+
 .kmSave {
   flex-shrink: 0;
   min-height: 48px;
