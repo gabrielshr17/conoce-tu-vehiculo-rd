@@ -4,6 +4,7 @@ import { History } from './screens/History/History';
 import { Maintenance } from './screens/Maintenance/Maintenance';
 import { Onboarding } from './screens/Onboarding/Onboarding';
 import { Profile } from './screens/Profile/Profile';
+import { Tips } from './screens/Tips/Tips';
 import { Welcome } from './screens/Welcome/Welcome';
 import { AppShell } from './ui/layout/AppShell';
 
@@ -18,6 +19,7 @@ export function App() {
             <Route path="/perfil" element={<Profile />} />
             <Route path="/mantenimiento" element={<Maintenance />} />
             <Route path="/historial" element={<History />} />
+            <Route path="/consejos" element={<Tips />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

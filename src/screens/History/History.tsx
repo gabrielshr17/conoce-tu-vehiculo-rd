@@ -1,4 +1,4 @@
-import { ClipboardList, Plus } from 'lucide-react';
+import { History as HistoryIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { formatCurrency, formatKm } from '../../core/format';
 import { MAINTENANCE_CATALOG } from '../../core/maintenance/catalog';
@@ -139,8 +139,7 @@ export function History() {
       <TopBar
         title="Historial"
         subtitle="La hoja de vida de tu carro"
-        icon={<ClipboardList size={20} />}
-        gradient
+        icon={<HistoryIcon size={20} />}
       />
       <div className={styles.body}>
       <div className={`${styles.grid} ${showForm ? styles.gridWithForm : ''}`}>
