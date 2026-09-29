@@ -100,6 +100,8 @@ en mayúsculas con tracking (1–1.5px) — es parte de la identidad del pen, pe
   de la app — se acompaña siempre de texto (badge + `dueReason`).
 - **Filtros**: pastillas Todos / Urgente / Pronto / Más adelante con conteo; solo aparecen las
   prioridades con elementos (si un filtro se queda en 0, vuelve a Todos). Activo = `--rojo-relleno` + blanco. `aria-pressed`.
+- **Chip** (`Chip`): etiqueta pasiva (accesorios). Neutra — `--superficie-alta`, borde
+  `--linea`, texto `--tinta-suave`. El rojo queda para lo seleccionado o accionable.
 - **Badge** (`Badge`): tonos `danger` / `warning` / `success` sobre su tint. Nunca color solo.
   La prioridad `later` dice "Más adelante", no "Al día" como el pen: un servicio sin registro
   no está "al día", solo no toca todavía según el estimado.
