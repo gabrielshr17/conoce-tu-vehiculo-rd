@@ -244,6 +244,7 @@ export function Maintenance() {
       </div>
       {lastDone && (
         <Toast
+          key={lastDone.id}
           message={`${lastDone.description} registrado en Historial`}
           actionLabel="Deshacer"
           onAction={undoLastDone}
