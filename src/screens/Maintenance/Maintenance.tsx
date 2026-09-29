@@ -67,10 +67,13 @@ export function Maintenance() {
   if (currentKm === undefined) {
     return (
       <div>
-        <TopBar title="Mantenimiento" icon={<Wrench size={20} />} />
+        <TopBar title="Plan de mantenimiento" icon={<Wrench size={20} />} />
         <form className={styles.body} onSubmit={saveOdometer}>
           <p className={styles.ask}>¿Cuántos kilómetros tiene tu carro ahora?</p>
-          <p className={styles.muted}>Lo necesitamos para saber qué le toca y para cuándo.</p>
+          <p className={styles.muted}>
+            Es el número del odómetro, en el tablero detrás del guía. Con eso sabemos qué le toca a tu
+            carro y para cuándo.
+          </p>
           <input
             className={styles.kmInput}
             type="number"
