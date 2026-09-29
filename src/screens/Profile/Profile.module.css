@@ -156,6 +156,25 @@
   color: var(--tinta);
 }
 
+.changeVehicle {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  margin: calc(-1 * var(--space-2)) 0 calc(-1 * var(--space-3));
+  padding: 0 var(--space-3);
+  font-family: var(--font-label);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--gris);
+  text-decoration: none;
+}
+
+.changeVehicle:hover {
+  color: var(--tinta);
+}
+
 .quoteCard {
   background: var(--superficie);
   border: 1px solid var(--linea);

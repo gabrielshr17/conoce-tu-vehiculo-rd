@@ -18,11 +18,12 @@ const STEP_META = [
 
 export function Onboarding() {
   const navigate = useNavigate();
+  const [existing] = useState(() => vehicleRepository.get());
   const [step, setStep] = useState(1);
-  const [year, setYear] = useState<number>();
-  const [make, setMake] = useState<string>();
-  const [model, setModel] = useState<string>();
-  const [trim, setTrim] = useState<string>();
+  const [year, setYear] = useState<number | undefined>(existing?.year);
+  const [make, setMake] = useState<string | undefined>(existing?.make);
+  const [model, setModel] = useState<string | undefined>(existing?.model);
+  const [trim, setTrim] = useState<string | undefined>(existing?.trim);
 
   const years = getYears();
   const makes = getMakes();
@@ -37,7 +38,7 @@ export function Onboarding() {
 
   function handleBack() {
     if (step === 1) {
-      navigate('/');
+      navigate(existing ? '/perfil' : '/');
     } else {
       setStep(step - 1);
     }
@@ -52,7 +53,6 @@ export function Onboarding() {
 
     // Si ya había un vehículo, se reutiliza su id y km — así no se huerfana
     // el historial existente al corregir una selección del onboarding.
-    const existing = vehicleRepository.get();
     const catalogModel = findCatalogModel(make, model);
     const vehicle: Vehicle = {
       id: existing?.id ?? crypto.randomUUID(),

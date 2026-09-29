@@ -1,4 +1,4 @@
-import { ChevronRight, ClipboardList, Gauge, LogOut, Sparkles } from 'lucide-react';
+import { ChevronRight, ClipboardList, Gauge, LogOut, RefreshCw, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { formatKm } from '../../core/format';
 import { recommend } from '../../core/maintenance/engine';
@@ -101,6 +101,9 @@ export function Profile() {
                 <dd>{fuelLabel}</dd>
               </div>
             </dl>
+            <Link to="/onboarding" className={styles.changeVehicle}>
+              <RefreshCw size={14} /> Cambiar de vehículo
+            </Link>
           </section>
 
           <section className={styles.quoteCard}>
