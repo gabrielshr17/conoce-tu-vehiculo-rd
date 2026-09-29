@@ -131,7 +131,7 @@ export function Profile() {
 
             {recommendations.length === 0 ? (
               <Link to="/mantenimiento" className={styles.serviceRow}>
-                <span className={styles.serviceIcon}>
+                <span className={styles.serviceIcon} aria-hidden="true">
                   <Gauge size={18} />
                 </span>
                 <span className={styles.serviceText}>
@@ -145,15 +145,17 @@ export function Profile() {
                 {recommendations.slice(0, PREVIEW_COUNT).map((rec) => {
                   const Icon = CATEGORY_ICON[rec.item.category];
                   return (
-                    <li key={rec.item.id} className={styles.serviceRow}>
-                      <span className={styles.serviceIcon}>
-                        <Icon size={18} />
-                      </span>
-                      <span className={styles.serviceText}>
-                        <span className={styles.serviceName}>{rec.item.name}</span>
-                        <span className={styles.serviceDue}>{rec.dueReason}</span>
-                      </span>
-                      <Badge tone={PRIORITY_TONE[rec.priority]}>{PRIORITY_LABEL[rec.priority]}</Badge>
+                    <li key={rec.item.id}>
+                      <Link to="/mantenimiento" className={styles.serviceRow}>
+                        <span className={styles.serviceIcon} aria-hidden="true">
+                          <Icon size={18} />
+                        </span>
+                        <span className={styles.serviceText}>
+                          <span className={styles.serviceName}>{rec.item.name}</span>
+                          <span className={styles.serviceDue}>{rec.dueReason}</span>
+                        </span>
+                        <Badge tone={PRIORITY_TONE[rec.priority]}>{PRIORITY_LABEL[rec.priority]}</Badge>
+                      </Link>
                     </li>
                   );
                 })}
