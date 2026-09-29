@@ -1,6 +1,10 @@
 .btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
   width: 100%;
+  min-height: 48px;
   background: var(--rojo-relleno);
   color: #fff;
   border: none;
