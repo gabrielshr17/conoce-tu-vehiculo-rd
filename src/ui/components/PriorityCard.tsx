@@ -24,7 +24,6 @@ export function PriorityCard({ recommendation, onMarkDone }: PriorityCardProps) 
         <h3 className={styles.title}>{item.name}</h3>
         <Badge tone={PRIORITY_TONE[priority]}>{PRIORITY_LABEL[priority]}</Badge>
       </div>
-      {!hasHistory && <p className={styles.meta}>Estimado: todavía no tienes este servicio registrado.</p>}
       {rdTip && priority !== 'later' && (
         <div className={styles.tip}>
           <DrFlag size={13} /> {rdTip}
@@ -32,7 +31,10 @@ export function PriorityCard({ recommendation, onMarkDone }: PriorityCardProps) 
       )}
       <div className={styles.row}>
         <span className={styles.due}>
-          <Timer size={14} aria-hidden="true" /> {dueReason}
+          <span className={styles.dueLine}>
+            <Timer size={14} aria-hidden="true" /> {dueReason}
+          </span>
+          {!hasHistory && <span className={styles.estimate}>Estimado, sin registro previo</span>}
         </span>
         <span className={styles.cost}>{formatCurrencyRange(item.costDOP.min, item.costDOP.max)}</span>
       </div>
