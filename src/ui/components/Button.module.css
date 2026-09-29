@@ -1,7 +1,7 @@
 .btn {
   display: block;
   width: 100%;
-  background: var(--rojo);
+  background: var(--rojo-relleno);
   color: #fff;
   border: none;
   padding: var(--space-4);
