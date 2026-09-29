@@ -36,7 +36,12 @@ export function PriorityCard({ recommendation, onMarkDone }: PriorityCardProps) 
         </span>
         <span className={styles.cost}>{formatCurrencyRange(item.costDOP.min, item.costDOP.max)}</span>
       </div>
-      <button type="button" className={styles.mini} onClick={onMarkDone}>
+      <button
+        type="button"
+        className={styles.mini}
+        onClick={onMarkDone}
+        aria-label={`Marcar hecho: ${item.name}`}
+      >
         Marcar hecho
       </button>
     </article>
