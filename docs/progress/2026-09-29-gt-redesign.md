@@ -46,6 +46,8 @@ axe-core (WCAG 2.1 AA + best practices): **0 violations** on every screen at 375
 - [x] Compact "Estimado, sin registro previo" note instead of a repeated sentence.
 - [x] RD tips in amber (red reserved for urgency); neutral accessory chips.
 - [x] Installable: web manifest + home-screen icons; favicon and theme color updated.
+- [x] PR screenshots refreshed (now includes Welcome and Historial) and PR description rewritten.
+- [x] White-on-red text tokenized as `--sobre-rojo`.
 
 **Accessibility / quality**
 - [x] `<main>` landmark, one `<h1>` per screen, correct heading order.
@@ -61,8 +63,6 @@ axe-core (WCAG 2.1 AA + best practices): **0 violations** on every screen at 375
 
 - [ ] **Delete unused components** `src/ui/components/ComingSoon.tsx` and `Card.tsx` (+ CSS) — not
       imported anywhere; left in place because deleting files needs your confirmation.
-- [ ] **Refresh PR screenshots** — `docs/screenshots/gt-redesign/` predates round 2 (Welcome,
-      Historial, onboarding and card changes are not shown).
 - [ ] **Mark PR #3 ready for review** once you've looked through it (it is large: ~34 commits;
       consider squash-merging as the CLAUDE.md rules say).
 - [ ] **Offline support** — the manifest makes the app installable, but there's no service worker,
@@ -73,7 +73,6 @@ axe-core (WCAG 2.1 AA + best practices): **0 violations** on every screen at 375
       change vehicle, undo, delete confirm, validation errors, scroll reset). Worth turning into
       a real `e2e/` suite; none exists yet.
 - [ ] **PLAN.md / MVP.md** still describe the pre-auth, pre-redesign MVP.
-- [ ] **Hardcoded white on red** (`#fff` in Button / filters / Guardar) could become a token.
 - [ ] **Tablet (768px)**: the 240px sidebar is wide for that width; an icon rail could free space.
 - [ ] `design.pen` references `generated.png`, which is gitignored — the pen shows a missing
       image in that frame for anyone cloning the repo.
