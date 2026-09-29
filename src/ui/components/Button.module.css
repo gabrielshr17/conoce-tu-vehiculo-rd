@@ -10,6 +10,7 @@
   border: none;
   padding: var(--space-4);
   border-radius: var(--radio-md);
+  font-family: var(--font-label);
   font-size: var(--text-md);
   font-weight: 700;
   cursor: pointer;

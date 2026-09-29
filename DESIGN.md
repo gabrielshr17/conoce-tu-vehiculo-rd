@@ -67,10 +67,10 @@ línea de tiempo, grosor de 2–3px de un borde de acento, 44px de objetivo tác
 
 Tres familias (Google Fonts), cada una con un rol único:
 
-- **Space Grotesk** (`--font-display`, 500/700) — nombre del vehículo, títulos de pantalla,
+- **Space Grotesk** (`--font-display`, 600/700) — nombre del vehículo, títulos de pantalla,
   títulos de card, encabezados de sección, cifras destacadas.
 - **Outfit** (`--font-label`, 500/700/800) — etiquetas cortas: badges, pestañas, filtros,
-  etiquetas de métricas, costos.
+  etiquetas de métricas, costos y texto de botones.
 - **Inter** (`--font`, 400/500/600) — todo texto de lectura: descripciones, avisos, formularios.
 
 Nunca Space Grotesk ni Outfit en párrafos. Los encabezados de sección y etiquetas de métrica van
