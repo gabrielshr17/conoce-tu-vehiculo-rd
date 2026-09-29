@@ -1,0 +1,1670 @@
+{
+  "version": "2.18",
+  "children": [
+    {
+      "type": "frame",
+      "id": "Q7JjB",
+      "x": 40,
+      "y": 40,
+      "name": "Gran Turismo - Perfil",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "#0B0E14",
+      "cornerRadius": 36,
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        16,
+        20,
+        24,
+        20
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "ctVWP",
+          "name": "Top Bar",
+          "width": "fill_container",
+          "height": 44,
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "pJuqs",
+              "name": "Brand Indicator",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "thTZa",
+                  "name": "GT Brand Crest",
+                  "width": 22,
+                  "height": 22,
+                  "fill": "#18202F",
+                  "cornerRadius": 6,
+                  "stroke": "#E53935",
+                  "strokeWidth": 1.5,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "JNtVH",
+                      "name": "Crest Monogram",
+                      "fill": "#FFFFFF",
+                      "content": "RD",
+                      "fontFamily": "Outfit",
+                      "fontSize": 10,
+                      "fontWeight": "800",
+                      "letterSpacing": 0.5
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "zT2YA",
+                  "name": "App Title",
+                  "fill": "#E2E8F0",
+                  "content": "CONOCE TU VEHÍCULO",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 12,
+                  "fontWeight": "700",
+                  "letterSpacing": 1.5
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "t5DnaM",
+              "name": "Status Pill",
+              "fill": "#14251F",
+              "cornerRadius": 20,
+              "stroke": "#1B4332",
+              "strokeWidth": 1,
+              "gap": 6,
+              "padding": [
+                6,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "ellipse",
+                  "id": "QMhCi",
+                  "name": "Status Dot",
+                  "fill": "#10B981",
+                  "width": 6,
+                  "height": 6
+                },
+                {
+                  "type": "text",
+                  "id": "BL17T",
+                  "name": "Status Label",
+                  "fill": "#34D399",
+                  "content": "AL DÍA",
+                  "fontFamily": "Outfit",
+                  "fontSize": 11,
+                  "fontWeight": "700",
+                  "letterSpacing": 0.8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "dXMil",
+          "name": "Hero Vehicle Card",
+          "width": "fill_container",
+          "fill": {
+            "type": "gradient",
+            "gradientType": "linear",
+            "enabled": true,
+            "rotation": 180,
+            "size": {
+              "height": 1
+            },
+            "colors": [
+              {
+                "color": "#1A2230",
+                "position": 0
+              },
+              {
+                "color": "#101520",
+                "position": 1
+              }
+            ]
+          },
+          "cornerRadius": 20,
+          "stroke": "#263245",
+          "strokeWidth": 1,
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#00000088",
+            "offset": {
+              "x": 0,
+              "y": 12
+            },
+            "blur": 28
+          },
+          "layout": "vertical",
+          "gap": 16,
+          "padding": 20,
+          "children": [
+            {
+              "type": "frame",
+              "id": "bF7Dd",
+              "name": "Hero Header",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "H0YfxT",
+                  "name": "Title Box",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "cWIIn",
+                      "name": "Vehicle Make Model",
+                      "fill": "#F8FAFC",
+                      "content": "TOYOTA COROLLA",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 20,
+                      "fontWeight": "700",
+                      "letterSpacing": 1.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "JqGG5",
+                      "name": "Vehicle Subtitle",
+                      "fill": "#94A3B8",
+                      "content": "2015 · LE Sedan · Gasolina",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Cu0w0",
+                  "name": "GT Badge",
+                  "fill": "#E5393522",
+                  "cornerRadius": 8,
+                  "stroke": "#E5393555",
+                  "strokeWidth": 1,
+                  "gap": 4,
+                  "padding": [
+                    4,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "RS5XP",
+                      "name": "GT Text",
+                      "fill": "#FF6B6B",
+                      "content": "GT EDITION",
+                      "fontFamily": "Outfit",
+                      "fontSize": 10,
+                      "fontWeight": "800",
+                      "letterSpacing": 1.2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "XQG01",
+              "name": "Car Visual Frame",
+              "width": "fill_container",
+              "height": 140,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "generated.png",
+                "mode": "fill"
+              },
+              "cornerRadius": 14,
+              "stroke": "#1E2636",
+              "strokeWidth": 1,
+              "justifyContent": "center",
+              "alignItems": "center"
+            },
+            {
+              "type": "frame",
+              "id": "WmRCf",
+              "name": "Metrics Row",
+              "width": "fill_container",
+              "fill": "#141B26",
+              "cornerRadius": 12,
+              "stroke": "#222D3E",
+              "strokeWidth": 1,
+              "padding": [
+                12,
+                16
+              ],
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "a1xDf5",
+                  "name": "Metric Item ODÓMETRO",
+                  "layout": "vertical",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "zsfwT",
+                      "name": "M Label",
+                      "fill": "#64748B",
+                      "content": "ODÓMETRO",
+                      "fontFamily": "Outfit",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 0.8
+                    },
+                    {
+                      "type": "text",
+                      "id": "Qzl61",
+                      "name": "M Value",
+                      "fill": "#F1F5F9",
+                      "content": "98,500 km",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 13,
+                      "fontWeight": "700",
+                      "letterSpacing": 0.5
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "BtkZc",
+                  "name": "Metric Item PRÓX. SERVICIO",
+                  "layout": "vertical",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "G67r0",
+                      "name": "M Label",
+                      "fill": "#64748B",
+                      "content": "PRÓX. SERVICIO",
+                      "fontFamily": "Outfit",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 0.8
+                    },
+                    {
+                      "type": "text",
+                      "id": "YZqVt",
+                      "name": "M Value",
+                      "fill": "#F1F5F9",
+                      "content": "1,500 km",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 13,
+                      "fontWeight": "700",
+                      "letterSpacing": 0.5
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "LKKlT",
+                  "name": "Metric Item RENDIMIENTO",
+                  "layout": "vertical",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "h2mvR5",
+                      "name": "M Label",
+                      "fill": "#64748B",
+                      "content": "RENDIMIENTO",
+                      "fontFamily": "Outfit",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                      "letterSpacing": 0.8
+                    },
+                    {
+                      "type": "text",
+                      "id": "oTQHb",
+                      "name": "M Value",
+                      "fill": "#F1F5F9",
+                      "content": "42 km/g",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 13,
+                      "fontWeight": "700",
+                      "letterSpacing": 0.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "W4NCUB",
+          "name": "Quote Card",
+          "width": "fill_container",
+          "fill": "#131923",
+          "cornerRadius": 14,
+          "stroke": "#202A3B",
+          "strokeWidth": 1,
+          "layout": "vertical",
+          "gap": 8,
+          "padding": [
+            14,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "J3wip",
+              "name": "Quote Header",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "oJwtS",
+                  "name": "Info Icon",
+                  "width": 14,
+                  "height": 14,
+                  "icon": "sparkles",
+                  "library": "lucide",
+                  "fill": "#E53935"
+                },
+                {
+                  "type": "text",
+                  "id": "FBjEA",
+                  "name": "Quote Label",
+                  "fill": "#94A3B8",
+                  "content": "ANÁLISIS DEL VEHÍCULO",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 10,
+                  "fontWeight": "800",
+                  "letterSpacing": 1
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "cEKdd",
+              "name": "Quote Body",
+              "fill": "#CBD5E1",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "“Confiable, económico y resistente. Sus piezas se consiguen en cualquier esquina de RD y tolera el calor local sin problemas.”",
+              "lineHeight": 1.55,
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "YNbJn",
+          "name": "Section Header",
+          "width": "fill_container",
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "m2Bcq",
+              "name": "Section Title",
+              "fill": "#94A3B8",
+              "content": "PRÓXIMOS SERVICIOS",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 11,
+              "fontWeight": "800",
+              "letterSpacing": 1.2
+            },
+            {
+              "type": "text",
+              "id": "q1hvE0",
+              "name": "See All",
+              "fill": "#E53935",
+              "content": "VER TODOS (6)",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "zYRvp",
+          "name": "Services List",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 10,
+          "children": [
+            {
+              "type": "frame",
+              "id": "nWDde",
+              "name": "Service Cambio de Aceite 0W-20",
+              "width": "fill_container",
+              "fill": "#131923",
+              "cornerRadius": 12,
+              "stroke": "#1F2838",
+              "strokeWidth": 1,
+              "padding": [
+                12,
+                14
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "XZtvK",
+                  "name": "Svc Left",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "V4HNnE",
+                      "name": "Svc Icon Box",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#1C2433",
+                      "cornerRadius": 10,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "J9Vysk",
+                          "name": "Svc Icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "droplets",
+                          "library": "lucide",
+                          "fill": "#E2E8F0"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Fzy4O",
+                      "name": "Svc Text Box",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "u6oqYK",
+                          "name": "Svc Name",
+                          "fill": "#F8FAFC",
+                          "content": "Cambio de Aceite 0W-20",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "iOv9T",
+                          "name": "Svc Due",
+                          "fill": "#94A3B8",
+                          "content": "En 1,500 km (~25 días)",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "MVrWd",
+                  "name": "Svc Badge",
+                  "fill": "#2A1E10",
+                  "cornerRadius": 6,
+                  "padding": [
+                    4,
+                    8
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "W8u5G",
+                      "name": "Svc Badge Text",
+                      "fill": "#F59E0B",
+                      "content": "Pronto",
+                      "fontFamily": "Outfit",
+                      "fontSize": 10,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "L2XWFn",
+              "name": "Service Refrigerante de Motor",
+              "width": "fill_container",
+              "fill": "#131923",
+              "cornerRadius": 12,
+              "stroke": "#1F2838",
+              "strokeWidth": 1,
+              "padding": [
+                12,
+                14
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "T3lcIk",
+                  "name": "Svc Left",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "FcLmZ",
+                      "name": "Svc Icon Box",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#1C2433",
+                      "cornerRadius": 10,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "QGHkb",
+                          "name": "Svc Icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "thermometer-snowflake",
+                          "library": "lucide",
+                          "fill": "#E2E8F0"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "a6QBYN",
+                      "name": "Svc Text Box",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "OdV8Y",
+                          "name": "Svc Name",
+                          "fill": "#F8FAFC",
+                          "content": "Refrigerante de Motor",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 13,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Se8Ol",
+                          "name": "Svc Due",
+                          "fill": "#94A3B8",
+                          "content": "En 12,000 km",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "JRhS2",
+                  "name": "Svc Badge",
+                  "fill": "#10261E",
+                  "cornerRadius": 6,
+                  "padding": [
+                    4,
+                    8
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "DLWuR",
+                      "name": "Svc Badge Text",
+                      "fill": "#10B981",
+                      "content": "Óptimo",
+                      "fontFamily": "Outfit",
+                      "fontSize": 10,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "j3ddu",
+          "name": "Bottom Navigation",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "#101622",
+          "cornerRadius": 18,
+          "stroke": "#1F293A",
+          "strokeWidth": 1,
+          "padding": [
+            8,
+            12
+          ],
+          "justifyContent": "space_around",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "XtpUw",
+              "name": "Tab Vehículo",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "wzDvY",
+                  "name": "Tab Icon",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "car",
+                  "library": "lucide",
+                  "fill": "#E53935"
+                },
+                {
+                  "type": "text",
+                  "id": "na49Y",
+                  "name": "Tab Label",
+                  "fill": "#F8FAFC",
+                  "content": "Vehículo",
+                  "fontFamily": "Outfit",
+                  "fontSize": 10,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "K9iIU",
+              "name": "Tab Servicios",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "uhLbp",
+                  "name": "Tab Icon",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "wrench",
+                  "library": "lucide",
+                  "fill": "#64748B"
+                },
+                {
+                  "type": "text",
+                  "id": "dmogb",
+                  "name": "Tab Label",
+                  "fill": "#64748B",
+                  "content": "Servicios",
+                  "fontFamily": "Outfit",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Z81RHq",
+              "name": "Tab Historial",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "r2iTq",
+                  "name": "Tab Icon",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "history",
+                  "library": "lucide",
+                  "fill": "#64748B"
+                },
+                {
+                  "type": "text",
+                  "id": "yhFjK",
+                  "name": "Tab Label",
+                  "fill": "#64748B",
+                  "content": "Historial",
+                  "fontFamily": "Outfit",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "aFnpa",
+              "name": "Tab Consejos",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "pRzaA",
+                  "name": "Tab Icon",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "shield-check",
+                  "library": "lucide",
+                  "fill": "#64748B"
+                },
+                {
+                  "type": "text",
+                  "id": "j030u",
+                  "name": "Tab Label",
+                  "fill": "#64748B",
+                  "content": "Consejos",
+                  "fontFamily": "Outfit",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Rg8qE",
+      "x": 470,
+      "y": 40,
+      "name": "Gran Turismo - Mantenimiento",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "#0B0E14",
+      "cornerRadius": 36,
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        16,
+        20,
+        24,
+        20
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "K8q4W",
+          "name": "Top Bar Maint",
+          "width": "fill_container",
+          "height": 44,
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "JvrHj",
+              "name": "Title Box Maint",
+              "layout": "vertical",
+              "gap": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "D01pM",
+                  "name": "Screen Title",
+                  "fill": "#F8FAFC",
+                  "content": "Plan de Mantenimiento",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "800",
+                  "letterSpacing": 0.5
+                },
+                {
+                  "type": "text",
+                  "id": "ozUJ1",
+                  "name": "Screen Subtitle",
+                  "fill": "#94A3B8",
+                  "content": "Toyota Corolla · 98,500 km",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "c9cGx5",
+              "name": "Update KM Button",
+              "fill": "#1E2636",
+              "cornerRadius": 8,
+              "stroke": "#2A364D",
+              "strokeWidth": 1,
+              "gap": 6,
+              "padding": [
+                6,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "v2KVgr",
+                  "name": "Edit Icon",
+                  "width": 14,
+                  "height": 14,
+                  "icon": "gauge",
+                  "library": "lucide",
+                  "fill": "#E2E8F0"
+                },
+                {
+                  "type": "text",
+                  "id": "PO4LF",
+                  "name": "Edit KM Text",
+                  "fill": "#F1F5F9",
+                  "content": "Editar km",
+                  "fontFamily": "Outfit",
+                  "fontSize": 11,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ykgAv",
+          "name": "Health Summary Card",
+          "width": "fill_container",
+          "fill": {
+            "type": "gradient",
+            "gradientType": "linear",
+            "enabled": true,
+            "rotation": 180,
+            "size": {
+              "height": 1
+            },
+            "colors": [
+              {
+                "color": "#192231",
+                "position": 0
+              },
+              {
+                "color": "#101622",
+                "position": 1
+              }
+            ]
+          },
+          "cornerRadius": 18,
+          "stroke": "#263245",
+          "strokeWidth": 1,
+          "padding": [
+            16,
+            18
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "E6srg2",
+              "name": "Summary Left",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CS4bE",
+                  "name": "Score Label",
+                  "fill": "#94A3B8",
+                  "content": "ESTADO GENERAL",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 10,
+                  "fontWeight": "800",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "LSz9A",
+                  "name": "Score Value",
+                  "fill": "#34D399",
+                  "content": "92% Óptimo",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 20,
+                  "fontWeight": "800"
+                },
+                {
+                  "type": "text",
+                  "id": "J6cxk",
+                  "name": "Score Hint",
+                  "fill": "#64748B",
+                  "content": "1 servicio preventivo pendiente",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "NG5lF",
+              "name": "Gauge Ring Box",
+              "width": 52,
+              "height": 52,
+              "fill": "#10261E",
+              "cornerRadius": 26,
+              "stroke": "#10B981",
+              "strokeWidth": 3,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "CSQhE",
+                  "name": "Check Icon",
+                  "width": 24,
+                  "height": 24,
+                  "icon": "shield-check",
+                  "library": "lucide",
+                  "fill": "#10B981"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "qO3KL",
+          "name": "Filter Tabs",
+          "width": "fill_container",
+          "gap": 8,
+          "children": [
+            {
+              "type": "frame",
+              "id": "byx2V",
+              "name": "Filter Pill Todos (5)",
+              "fill": "#E53935",
+              "cornerRadius": 16,
+              "stroke": "#E53935",
+              "strokeWidth": 1,
+              "padding": [
+                6,
+                12
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "gjYyl",
+                  "name": "Filter Text",
+                  "fill": "#FFFFFF",
+                  "content": "Todos (5)",
+                  "fontFamily": "Outfit",
+                  "fontSize": 11,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "L9aOqK",
+              "name": "Filter Pill Pronto (1)",
+              "fill": "#141A24",
+              "cornerRadius": 16,
+              "stroke": "#222B3B",
+              "strokeWidth": 1,
+              "padding": [
+                6,
+                12
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "QON1A",
+                  "name": "Filter Text",
+                  "fill": "#94A3B8",
+                  "content": "Pronto (1)",
+                  "fontFamily": "Outfit",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "n5HHG",
+              "name": "Filter Pill Al día (4)",
+              "fill": "#141A24",
+              "cornerRadius": 16,
+              "stroke": "#222B3B",
+              "strokeWidth": 1,
+              "padding": [
+                6,
+                12
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "c66jLr",
+                  "name": "Filter Text",
+                  "fill": "#94A3B8",
+                  "content": "Al día (4)",
+                  "fontFamily": "Outfit",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "WPG4V",
+          "name": "Maint Services List",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "DhXXf",
+              "name": "Maint Card Aceite de Motor Sintético 0W-20",
+              "width": "fill_container",
+              "fill": "#131923",
+              "cornerRadius": 14,
+              "stroke": "#202A3B",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                14,
+                16
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "OFzMr",
+                  "name": "MCard Top Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "xcDLg",
+                      "name": "Icon Title Box",
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "XnLPq",
+                          "name": "MIcon Box",
+                          "width": 32,
+                          "height": 32,
+                          "fill": "#1C2433",
+                          "cornerRadius": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "Z7ifC",
+                              "name": "Card Icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "droplets",
+                              "library": "lucide",
+                              "fill": "#E2E8F0"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "i61cP7",
+                          "name": "Card Title",
+                          "fill": "#FFFFFF",
+                          "content": "Aceite Sintético 0W-20",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "C880xj",
+                      "name": "Badge Pill",
+                      "fill": "#2A1E10",
+                      "cornerRadius": 6,
+                      "padding": [
+                        3,
+                        8
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "KKYfj",
+                          "name": "Badge Text",
+                          "fill": "#F59E0B",
+                          "content": "PRONTO",
+                          "fontFamily": "Outfit",
+                          "fontSize": 9,
+                          "fontWeight": "800",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "vMkBP",
+                  "name": "Card Desc",
+                  "fill": "#94A3B8",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Cada 5,000 km en RD. Protege contra altas temperaturas.",
+                  "lineHeight": 1.4,
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "UL5Na",
+                  "name": "MCard Bottom Row",
+                  "width": "fill_container",
+                  "padding": [
+                    8,
+                    0,
+                    0,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "FSWde",
+                      "name": "Due Text",
+                      "fill": "#E2E8F0",
+                      "content": "⏱ Faltan 1,500 km (~25 días)",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mxjpT",
+                      "name": "Cost Text",
+                      "fill": "#F8FAFC",
+                      "content": "~RD$ 2,800",
+                      "fontFamily": "Outfit",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "EH4uk",
+              "name": "Maint Card Filtro de Aire de Cabina (A/C)",
+              "width": "fill_container",
+              "fill": "#131923",
+              "cornerRadius": 14,
+              "stroke": "#202A3B",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                14,
+                16
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "h4KpYm",
+                  "name": "MCard Top Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ZGwY9",
+                      "name": "Icon Title Box",
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "sA9tA",
+                          "name": "MIcon Box",
+                          "width": 32,
+                          "height": 32,
+                          "fill": "#1C2433",
+                          "cornerRadius": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "SLucG",
+                              "name": "Card Icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "fan",
+                              "library": "lucide",
+                              "fill": "#E2E8F0"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "agD45",
+                          "name": "Card Title",
+                          "fill": "#FFFFFF",
+                          "content": "Filtro de Aire de Cabina (A/C)",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "zAviG",
+                      "name": "Badge Pill",
+                      "fill": "#10261E",
+                      "cornerRadius": 6,
+                      "padding": [
+                        3,
+                        8
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ptxo7",
+                          "name": "Badge Text",
+                          "fill": "#10B981",
+                          "content": "AL DÍA",
+                          "fontFamily": "Outfit",
+                          "fontSize": 9,
+                          "fontWeight": "800",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "uLLBz",
+                  "name": "Card Desc",
+                  "fill": "#94A3B8",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Previene malos olores y polvillo en el aire acondicionado.",
+                  "lineHeight": 1.4,
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "II3dm",
+                  "name": "MCard Bottom Row",
+                  "width": "fill_container",
+                  "padding": [
+                    8,
+                    0,
+                    0,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "HtYZR",
+                      "name": "Due Text",
+                      "fill": "#E2E8F0",
+                      "content": "⏱ Faltan 4,200 km",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "pyjDn",
+                      "name": "Cost Text",
+                      "fill": "#F8FAFC",
+                      "content": "~RD$ 950",
+                      "fontFamily": "Outfit",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ZX6LB",
+              "name": "Maint Card Líquido de Frenos DOT 4",
+              "width": "fill_container",
+              "fill": "#131923",
+              "cornerRadius": 14,
+              "stroke": "#202A3B",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                14,
+                16
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "u5ZdGK",
+                  "name": "MCard Top Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "gjTNk",
+                      "name": "Icon Title Box",
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "y2WQ2",
+                          "name": "MIcon Box",
+                          "width": 32,
+                          "height": 32,
+                          "fill": "#1C2433",
+                          "cornerRadius": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "Zytvj",
+                              "name": "Card Icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "disc",
+                              "library": "lucide",
+                              "fill": "#E2E8F0"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "vIXT9",
+                          "name": "Card Title",
+                          "fill": "#FFFFFF",
+                          "content": "Líquido de Frenos DOT 4",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PPlzC",
+                      "name": "Badge Pill",
+                      "fill": "#10261E",
+                      "cornerRadius": 6,
+                      "padding": [
+                        3,
+                        8
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cx7lL",
+                          "name": "Badge Text",
+                          "fill": "#10B981",
+                          "content": "AL DÍA",
+                          "fontFamily": "Outfit",
+                          "fontSize": 9,
+                          "fontWeight": "800",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "wXa5C",
+                  "name": "Card Desc",
+                  "fill": "#94A3B8",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Inspección de humedad y nivel en el reservorio.",
+                  "lineHeight": 1.4,
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "N8Ysc0",
+                  "name": "MCard Bottom Row",
+                  "width": "fill_container",
+                  "padding": [
+                    8,
+                    0,
+                    0,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kATIf",
+                      "name": "Due Text",
+                      "fill": "#E2E8F0",
+                      "content": "⏱ Faltan 8,500 km",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "yyaAn",
+                      "name": "Cost Text",
+                      "fill": "#F8FAFC",
+                      "content": "~RD$ 1,200",
+                      "fontFamily": "Outfit",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "m5acYK",
+          "name": "Bottom Navigation Maint",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "#101622",
+          "cornerRadius": 18,
+          "stroke": "#1F293A",
+          "strokeWidth": 1,
+          "padding": [
+            8,
+            12
+          ],
+          "justifyContent": "space_around",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "XRMdN",
+              "name": "Tab M Vehículo",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "vI6zJ",
+                  "name": "Tab M Icon",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "car",
+                  "library": "lucide",
+                  "fill": "#64748B"
+                },
+                {
+                  "type": "text",
+                  "id": "BTBG4",
+                  "name": "Tab M Label",
+                  "fill": "#64748B",
+                  "content": "Vehículo",
+                  "fontFamily": "Outfit",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dVtY4",
+              "name": "Tab M Servicios",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "EvmnV",
+                  "name": "Tab M Icon",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "wrench",
+                  "library": "lucide",
+                  "fill": "#E53935"
+                },
+                {
+                  "type": "text",
+                  "id": "twgPQ",
+                  "name": "Tab M Label",
+                  "fill": "#F8FAFC",
+                  "content": "Servicios",
+                  "fontFamily": "Outfit",
+                  "fontSize": 10,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "mDmP8",
+              "name": "Tab M Historial",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "vvXiw",
+                  "name": "Tab M Icon",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "history",
+                  "library": "lucide",
+                  "fill": "#64748B"
+                },
+                {
+                  "type": "text",
+                  "id": "Javkc",
+                  "name": "Tab M Label",
+                  "fill": "#64748B",
+                  "content": "Historial",
+                  "fontFamily": "Outfit",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hrCuA",
+              "name": "Tab M Consejos",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "jA3o4",
+                  "name": "Tab M Icon",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "shield-check",
+                  "library": "lucide",
+                  "fill": "#64748B"
+                },
+                {
+                  "type": "text",
+                  "id": "ucL78",
+                  "name": "Tab M Label",
+                  "fill": "#64748B",
+                  "content": "Consejos",
+                  "fontFamily": "Outfit",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "fileToken": "e7037177-c4ca-434c-bc17-c8a05dc65e75"
+}
