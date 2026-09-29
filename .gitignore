@@ -27,3 +27,7 @@ Thumbs.db
 
 # Design reference photo (third-party imagery, not redistributable)
 generated.png
+
+# Playwright output
+test-results/
+playwright-report/
