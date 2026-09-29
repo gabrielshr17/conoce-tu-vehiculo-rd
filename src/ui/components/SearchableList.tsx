@@ -9,6 +9,7 @@ interface SearchableListProps<T> {
   selectedKey?: string;
   onSelect: (item: T) => void;
   placeholder?: string;
+  inputId?: string;
 }
 
 export function SearchableList<T>({
@@ -18,6 +19,7 @@ export function SearchableList<T>({
   selectedKey,
   onSelect,
   placeholder = 'Buscar...',
+  inputId,
 }: SearchableListProps<T>) {
   const [query, setQuery] = useState('');
 
@@ -32,6 +34,7 @@ export function SearchableList<T>({
       <div className={styles.search}>
         <Search size={16} />
         <input
+          id={inputId}
           className={styles.searchInput}
           type="text"
           value={query}
@@ -49,6 +52,7 @@ export function SearchableList<T>({
               key={key}
               type="button"
               className={`${styles.opt} ${isSelected ? styles.sel : ''}`}
+              aria-pressed={isSelected}
               onClick={() => onSelect(item)}
             >
               {getLabel(item)}
