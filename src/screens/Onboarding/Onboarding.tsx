@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Vehicle } from '../../core/types';
+import { resolveVehicleSelection } from '../../core/vehicle';
 import { findCatalogModel, getMakes, getModelsByMake, getTrims, getYears } from '../../data/catalog';
 import { vehicleRepository } from '../../storage';
 import { Button, SearchableList, Stepper, TopBar } from '../../ui/components';
@@ -53,19 +53,13 @@ export function Onboarding() {
     }
     if (!year || !make || !model || !trim) return;
 
-    // Si ya había un vehículo, se reutiliza su id y km — así no se huerfana
-    // el historial existente al corregir una selección del onboarding.
     const catalogModel = findCatalogModel(make, model);
-    const vehicle: Vehicle = {
-      id: existing?.id ?? crypto.randomUUID(),
-      year,
-      make,
-      model,
-      trim,
-      fuelType: catalogModel?.fuelType ?? 'gasolina',
-      createdAt: existing?.createdAt ?? new Date().toISOString(),
-      currentKm: existing?.currentKm,
-    };
+    const vehicle = resolveVehicleSelection(
+      existing ?? undefined,
+      { year, make, model, trim, fuelType: catalogModel?.fuelType ?? 'gasolina' },
+      crypto.randomUUID(),
+      new Date().toISOString(),
+    );
     vehicleRepository.save(vehicle);
     navigate('/perfil');
   }
