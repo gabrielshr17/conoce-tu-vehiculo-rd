@@ -79,7 +79,7 @@
   border: none;
   border-radius: var(--radio-sm);
   background: var(--rojo-relleno);
-  color: #fff;
+  color: var(--sobre-rojo);
   font-family: var(--font-label);
   font-size: var(--text-sm);
   font-weight: 700;
@@ -218,12 +218,12 @@
 .filterOn {
   background: var(--rojo-relleno);
   border-color: var(--rojo-relleno);
-  color: #fff;
+  color: var(--sobre-rojo);
   font-weight: 700;
 }
 
 .filterOn:hover {
-  color: #fff;
+  color: var(--sobre-rojo);
 }
 
 .cardGrid {

@@ -25,6 +25,7 @@
 | `--gris-tenue` | `#8a98ae` | Etiquetas pequeñas y pestañas inactivas. 6.0:1 sobre `--superficie`, 6.2:1 sobre `--barra` |
 | `--rojo` | `#e53935` | Acento de marca: íconos, bordes, barra de prioridad urgente, pestaña activa |
 | `--rojo-relleno` | `#d32f2f` | Fondo de botones/pastillas con texto blanco (4.98:1) |
+| `--sobre-rojo` | `#ffffff` | Texto e íconos sobre `--rojo-relleno` |
 | `--rojo-osc` | `#b71c1c` | Estado pressed de botones rojos |
 | `--rojo-brillante` | `#ff6b6b` | Rojo **para texto** sobre fondo oscuro (6.4–7.0:1) |
 | `--rojo-tint` | `#2a1618` | Superficie roja oscura (chips, badge urgente, avisos) |

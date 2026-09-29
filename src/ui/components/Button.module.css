@@ -6,7 +6,7 @@
   width: 100%;
   min-height: 48px;
   background: var(--rojo-relleno);
-  color: #fff;
+  color: var(--sobre-rojo);
   border: none;
   padding: var(--space-4);
   border-radius: var(--radio-md);
