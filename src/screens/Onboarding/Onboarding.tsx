@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Vehicle } from '../../core/types';
@@ -67,7 +68,13 @@ export function Onboarding() {
     navigate('/perfil');
   }
 
+  function pick(apply: () => void) {
+    apply();
+    if (step < TOTAL_STEPS) setStep(step + 1);
+  }
+
   const { question, placeholder } = STEP_META[step - 1];
+  const chosen = [year, make, model].slice(0, step - 1).filter((v) => v !== undefined);
 
   return (
     <div>
@@ -76,8 +83,12 @@ export function Onboarding() {
         <div className={styles.stepperWrap}>
           <Stepper total={TOTAL_STEPS} current={step} />
         </div>
-        <div className={styles.qbig}>{question}</div>
-        <p className={styles.muted}>Elígelo de la lista, no hace falta escribir.</p>
+        <h1 className={styles.qbig}>{question}</h1>
+        {chosen.length > 0 ? (
+          <p className={styles.chosen}>{chosen.join(' · ')}</p>
+        ) : (
+          <p className={styles.muted}>Elígelo de la lista, no hace falta escribir.</p>
+        )}
 
         {step === 1 && (
           <SearchableList
@@ -85,7 +96,7 @@ export function Onboarding() {
             getKey={(y) => String(y)}
             getLabel={(y) => String(y)}
             selectedKey={year !== undefined ? String(year) : undefined}
-            onSelect={setYear}
+            onSelect={(y) => pick(() => setYear(y))}
             placeholder={placeholder}
           />
         )}
@@ -95,11 +106,13 @@ export function Onboarding() {
             getKey={(m) => m}
             getLabel={(m) => m}
             selectedKey={make}
-            onSelect={(m) => {
-              setMake(m);
-              setModel(undefined);
-              setTrim(undefined);
-            }}
+            onSelect={(m) =>
+              pick(() => {
+                setMake(m);
+                setModel(undefined);
+                setTrim(undefined);
+              })
+            }
             placeholder={placeholder}
           />
         )}
@@ -109,10 +122,12 @@ export function Onboarding() {
             getKey={(m) => m.id}
             getLabel={(m) => m.model}
             selectedKey={models.find((m) => m.model === model)?.id}
-            onSelect={(m) => {
-              setModel(m.model);
-              setTrim(undefined);
-            }}
+            onSelect={(m) =>
+              pick(() => {
+                setModel(m.model);
+                setTrim(undefined);
+              })
+            }
             placeholder={placeholder}
           />
         )}
@@ -129,10 +144,10 @@ export function Onboarding() {
 
         <div className={styles.navrow}>
           <Button variant="ghost" onClick={handleBack}>
-            ← Atrás
+            <ArrowLeft size={18} /> Atrás
           </Button>
           <Button disabled={!canAdvance} onClick={handleNext}>
-            {step === TOTAL_STEPS ? 'Ver mi perfil →' : 'Siguiente →'}
+            {step === TOTAL_STEPS ? 'Ver mi carro' : 'Siguiente'} <ArrowRight size={18} />
           </Button>
         </div>
       </div>

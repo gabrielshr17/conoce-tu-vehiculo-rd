@@ -35,6 +35,7 @@ export function SearchableList<T>({
         <Search size={16} />
         <input
           id={inputId}
+          aria-label={inputId ? undefined : placeholder}
           className={styles.searchInput}
           type="text"
           value={query}

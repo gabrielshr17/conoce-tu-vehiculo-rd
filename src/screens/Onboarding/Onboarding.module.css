@@ -1,5 +1,5 @@
 .body {
-  padding: var(--space-5) var(--space-5) var(--space-6);
+  padding: var(--space-2) var(--space-5) 0;
 }
 
 .stepperWrap {
@@ -7,22 +7,35 @@
 }
 
 .qbig {
-  font-size: var(--text-xl);
-  font-weight: 800;
-  margin-bottom: var(--space-1);
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+}
+
+.chosen {
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-base-sm);
+  font-weight: 700;
+  color: var(--rojo-brillante);
 }
 
 .muted {
+  margin: 0;
   color: var(--gris);
   font-size: var(--text-base-sm);
   line-height: 1.5;
-  margin-bottom: var(--space-1);
 }
 
 .navrow {
+  position: sticky;
+  bottom: 0;
   display: flex;
   gap: var(--space-3);
-  margin-top: var(--space-5);
+  margin: var(--space-3) calc(-1 * var(--space-5)) 0;
+  padding: var(--space-3) var(--space-5) var(--space-5);
+  background: linear-gradient(to bottom, transparent, var(--fondo) 30%);
 }
 
 .navrow > * {
@@ -33,10 +46,15 @@
   .body {
     max-width: 900px;
     margin: 0 auto;
-    padding: var(--space-8);
+    padding: var(--space-6) var(--space-8) 0;
+  }
+
+  .navrow {
+    margin: var(--space-3) calc(-1 * var(--space-8)) 0;
+    padding: var(--space-4) var(--space-8) var(--space-8);
   }
 
   .qbig {
-    font-size: var(--text-2xl);
+    font-size: var(--text-3xl);
   }
 }
