@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { sessionRepository, vehicleRepository } from '../../storage';
 import styles from './AppShell.module.css';
+import { useDocumentTitle } from './useDocumentTitle';
 import type { ShellContext } from './useShell';
 
 const TABS = [
@@ -19,6 +20,7 @@ export function AppShell() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  useDocumentTitle(TABS.find((tab) => tab.to === pathname)?.label);
 
   // Sin vehículo identificado no hay nada que mostrar en estas pantallas.
   if (!vehicleRepository.get()) {

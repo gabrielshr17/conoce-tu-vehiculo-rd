@@ -3,12 +3,14 @@ import { signInWithGoogle } from '../../auth/google';
 import { sendWelcomeEmail } from '../../auth/welcomeEmail';
 import { sessionRepository, vehicleRepository } from '../../storage';
 import { Button, CarSilhouette, DrFlag, GoogleIcon } from '../../ui/components';
+import { useDocumentTitle } from '../../ui/layout/useDocumentTitle';
 import styles from './Welcome.module.css';
 
 const GOOGLE_ACCOUNT_RECOVERY_URL = 'https://accounts.google.com/signin/recovery';
 
 export function Welcome() {
   const navigate = useNavigate();
+  useDocumentTitle();
   const vehicle = vehicleRepository.get();
   const session = sessionRepository.get();
 

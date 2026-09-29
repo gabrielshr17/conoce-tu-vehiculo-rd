@@ -5,6 +5,7 @@ import type { Vehicle } from '../../core/types';
 import { findCatalogModel, getMakes, getModelsByMake, getTrims, getYears } from '../../data/catalog';
 import { vehicleRepository } from '../../storage';
 import { Button, SearchableList, Stepper, TopBar } from '../../ui/components';
+import { useDocumentTitle } from '../../ui/layout/useDocumentTitle';
 import styles from './Onboarding.module.css';
 
 const TOTAL_STEPS = 4;
@@ -18,6 +19,7 @@ const STEP_META = [
 
 export function Onboarding() {
   const navigate = useNavigate();
+  useDocumentTitle('Identifica tu vehículo');
   const [existing] = useState(() => vehicleRepository.get());
   const [step, setStep] = useState(1);
   const [year, setYear] = useState<number | undefined>(existing?.year);
