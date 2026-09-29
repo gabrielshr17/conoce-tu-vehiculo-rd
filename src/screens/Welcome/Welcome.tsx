@@ -1,12 +1,11 @@
-import { Car } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithGoogle } from '../../auth/google';
 import { sendWelcomeEmail } from '../../auth/welcomeEmail';
 import { sessionRepository, vehicleRepository } from '../../storage';
-import { Button, DrFlag, GoogleIcon } from '../../ui/components';
+import { Button, CarSilhouette, DrFlag, GoogleIcon } from '../../ui/components';
 import styles from './Welcome.module.css';
 
-const GOOGLE_PASSWORD_RECOVERY_URL = 'https://accounts.google.com/signin/recovery';
+const GOOGLE_ACCOUNT_RECOVERY_URL = 'https://accounts.google.com/signin/recovery';
 
 export function Welcome() {
   const navigate = useNavigate();
@@ -22,46 +21,49 @@ export function Welcome() {
   }
 
   return (
-    <div className={styles.welcome}>
-      <div className={styles.logo}>
-        <Car size={56} strokeWidth={1.75} />
+    <main className={styles.welcome}>
+      <div className={styles.brand}>
+        <span className={styles.crest}>RD</span>
+        Conoce tu vehículo
       </div>
-      <h1 className={styles.title}>
-        Conoce tu
-        <br />
-        Vehículo RD
-      </h1>
-      <p className={styles.tag}>Cuida tu carro como un experto, sin serlo.</p>
-      <div className={styles.rdflag}>
-        <DrFlag size={17} /> Hecho para República Dominicana
+
+      <div className={styles.stage}>
+        <CarSilhouette size="hero" />
       </div>
-      <div className={styles.spacer} />
+
+      <div className={styles.copy}>
+        <h1 className={styles.title}>Cuida tu carro como un experto, sin serlo.</h1>
+        <p className={styles.tag}>
+          Qué le toca, cuándo y cuánto cuesta, en palabras simples. Sin jerga de taller.
+        </p>
+        <div className={styles.rdflag}>
+          <DrFlag size={16} /> Hecho para República Dominicana
+        </div>
+      </div>
+
       <div className={styles.actions}>
         {!session ? (
           <>
-            <p className={styles.tag}>Inicia sesión con Google para empezar.</p>
-            <Button variant="inverse" className={styles.googleButton} onClick={handleGoogleSignIn}>
-              <GoogleIcon size={18} className={styles.googleIcon} /> Iniciar sesión con Google
-            </Button>
+            <button type="button" className={styles.googleButton} onClick={handleGoogleSignIn}>
+              <GoogleIcon size={18} /> Continuar con Google
+            </button>
             <a
               className={styles.link}
-              href={GOOGLE_PASSWORD_RECOVERY_URL}
+              href={GOOGLE_ACCOUNT_RECOVERY_URL}
               target="_blank"
               rel="noopener noreferrer"
             >
-              ¿Olvidaste tu contraseña?
+              ¿No puedes entrar a tu cuenta de Google?
             </a>
           </>
         ) : vehicle ? (
-          <Button variant="inverse" onClick={() => navigate('/perfil')}>
-            Continuar con tu {vehicle.make} {vehicle.model} →
+          <Button onClick={() => navigate('/perfil')}>
+            Continuar con tu {vehicle.make} {vehicle.model}
           </Button>
         ) : (
-          <Button variant="inverse" onClick={() => navigate('/onboarding')}>
-            Empezar →
-          </Button>
+          <Button onClick={() => navigate('/onboarding')}>Identificar mi carro</Button>
         )}
       </div>
-    </div>
+    </main>
   );
 }
