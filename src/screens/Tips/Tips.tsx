@@ -1,4 +1,4 @@
-import { CircleCheck, Gauge, ShieldCheck, Users, Wrench } from 'lucide-react';
+import { CircleCheck, ExternalLink, Gauge, ShieldCheck, Users, Wrench } from 'lucide-react';
 import { getAccessoryGroups } from '../../data/accessories';
 import { findCatalogModel } from '../../data/catalog';
 import { communitySearchUrl, findVehicleSpec } from '../../data/specs';
@@ -97,10 +97,14 @@ export function Tips() {
                   <div className={styles.communityIcon}>
                     <Users size={16} />
                   </div>
-                  <div>
+                  <div className={styles.communityText}>
                     <div className={styles.tipTitle}>{c.name}</div>
-                    <div className={styles.tipDesc}>{c.platform} · buscar grupo</div>
+                    <div className={styles.tipDesc}>
+                      Buscar el grupo en {c.platform}
+                      <span className={styles.srOnly}> (se abre en otra pestaña)</span>
+                    </div>
                   </div>
+                  <ExternalLink size={16} className={styles.external} aria-hidden="true" />
                 </a>
               ))}
             </div>
