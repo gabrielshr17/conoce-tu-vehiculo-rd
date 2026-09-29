@@ -1,5 +1,6 @@
 import { History as HistoryIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
+import { formatMonthYear, toLocalIsoDate } from '../../core/date';
 import { formatCurrency, formatKm } from '../../core/format';
 import { MAINTENANCE_CATALOG } from '../../core/maintenance/catalog';
 import type { HistoryEntry, Vehicle } from '../../core/types';
@@ -7,28 +8,9 @@ import { historyRepository, vehicleRepository } from '../../storage';
 import { Button, SearchableList, TopBar } from '../../ui/components';
 import styles from './History.module.css';
 
-const MONTHS = [
-  'enero',
-  'febrero',
-  'marzo',
-  'abril',
-  'mayo',
-  'junio',
-  'julio',
-  'agosto',
-  'septiembre',
-  'octubre',
-  'noviembre',
-  'diciembre',
-];
-
 const OTHER_OPTION = { id: 'other', name: 'Otro (especificar)' };
 const ITEM_OPTIONS = [...MAINTENANCE_CATALOG.map((i) => ({ id: i.id, name: i.name })), OTHER_OPTION];
 
-function monthLabel(dateStr: string): string {
-  const d = new Date(dateStr);
-  return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`.toUpperCase();
-}
 
 interface FormState {
   itemId: string;
@@ -43,7 +25,7 @@ function emptyForm(defaultKm?: number): FormState {
   return {
     itemId: '',
     customDescription: '',
-    date: new Date().toISOString().slice(0, 10),
+    date: toLocalIsoDate(new Date()),
     km: defaultKm !== undefined ? String(defaultKm) : '',
     cost: '',
     shop: '',
@@ -149,7 +131,7 @@ export function History() {
             <div className={styles.specKey}>Último registro</div>
             <div className={styles.specValue}>{sorted[0].description}</div>
             <div className={styles.lastEntryMeta}>
-              {formatKm(sorted[0].km)} · {monthLabel(sorted[0].date).toLowerCase()}
+              {formatKm(sorted[0].km)} · {formatMonthYear(sorted[0].date)}
             </div>
           </div>
         )}
@@ -171,7 +153,7 @@ export function History() {
         {sorted.length > 0 && (
           <div className={styles.timeline}>
             {sorted.map((entry) => {
-              const group = monthLabel(entry.date);
+              const group = formatMonthYear(entry.date);
               const showGroup = group !== lastGroup;
               lastGroup = group;
               return (

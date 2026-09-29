@@ -1,3 +1,4 @@
+import { parseLocalDate } from '../date';
 import type { HistoryEntry, MaintenanceItem, Priority, Recommendation } from '../types';
 import { MAINTENANCE_CATALOG } from './catalog';
 import { RD_MODIFIERS } from './rdModifiers';
@@ -38,7 +39,7 @@ function computeRecommendation(item: MaintenanceItem, input: RecommendInput): Re
   const last = findLastEntry(history, item.id);
 
   const kmSinceLast = last ? currentKm - last.km : currentKm;
-  const monthsSinceLast = last ? monthsBetween(new Date(last.date), today) : monthsSinceVehicleYear(vehicleYear, today);
+  const monthsSinceLast = last ? monthsBetween(parseLocalDate(last.date), today) : monthsSinceVehicleYear(vehicleYear, today);
 
   const modifier = RD_MODIFIERS[item.id]?.factor ?? 1;
   const effectiveIntervalKm = item.intervalKm !== undefined ? item.intervalKm * modifier : undefined;

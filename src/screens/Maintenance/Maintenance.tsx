@@ -1,5 +1,6 @@
 import { Clock, FileText, Gauge, ShieldCheck, TriangleAlert, Wrench, type LucideIcon } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
+import { toLocalIsoDate } from '../../core/date';
 import { formatKm } from '../../core/format';
 import { recommend } from '../../core/maintenance/engine';
 import { getSeasonalTip } from '../../core/maintenance/rdModifiers';
@@ -88,7 +89,7 @@ export function Maintenance() {
       vehicleId: vehicle.id,
       itemId: rec.item.id,
       description: rec.item.name,
-      date: today.toISOString().slice(0, 10),
+      date: toLocalIsoDate(today),
       km: currentKm,
     };
     historyRepository.add(entry);
