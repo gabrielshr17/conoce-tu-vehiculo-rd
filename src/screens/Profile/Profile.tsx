@@ -58,9 +58,15 @@ export function Profile() {
         </div>
         <div className={styles.topActions}>
           {summary && (
-            <Badge tone={STATUS_TONE[summary.status]} shape="pill" dot>
-              {STATUS_LABEL[summary.status]}
-            </Badge>
+            <Link
+              to="/mantenimiento"
+              className={styles.statusLink}
+              aria-label={`Estado: ${STATUS_LABEL[summary.status]}. Ver servicios`}
+            >
+              <Badge tone={STATUS_TONE[summary.status]} shape="pill" dot>
+                {STATUS_LABEL[summary.status]}
+              </Badge>
+            </Link>
           )}
           <button type="button" className={styles.iconButton} onClick={onSignOut} aria-label="Salir">
             <LogOut size={18} />
