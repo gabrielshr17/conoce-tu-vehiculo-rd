@@ -1,7 +1,8 @@
 # Gran Turismo redesign — session recap (2026-09-28 → 2026-09-29)
 
 Branch: `feature/gt-redesign` · PR: [#3](https://github.com/gabrielshr17/conoce-tu-vehiculo-rd/pull/3) (draft)
-Status at end of session: `npm run build`, `npm run lint`, `npm test` all green — **25/25 tests**.
+Status at end of session: `npm run build`, `npm run lint`, `npm test` all green — **25/25 unit
+tests**, `npm run test:e2e` **6/6 flows**.
 axe-core (WCAG 2.1 AA + best practices): **0 violations** on every screen at 375px and 1440px.
 
 ---
@@ -48,6 +49,8 @@ axe-core (WCAG 2.1 AA + best practices): **0 violations** on every screen at 375
 - [x] Installable: web manifest + home-screen icons; favicon and theme color updated.
 - [x] PR screenshots refreshed (now includes Welcome and Historial) and PR description rewritten.
 - [x] White-on-red text tokenized as `--sobre-rojo`.
+- [x] Playwright e2e suite (`e2e/`, `npm run test:e2e`): onboarding, switch car, undo,
+      odometer rule, history validation, delete confirmation — 6/6 passing.
 
 **Accessibility / quality**
 - [x] `<main>` landmark, one `<h1>` per screen, correct heading order.
@@ -69,9 +72,8 @@ axe-core (WCAG 2.1 AA + best practices): **0 violations** on every screen at 375
       so it still needs a connection to load.
 - [ ] **Orphaned history** — when switching cars, the old car's records stay in `localStorage`
       under its old id (harmless, invisible). Decide whether to keep (for switching back) or purge.
-- [ ] **Playwright e2e suite** — flows verified this session with throwaway scripts (onboarding,
-      change vehicle, undo, delete confirm, validation errors, scroll reset). Worth turning into
-      a real `e2e/` suite; none exists yet.
+- [ ] **Run e2e in CI / pre-commit** — `npm run test:e2e` exists locally but isn't wired into
+      the pre-commit hook or any CI.
 - [ ] **PLAN.md / MVP.md** still describe the pre-auth, pre-redesign MVP.
 - [ ] **Tablet (768px)**: the 240px sidebar is wide for that width; an icon rail could free space.
 - [ ] `design.pen` references `generated.png`, which is gitignored — the pen shows a missing

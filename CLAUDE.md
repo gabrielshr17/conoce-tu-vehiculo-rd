@@ -80,14 +80,16 @@ specific element's own math (documented case-by-case in DESIGN.md §2).
 ```bash
 npm install       # deps
 npm run dev       # vite dev server (hot reload)
-npm test          # vitest run — 9 tests in src/core/maintenance/{engine,summary}.test.ts
+npm test          # vitest run — 25 unit tests in src/core/**/*.test.ts
+npm run test:e2e  # playwright — 6 flows in e2e/*.e2e.ts (uses installed Chrome)
 npm run test:watch
 npm run lint      # oxlint (not ESLint/Prettier — see hooks below)
 npm run build     # tsc -b && vite build
 npm run preview   # preview the production build
 ```
 
-No Playwright/e2e suite exists yet. No `server/` test script exists yet.
+Playwright e2e lives in `e2e/` (files end in `.e2e.ts` so Vitest ignores them; it starts its
+own dev server on port 5199). No `server/` test script exists yet.
 
 `server/` has its own commands (run from `server/`, not the repo root):
 
@@ -132,7 +134,7 @@ racing visual redesign session — recorded here so the reasoning behind each is
 ## 7. Project Baseline
 
 - **Current status:** Frontend builds and runs clean (`npm run build`, `npm test` both green,
-  9/9 tests passing). `server/` compiles clean (`npm run build` in `server/`) and was smoke-
+  25/25 unit tests and 6/6 e2e flows passing). `server/` compiles clean (`npm run build` in `server/`) and was smoke-
   tested directly against the compiled `dist/index.js` (missing-token 400, invalid-token 401
   both verified).
 - **Verified features:** MVP M0–M5 complete (onboarding, profile, maintenance engine, history,
