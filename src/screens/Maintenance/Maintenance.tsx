@@ -1,5 +1,6 @@
-import { Clock, FileText, Gauge, ShieldCheck, TriangleAlert, Wrench, type LucideIcon } from 'lucide-react';
+import { Clock, FileText, Gauge, Info, ShieldCheck, TriangleAlert, Wrench, type LucideIcon } from 'lucide-react';
 import { useCallback, useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { toLocalIsoDate } from '../../core/date';
 import { formatKm } from '../../core/format';
 import { recommend } from '../../core/maintenance/engine';
@@ -191,10 +192,12 @@ export function Maintenance() {
 
         {missingHistoryCount > 0 && (
           <div className={styles.noticeTip}>
-            Como es la primera vez, calculamos{' '}
-            {missingHistoryCount === recommendations.length ? 'todo' : 'algunos de estos'} asumiendo que
-            nunca se le ha hecho mantenimiento. Si ya le hiciste algo, regístralo en{' '}
-            <strong>Historial</strong> para afinar estas recomendaciones.
+            <Info size={18} aria-hidden="true" />
+            <p>
+              {missingHistoryCount === recommendations.length ? 'Todos estos cálculos asumen' : `${missingHistoryCount} de estos cálculos asumen`}{' '}
+              que nunca se le ha hecho ese servicio. Si ya se lo hiciste,{' '}
+              <Link to="/historial">anótalo en Historial</Link> y la recomendación se ajusta.
+            </p>
           </div>
         )}
 
