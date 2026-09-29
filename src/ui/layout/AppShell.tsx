@@ -1,5 +1,6 @@
 import { Car, History, LogOut, ShieldCheck, Wrench } from 'lucide-react';
-import { NavLink, Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { sessionRepository, vehicleRepository } from '../../storage';
 import styles from './AppShell.module.css';
 import type { ShellContext } from './useShell';
@@ -13,6 +14,11 @@ const TABS = [
 
 export function AppShell() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   // Sin vehículo identificado no hay nada que mostrar en estas pantallas.
   if (!vehicleRepository.get()) {
