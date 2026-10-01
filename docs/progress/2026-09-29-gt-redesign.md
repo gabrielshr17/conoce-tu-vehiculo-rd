@@ -59,13 +59,12 @@ axe-core (WCAG 2.1 AA + best practices): **0 violations** on every screen at 375
 - [x] Reduced-motion support; buttons center icons and have 48px min height.
 - [x] Per-screen document titles.
 - [x] Only the font weights actually used are loaded.
+- [x] Removed unused `Card` and `ComingSoon` components (approved).
 
 ---
 
 ## Pending / suggested follow-ups
 
-- [ ] **Delete unused components** `src/ui/components/ComingSoon.tsx` and `Card.tsx` (+ CSS) — not
-      imported anywhere; left in place because deleting files needs your confirmation.
 - [ ] **Mark PR #3 ready for review** once you've looked through it (it is large: ~34 commits;
       consider squash-merging as the CLAUDE.md rules say).
 - [ ] **Offline support** — the manifest makes the app installable, but there's no service worker,

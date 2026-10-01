@@ -64,6 +64,7 @@ Last updated: 2026-09-29 · Build ✅ · Lint ✅ · Unit 25/25 ✅ · E2E 6/6 �
 - [x] Screenshots at 375px / 1440px in `docs/screenshots/gt-redesign/`
 - [x] PR description with screenshots and test steps
 - [x] `design.pen` tracked; `generated.png` gitignored (third-party photo)
+- [x] Removed unused `Card` and `ComingSoon` components
 
 ---
 
@@ -71,7 +72,6 @@ Last updated: 2026-09-29 · Build ✅ · Lint ✅ · Unit 25/25 ✅ · E2E 6/6 �
 
 ### Needs your decision or action
 - [ ] Review PR #3 and mark it ready (40 commits — squash merge)
-- [ ] Approve deleting unused `src/ui/components/ComingSoon.tsx` and `Card.tsx` (+ their CSS)
 - [ ] Decide what happens to an old car's history after switching cars (keep for switching back, or purge)
 - [ ] Decide how `design.pen` should handle its missing reference photo (`generated.png` is gitignored)
 
