@@ -1,13 +1,10 @@
+import { Timer } from 'lucide-react';
 import type { Recommendation } from '../../core/types';
 import { formatCurrencyRange } from '../../core/format';
+import { Badge } from './Badge';
 import { DrFlag } from './DrFlag';
+import { CATEGORY_ICON, PRIORITY_LABEL, PRIORITY_TONE } from './maintenanceMeta';
 import styles from './PriorityCard.module.css';
-
-const BAR_COLOR: Record<Recommendation['priority'], string> = {
-  urgent: 'var(--rojo)',
-  soon: 'var(--amarillo)',
-  later: 'var(--verde)',
-};
 
 interface PriorityCardProps {
   recommendation: Recommendation;
@@ -16,14 +13,16 @@ interface PriorityCardProps {
 
 export function PriorityCard({ recommendation, onMarkDone }: PriorityCardProps) {
   const { item, dueReason, rdTip, hasHistory, priority } = recommendation;
+  const Icon = CATEGORY_ICON[item.category];
 
   return (
-    <div className={styles.card}>
-      <div className={styles.bar} style={{ background: BAR_COLOR[priority] }} />
-      <div className={styles.title}>{item.name}</div>
-      <div className={styles.meta}>
-        {dueReason}
-        {!hasHistory && ' · estimado, sin registro previo'}
+    <article className={`${styles.card} ${styles[priority]}`}>
+      <div className={styles.top}>
+        <span className={styles.iconBox} aria-hidden="true">
+          <Icon size={16} />
+        </span>
+        <h3 className={styles.title}>{item.name}</h3>
+        <Badge tone={PRIORITY_TONE[priority]}>{PRIORITY_LABEL[priority]}</Badge>
       </div>
       {rdTip && priority !== 'later' && (
         <div className={styles.tip}>
@@ -31,11 +30,22 @@ export function PriorityCard({ recommendation, onMarkDone }: PriorityCardProps) 
         </div>
       )}
       <div className={styles.row}>
+        <span className={styles.due}>
+          <span className={styles.dueLine}>
+            <Timer size={14} aria-hidden="true" /> {dueReason}
+          </span>
+          {!hasHistory && <span className={styles.estimate}>Estimado, sin registro previo</span>}
+        </span>
         <span className={styles.cost}>{formatCurrencyRange(item.costDOP.min, item.costDOP.max)}</span>
-        <button type="button" className={styles.mini} onClick={onMarkDone}>
-          Marcar hecho
-        </button>
       </div>
-    </div>
+      <button
+        type="button"
+        className={styles.mini}
+        onClick={onMarkDone}
+        aria-label={`Marcar hecho: ${item.name}`}
+      >
+        Marcar hecho
+      </button>
+    </article>
   );
 }

@@ -1,34 +1,16 @@
-import { ClipboardList, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { ClipboardList, History as HistoryIcon, Plus, Wrench } from 'lucide-react';
+import { useEffect, useId, useRef, useState } from 'react';
+import { formatMonthYear, toLocalIsoDate } from '../../core/date';
 import { formatCurrency, formatKm } from '../../core/format';
+import { validateHistoryDraft, type HistoryDraftErrors } from '../../core/history/validate';
 import { MAINTENANCE_CATALOG } from '../../core/maintenance/catalog';
 import type { HistoryEntry, Vehicle } from '../../core/types';
 import { historyRepository, vehicleRepository } from '../../storage';
-import { Button, SearchableList, TopBar } from '../../ui/components';
+import { Button, CATEGORY_ICON, SearchableList, TopBar } from '../../ui/components';
 import styles from './History.module.css';
-
-const MONTHS = [
-  'enero',
-  'febrero',
-  'marzo',
-  'abril',
-  'mayo',
-  'junio',
-  'julio',
-  'agosto',
-  'septiembre',
-  'octubre',
-  'noviembre',
-  'diciembre',
-];
 
 const OTHER_OPTION = { id: 'other', name: 'Otro (especificar)' };
 const ITEM_OPTIONS = [...MAINTENANCE_CATALOG.map((i) => ({ id: i.id, name: i.name })), OTHER_OPTION];
-
-function monthLabel(dateStr: string): string {
-  const d = new Date(dateStr);
-  return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`.toUpperCase();
-}
 
 interface FormState {
   itemId: string;
@@ -43,21 +25,37 @@ function emptyForm(defaultKm?: number): FormState {
   return {
     itemId: '',
     customDescription: '',
-    date: new Date().toISOString().slice(0, 10),
+    date: toLocalIsoDate(new Date()),
     km: defaultKm !== undefined ? String(defaultKm) : '',
     cost: '',
     shop: '',
   };
 }
 
+function iconFor(entry: HistoryEntry) {
+  const item = MAINTENANCE_CATALOG.find((i) => i.id === entry.itemId);
+  return item ? CATEGORY_ICON[item.category] : Wrench;
+}
+
 export function History() {
+  const fieldId = useId();
   const maybeVehicle = vehicleRepository.get();
   const [entries, setEntries] = useState<HistoryEntry[]>(() =>
     maybeVehicle ? historyRepository.getAll(maybeVehicle.id) : [],
   );
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(() => emptyForm(maybeVehicle?.currentKm));
+  const [errors, setErrors] = useState<HistoryDraftErrors>({});
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (showForm) {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      formRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }, [showForm, editingId]);
 
   // AppShell garantiza que exista un vehículo antes de renderizar esta ruta.
   if (!maybeVehicle) return null;
@@ -65,15 +63,27 @@ export function History() {
 
   const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date));
   const total = entries.reduce((sum, e) => sum + (e.costDOP ?? 0), 0);
+  const latest = sorted[0];
+  const ids = {
+    item: `${fieldId}-item`,
+    custom: `${fieldId}-custom`,
+    date: `${fieldId}-date`,
+    km: `${fieldId}-km`,
+    cost: `${fieldId}-cost`,
+    shop: `${fieldId}-shop`,
+  };
 
   function openAdd() {
     setEditingId(null);
+    setErrors({});
     setForm(emptyForm(vehicle.currentKm));
     setShowForm(true);
   }
 
   function openEdit(entry: HistoryEntry) {
     setEditingId(entry.id);
+    setErrors({});
+    setConfirmingId(null);
     const matched = MAINTENANCE_CATALOG.find((i) => i.id === entry.itemId);
     setForm({
       itemId: matched ? matched.id : 'other',
@@ -89,24 +99,27 @@ export function History() {
   function cancelForm() {
     setShowForm(false);
     setEditingId(null);
+    setErrors({});
   }
 
   function submitForm() {
-    const km = Number(form.km);
-    if (!form.itemId || !Number.isFinite(km) || km < 0 || !form.date) return;
-
     const matched = MAINTENANCE_CATALOG.find((i) => i.id === form.itemId);
-    const description = matched ? matched.name : form.customDescription.trim();
-    if (!description) return;
+    const description = matched ? matched.name : form.itemId === 'other' ? form.customDescription : '';
+    const result = validateHistoryDraft(
+      { description, date: form.date, km: form.km, cost: form.cost },
+      new Date(),
+    );
+    if (!result.ok) {
+      setErrors(result.errors);
+      return;
+    }
 
+    const { km } = result.value;
     const entry: HistoryEntry = {
       id: editingId ?? crypto.randomUUID(),
       vehicleId: vehicle.id,
       itemId: matched?.id,
-      description,
-      date: form.date,
-      km,
-      costDOP: form.cost ? Number(form.cost) : undefined,
+      ...result.value,
       shop: form.shop.trim() || undefined,
     };
 
@@ -125,11 +138,29 @@ export function History() {
 
     setShowForm(false);
     setEditingId(null);
+    setErrors({});
   }
 
   function removeEntry(id: string) {
     historyRepository.remove(id);
     setEntries((prev) => prev.filter((e) => e.id !== id));
+    setConfirmingId(null);
+  }
+
+  function fieldProps(field: keyof HistoryDraftErrors, id: string) {
+    return {
+      id,
+      'aria-invalid': errors[field] ? true : undefined,
+      'aria-describedby': errors[field] ? `${id}-error` : undefined,
+    };
+  }
+
+  function errorFor(field: keyof HistoryDraftErrors, id: string) {
+    return errors[field] ? (
+      <p id={`${id}-error`} className={styles.error}>
+        {errors[field]}
+      </p>
+    ) : null;
   }
 
   let lastGroup = '';
@@ -139,155 +170,218 @@ export function History() {
       <TopBar
         title="Historial"
         subtitle="La hoja de vida de tu carro"
-        icon={<ClipboardList size={20} />}
-        gradient
+        icon={<HistoryIcon size={20} />}
       />
       <div className={styles.body}>
-      <div className={`${styles.grid} ${showForm ? styles.gridWithForm : ''}`}>
-      <div className={styles.colMain}>
-        {sorted.length > 0 && (
-          <div className={styles.lastEntry}>
-            <div className={styles.specKey}>Último registro</div>
-            <div className={styles.specValue}>{sorted[0].description}</div>
-            <div className={styles.lastEntryMeta}>
-              {formatKm(sorted[0].km)} · {monthLabel(sorted[0].date).toLowerCase()}
-            </div>
-          </div>
-        )}
-        <div className={styles.specs}>
-          <div className={styles.spec}>
-            <div className={styles.specKey}>Registros</div>
-            <div className={styles.specValue}>{entries.length}</div>
-          </div>
-          <div className={styles.spec}>
-            <div className={styles.specKey}>Gasto total</div>
-            <div className={styles.specValue}>{formatCurrency(total)}</div>
-          </div>
-        </div>
-
-        {sorted.length === 0 && !showForm && (
-          <p className={styles.empty}>Todavía no tienes registros. Agrega el primero.</p>
-        )}
-
-        {sorted.length > 0 && (
-          <div className={styles.timeline}>
-            {sorted.map((entry) => {
-              const group = monthLabel(entry.date);
-              const showGroup = group !== lastGroup;
-              lastGroup = group;
-              return (
-                <div key={entry.id}>
-                  {showGroup && <div className={styles.groupLabel}>{group}</div>}
-                  <div className={styles.event}>
-                    <div className={styles.eventRow}>
-                      <div>
-                        <div className={styles.eventTitle}>{entry.description}</div>
-                        <div className={styles.eventSub}>
-                          {entry.shop ? `${entry.shop} · ` : ''}
-                          {formatKm(entry.km)}
-                        </div>
-                      </div>
-                      {entry.costDOP !== undefined && (
-                        <div className={styles.eventCost}>{formatCurrency(entry.costDOP)}</div>
-                      )}
-                    </div>
-                    <div className={styles.eventActions}>
-                      <button type="button" className={styles.linkBtn} onClick={() => openEdit(entry)}>
-                        Editar
-                      </button>
-                      <button
-                        type="button"
-                        className={`${styles.linkBtn} ${styles.danger}`}
-                        onClick={() => removeEntry(entry.id)}
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </div>
+        <div className={`${styles.grid} ${showForm ? styles.gridWithForm : ''}`}>
+          <div className={styles.colMain}>
+            <section className={styles.summary}>
+              <h2 className={styles.summaryLabel}>Último registro</h2>
+              <p className={styles.summaryValue}>{latest ? latest.description : 'Nada registrado todavía'}</p>
+              {latest && (
+                <p className={styles.summaryMeta}>
+                  {formatKm(latest.km)} · {formatMonthYear(latest.date)}
+                </p>
+              )}
+              <dl className={styles.metrics}>
+                <div>
+                  <dt>Registros</dt>
+                  <dd>{entries.length}</dd>
                 </div>
-              );
-            })}
-          </div>
-        )}
+                <div>
+                  <dt>Gasto total</dt>
+                  <dd>{formatCurrency(total)}</dd>
+                </div>
+              </dl>
+            </section>
 
-        {!showForm && (
-          <button type="button" className={styles.addBtn} onClick={openAdd}>
-            <Plus size={16} /> Agregar registro
-          </button>
-        )}
-      </div>
-
-        {showForm && (
-          <div className={styles.colForm}>
-          <div className={styles.form}>
-            <div className={styles.formTitle}>{editingId ? 'Editar registro' : 'Nuevo registro'}</div>
-
-            <label className={styles.label}>¿Qué se hizo?</label>
-            <SearchableList
-              items={ITEM_OPTIONS}
-              getKey={(i) => i.id}
-              getLabel={(i) => i.name}
-              selectedKey={form.itemId || undefined}
-              onSelect={(i) => setForm((f) => ({ ...f, itemId: i.id }))}
-              placeholder="Buscar..."
-            />
-            {form.itemId === 'other' && (
-              <input
-                className={styles.input}
-                type="text"
-                placeholder="Describe qué se hizo"
-                value={form.customDescription}
-                onChange={(e) => setForm((f) => ({ ...f, customDescription: e.target.value }))}
-              />
+            {sorted.length === 0 && !showForm && (
+              <div className={styles.empty}>
+                <ClipboardList size={28} aria-hidden="true" />
+                <p>
+                  Anota aquí cada cambio de aceite, goma o reparación. Con eso las recomendaciones de
+                  Servicios se ajustan a tu carro de verdad.
+                </p>
+              </div>
             )}
 
-            <label className={styles.label}>Fecha</label>
-            <input
-              className={styles.input}
-              type="date"
-              value={form.date}
-              onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
-            />
+            {sorted.length > 0 && (
+              <ol className={styles.timeline}>
+                {sorted.map((entry) => {
+                  const group = formatMonthYear(entry.date);
+                  const showGroup = group !== lastGroup;
+                  lastGroup = group;
+                  const Icon = iconFor(entry);
+                  const confirming = confirmingId === entry.id;
+                  return (
+                    <li key={entry.id}>
+                      {showGroup && <h3 className={styles.groupLabel}>{group}</h3>}
+                      <article className={styles.event}>
+                        <div className={styles.eventRow}>
+                          <span className={styles.eventIcon} aria-hidden="true">
+                            <Icon size={16} />
+                          </span>
+                          <div className={styles.eventText}>
+                            <div className={styles.eventTitle}>{entry.description}</div>
+                            <div className={styles.eventSub}>
+                              {entry.shop ? `${entry.shop} · ` : ''}
+                              {formatKm(entry.km)}
+                            </div>
+                          </div>
+                          {entry.costDOP !== undefined && (
+                            <div className={styles.eventCost}>{formatCurrency(entry.costDOP)}</div>
+                          )}
+                        </div>
+                        {confirming ? (
+                          <div className={styles.confirm} role="group" aria-label="Confirmar eliminación">
+                            <span>¿Eliminar este registro?</span>
+                            <button
+                              type="button"
+                              className={`${styles.linkBtn} ${styles.danger}`}
+                              onClick={() => removeEntry(entry.id)}
+                            >
+                              Sí, eliminar
+                            </button>
+                            <button type="button" className={styles.linkBtn} onClick={() => setConfirmingId(null)}>
+                              Cancelar
+                            </button>
+                          </div>
+                        ) : (
+                          <div className={styles.eventActions}>
+                            <button type="button" className={styles.linkBtn} onClick={() => openEdit(entry)}>
+                              Editar
+                            </button>
+                            <button
+                              type="button"
+                              className={`${styles.linkBtn} ${styles.danger}`}
+                              onClick={() => setConfirmingId(entry.id)}
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        )}
+                      </article>
+                    </li>
+                  );
+                })}
+              </ol>
+            )}
 
-            <label className={styles.label}>Kilometraje</label>
-            <input
-              className={styles.input}
-              type="number"
-              inputMode="numeric"
-              placeholder="Ej. 98500"
-              value={form.km}
-              onChange={(e) => setForm((f) => ({ ...f, km: e.target.value }))}
-            />
-
-            <label className={styles.label}>Costo en RD$ (opcional)</label>
-            <input
-              className={styles.input}
-              type="number"
-              inputMode="numeric"
-              placeholder="Ej. 2500"
-              value={form.cost}
-              onChange={(e) => setForm((f) => ({ ...f, cost: e.target.value }))}
-            />
-
-            <label className={styles.label}>Taller (opcional)</label>
-            <input
-              className={styles.input}
-              type="text"
-              placeholder="Ej. Taller Marte"
-              value={form.shop}
-              onChange={(e) => setForm((f) => ({ ...f, shop: e.target.value }))}
-            />
-
-            <div className={styles.formActions}>
-              <Button variant="ghost" onClick={cancelForm}>
-                Cancelar
+            {!showForm && (
+              <Button onClick={openAdd}>
+                <Plus size={18} /> Agregar registro
               </Button>
-              <Button onClick={submitForm}>Guardar</Button>
+            )}
+          </div>
+
+          {showForm && (
+            <div className={styles.colForm}>
+              <form
+                ref={formRef}
+                className={styles.form}
+                noValidate
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitForm();
+                }}
+              >
+                <h2 className={styles.formTitle}>{editingId ? 'Editar registro' : 'Nuevo registro'}</h2>
+
+                <label className={styles.label} htmlFor={ids.item}>
+                  ¿Qué se hizo?
+                </label>
+                {form.itemId !== 'other' && errorFor('description', ids.item)}
+                <SearchableList
+                  inputId={ids.item}
+                  items={ITEM_OPTIONS}
+                  getKey={(i) => i.id}
+                  getLabel={(i) => i.name}
+                  selectedKey={form.itemId || undefined}
+                  onSelect={(i) => setForm((f) => ({ ...f, itemId: i.id }))}
+                  placeholder="Buscar servicio..."
+                />
+                {form.itemId === 'other' && (
+                  <>
+                    <label className={styles.label} htmlFor={ids.custom}>
+                      Describe qué se hizo
+                    </label>
+                    <input
+                      className={styles.input}
+                      type="text"
+                      placeholder="Ej. Cambio de bombillo"
+                      value={form.customDescription}
+                      onChange={(e) => setForm((f) => ({ ...f, customDescription: e.target.value }))}
+                      {...fieldProps('description', ids.custom)}
+                    />
+                    {errorFor('description', ids.custom)}
+                  </>
+                )}
+
+                <label className={styles.label} htmlFor={ids.date}>
+                  Fecha
+                </label>
+                <input
+                  className={styles.input}
+                  type="date"
+                  max={toLocalIsoDate(new Date())}
+                  value={form.date}
+                  onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
+                  {...fieldProps('date', ids.date)}
+                />
+                {errorFor('date', ids.date)}
+
+                <label className={styles.label} htmlFor={ids.km}>
+                  Kilometraje
+                </label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  placeholder="Ej. 98500"
+                  value={form.km}
+                  onChange={(e) => setForm((f) => ({ ...f, km: e.target.value }))}
+                  {...fieldProps('km', ids.km)}
+                />
+                {errorFor('km', ids.km)}
+
+                <label className={styles.label} htmlFor={ids.cost}>
+                  Costo en RD$ (opcional)
+                </label>
+                <input
+                  className={styles.input}
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  placeholder="Ej. 2500"
+                  value={form.cost}
+                  onChange={(e) => setForm((f) => ({ ...f, cost: e.target.value }))}
+                  {...fieldProps('cost', ids.cost)}
+                />
+                {errorFor('cost', ids.cost)}
+
+                <label className={styles.label} htmlFor={ids.shop}>
+                  Taller (opcional)
+                </label>
+                <input
+                  id={ids.shop}
+                  className={styles.input}
+                  type="text"
+                  placeholder="Ej. Taller Marte"
+                  value={form.shop}
+                  onChange={(e) => setForm((f) => ({ ...f, shop: e.target.value }))}
+                />
+
+                <div className={styles.formActions}>
+                  <Button variant="ghost" onClick={cancelForm}>
+                    Cancelar
+                  </Button>
+                  <Button type="submit">Guardar</Button>
+                </div>
+              </form>
             </div>
-          </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
       </div>
     </div>
   );

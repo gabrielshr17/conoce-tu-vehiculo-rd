@@ -6,47 +6,58 @@
 
 .content {
   flex: 1;
-  overflow-y: auto;
   background: var(--fondo);
+  padding-bottom: var(--space-4);
 }
 
 .tabbar {
+  position: sticky;
+  bottom: var(--space-3);
+  z-index: 10;
   display: flex;
-  background: var(--carbon-bg);
-  background-size: var(--carbon-size);
-  background-color: var(--superficie);
-  border-top: 2px solid var(--rojo);
-  padding: var(--space-2) var(--space-1) var(--space-3);
-  order: 1;
+  margin: 0 var(--space-5) var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--barra);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra);
+}
+
+.brand,
+.tab.signOut {
+  display: none;
 }
 
 .tab {
   flex: 1;
-  text-align: center;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-family: var(--font-label);
   font-size: var(--text-2xs);
-  color: var(--gris);
-  font-weight: 600;
+  font-weight: 500;
+  color: var(--gris-tenue);
   text-decoration: none;
   background: none;
   border: none;
   padding: 0;
-  font-family: inherit;
   cursor: pointer;
 }
 
 .icon {
   display: flex;
-  justify-content: center;
-  margin-bottom: 2px;
-  opacity: 0.6;
 }
 
 .active {
-  color: var(--rojo-brillante);
+  color: var(--tinta);
+  font-weight: 700;
 }
 
 .active .icon {
-  opacity: 1;
+  color: var(--rojo);
 }
 
 /* Escritorio: la barra de pestañas inferior se convierte en un sidebar
@@ -59,42 +70,77 @@
 
   .content {
     order: 1;
+    padding-bottom: 0;
   }
 
   .tabbar {
     order: 0;
+    position: sticky;
+    top: 0;
+    bottom: auto;
+    height: 100vh;
     flex-direction: column;
     align-items: stretch;
-    width: 230px;
+    width: 240px;
     flex-shrink: 0;
-    border-top: none;
-    border-right: 2px solid var(--rojo);
-    padding: var(--space-8) var(--space-4);
+    margin: 0;
+    border: none;
+    border-right: 1px solid var(--linea);
+    border-radius: 0;
+    box-shadow: none;
+    padding: var(--space-6) var(--space-4);
     gap: var(--space-1);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-3) var(--space-6);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--tinta);
+  }
+
+  .crest {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--rojo);
+    border-radius: var(--radio-2xs);
+    background: var(--superficie-alta);
+    font-family: var(--font-label);
+    font-size: var(--text-2xs);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  .tab.signOut {
+    display: flex;
+    margin-top: auto;
   }
 
   .tab {
     flex: none;
-    display: flex;
-    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
     gap: var(--space-3);
-    text-align: left;
     font-size: var(--text-base);
-    font-weight: 700;
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radio-sm);
   }
 
   .tab:hover {
-    background: var(--rojo-tint);
+    background: var(--superficie);
+    color: var(--tinta);
   }
 
   .active {
-    background: var(--rojo-tint);
-    color: var(--rojo-brillante);
-  }
-
-  .icon {
-    margin-bottom: 0;
+    background: var(--superficie-alta);
   }
 }

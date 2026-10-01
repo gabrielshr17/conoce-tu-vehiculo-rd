@@ -1,9 +1,11 @@
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Vehicle } from '../../core/types';
+import { resolveVehicleSelection } from '../../core/vehicle';
 import { findCatalogModel, getMakes, getModelsByMake, getTrims, getYears } from '../../data/catalog';
 import { vehicleRepository } from '../../storage';
 import { Button, SearchableList, Stepper, TopBar } from '../../ui/components';
+import { useDocumentTitle } from '../../ui/layout/useDocumentTitle';
 import styles from './Onboarding.module.css';
 
 const TOTAL_STEPS = 4;
@@ -17,11 +19,13 @@ const STEP_META = [
 
 export function Onboarding() {
   const navigate = useNavigate();
+  useDocumentTitle('Identifica tu vehículo');
+  const [existing] = useState(() => vehicleRepository.get());
   const [step, setStep] = useState(1);
-  const [year, setYear] = useState<number>();
-  const [make, setMake] = useState<string>();
-  const [model, setModel] = useState<string>();
-  const [trim, setTrim] = useState<string>();
+  const [year, setYear] = useState<number | undefined>(existing?.year);
+  const [make, setMake] = useState<string | undefined>(existing?.make);
+  const [model, setModel] = useState<string | undefined>(existing?.model);
+  const [trim, setTrim] = useState<string | undefined>(existing?.trim);
 
   const years = getYears();
   const makes = getMakes();
@@ -36,7 +40,7 @@ export function Onboarding() {
 
   function handleBack() {
     if (step === 1) {
-      navigate('/');
+      navigate(existing ? '/perfil' : '/');
     } else {
       setStep(step - 1);
     }
@@ -49,35 +53,38 @@ export function Onboarding() {
     }
     if (!year || !make || !model || !trim) return;
 
-    // Si ya había un vehículo, se reutiliza su id y km — así no se huerfana
-    // el historial existente al corregir una selección del onboarding.
-    const existing = vehicleRepository.get();
     const catalogModel = findCatalogModel(make, model);
-    const vehicle: Vehicle = {
-      id: existing?.id ?? crypto.randomUUID(),
-      year,
-      make,
-      model,
-      trim,
-      fuelType: catalogModel?.fuelType ?? 'gasolina',
-      createdAt: existing?.createdAt ?? new Date().toISOString(),
-      currentKm: existing?.currentKm,
-    };
+    const vehicle = resolveVehicleSelection(
+      existing ?? undefined,
+      { year, make, model, trim, fuelType: catalogModel?.fuelType ?? 'gasolina' },
+      crypto.randomUUID(),
+      new Date().toISOString(),
+    );
     vehicleRepository.save(vehicle);
     navigate('/perfil');
   }
 
+  function pick(apply: () => void) {
+    apply();
+    if (step < TOTAL_STEPS) setStep(step + 1);
+  }
+
   const { question, placeholder } = STEP_META[step - 1];
+  const chosen = [year, make, model].slice(0, step - 1).filter((v) => v !== undefined);
 
   return (
-    <div>
+    <main>
       <TopBar title="Identifica tu vehículo" subtitle={`Paso ${step} de ${TOTAL_STEPS}`} onBack={handleBack} />
       <div className={styles.body}>
         <div className={styles.stepperWrap}>
           <Stepper total={TOTAL_STEPS} current={step} />
         </div>
-        <div className={styles.qbig}>{question}</div>
-        <p className={styles.muted}>Elígelo de la lista, no hace falta escribir.</p>
+        <h2 className={styles.qbig}>{question}</h2>
+        {chosen.length > 0 ? (
+          <p className={styles.chosen}>{chosen.join(' · ')}</p>
+        ) : (
+          <p className={styles.muted}>Elígelo de la lista, no hace falta escribir.</p>
+        )}
 
         {step === 1 && (
           <SearchableList
@@ -85,7 +92,7 @@ export function Onboarding() {
             getKey={(y) => String(y)}
             getLabel={(y) => String(y)}
             selectedKey={year !== undefined ? String(year) : undefined}
-            onSelect={setYear}
+            onSelect={(y) => pick(() => setYear(y))}
             placeholder={placeholder}
           />
         )}
@@ -95,11 +102,13 @@ export function Onboarding() {
             getKey={(m) => m}
             getLabel={(m) => m}
             selectedKey={make}
-            onSelect={(m) => {
-              setMake(m);
-              setModel(undefined);
-              setTrim(undefined);
-            }}
+            onSelect={(m) =>
+              pick(() => {
+                setMake(m);
+                setModel(undefined);
+                setTrim(undefined);
+              })
+            }
             placeholder={placeholder}
           />
         )}
@@ -109,10 +118,12 @@ export function Onboarding() {
             getKey={(m) => m.id}
             getLabel={(m) => m.model}
             selectedKey={models.find((m) => m.model === model)?.id}
-            onSelect={(m) => {
-              setModel(m.model);
-              setTrim(undefined);
-            }}
+            onSelect={(m) =>
+              pick(() => {
+                setModel(m.model);
+                setTrim(undefined);
+              })
+            }
             placeholder={placeholder}
           />
         )}
@@ -129,13 +140,13 @@ export function Onboarding() {
 
         <div className={styles.navrow}>
           <Button variant="ghost" onClick={handleBack}>
-            ← Atrás
+            <ArrowLeft size={18} /> Atrás
           </Button>
           <Button disabled={!canAdvance} onClick={handleNext}>
-            {step === TOTAL_STEPS ? 'Ver mi perfil →' : 'Siguiente →'}
+            {step === TOTAL_STEPS ? 'Ver mi carro' : 'Siguiente'} <ArrowRight size={18} />
           </Button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -1,12 +1,35 @@
-import { Car, CircleCheck, ClipboardList, Gauge, Users, Wrench } from 'lucide-react';
-import { getAccessoryGroups } from '../../data/accessories';
+import { ChevronRight, ClipboardList, Gauge, LogOut, RefreshCw, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { formatKm } from '../../core/format';
+import { recommend } from '../../core/maintenance/engine';
+import { summarizeRecommendations } from '../../core/maintenance/summary';
+import type { VehicleCategory } from '../../core/types';
 import { findCatalogModel } from '../../data/catalog';
-import { communitySearchUrl, findVehicleSpec } from '../../data/specs';
-import { vehicleRepository } from '../../storage';
-import { Chip, TopBar } from '../../ui/components';
+import { findVehicleSpec } from '../../data/specs';
+import { historyRepository, vehicleRepository } from '../../storage';
+import {
+  Badge,
+  CarSilhouette,
+  CATEGORY_ICON,
+  PRIORITY_LABEL,
+  PRIORITY_TONE,
+  STATUS_LABEL,
+  STATUS_TONE,
+} from '../../ui/components';
+import { useShell } from '../../ui/layout/useShell';
 import styles from './Profile.module.css';
 
+const CATEGORY_LABEL: Record<VehicleCategory, string> = {
+  sedan: 'Sedán',
+  hatchback: 'Hatchback',
+  suv: 'SUV',
+  pickup: 'Pickup',
+};
+
+const PREVIEW_COUNT = 2;
+
 export function Profile() {
+  const { onSignOut } = useShell();
   const vehicle = vehicleRepository.get();
   // AppShell garantiza que exista un vehículo antes de renderizar esta ruta.
   if (!vehicle) return null;
@@ -14,143 +37,167 @@ export function Profile() {
   const fuelLabel = vehicle.fuelType === 'diesel' ? 'Diésel' : 'Gasolina';
   const catalogModel = findCatalogModel(vehicle.make, vehicle.model);
   const spec = catalogModel ? findVehicleSpec(catalogModel.id) : undefined;
-  const accessoryGroups = getAccessoryGroups(spec?.accessories ?? [], catalogModel, vehicle.trim);
 
-  if (!spec) {
-    return (
-      <div>
-        <TopBar
-          title={`${vehicle.make} ${vehicle.model} ${vehicle.year}`}
-          subtitle={`${vehicle.trim} · ${fuelLabel}`}
-          icon={<Car size={20} />}
-          gradient
-        />
-        <div className={styles.body}>
-          <p className={styles.honest}>
-            Todavía no tenemos una ficha curada para este modelo. Estamos agregando más
-            vehículos poco a poco — mientras tanto, el Mantenimiento sigue funcionando con
-            recomendaciones generales.
-          </p>
-
-          <div className={styles.sectionTitle}>
-            <Wrench size={13} /> Accesorios recomendados
-          </div>
-          {accessoryGroups.map((group) => (
-            <div key={group.title} className={styles.accessoryGroup}>
-              <p className={styles.accessoryGroupTitle}>{group.title}</p>
-              <div className={styles.chips}>
-                {group.items.map((a) => (
-                  <Chip key={a}>{a}</Chip>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  const recommendations =
+    vehicle.currentKm === undefined
+      ? []
+      : recommend({
+          vehicleYear: vehicle.year,
+          currentKm: vehicle.currentKm,
+          history: historyRepository.getAll(vehicle.id),
+          today: new Date(),
+        });
+  const summary = vehicle.currentKm === undefined ? undefined : summarizeRecommendations(recommendations);
 
   return (
-    <div>
-      <TopBar
-        title={`${vehicle.make} ${vehicle.model} ${vehicle.year}`}
-        subtitle={`${vehicle.trim} · ${fuelLabel}`}
-        icon={<Car size={20} />}
-        gradient
-      />
-      <div className={styles.body}>
-        <div className={styles.grid}>
-          <div className={styles.colLeft}>
-            <div className={styles.sectionTitle}>Tu carro en pocas palabras</div>
-            <blockquote className={styles.quote}>"{spec.description}"</blockquote>
+    <div className={styles.page}>
+      <header className={styles.topbar}>
+        <div className={styles.brand}>
+          <span className={styles.crest}>RD</span>
+          <span className={styles.appTitle}>Conoce tu vehículo</span>
+        </div>
+        <div className={styles.topActions}>
+          {summary && (
+            <Link
+              to="/mantenimiento"
+              className={styles.statusLink}
+              aria-label={`Estado: ${STATUS_LABEL[summary.status]}. Ver servicios`}
+            >
+              <Badge tone={STATUS_TONE[summary.status]} shape="pill" dot>
+                {STATUS_LABEL[summary.status]}
+              </Badge>
+            </Link>
+          )}
+          <button type="button" className={styles.iconButton} onClick={onSignOut} aria-label="Salir">
+            <LogOut size={18} />
+          </button>
+        </div>
+      </header>
 
-            <div className={styles.sectionTitle}>
-              <CircleCheck size={13} /> Cómo tratarlo bien
-            </div>
-            {spec.careTips.map((tip) => (
-              <div key={tip.title} className={styles.tipCard}>
-                <div className={styles.tipIcon}>{tip.icon}</div>
-                <div>
-                  <div className={styles.tipTitle}>{tip.title}</div>
-                  <div className={styles.tipDesc}>{tip.description}</div>
-                </div>
+      <div className={styles.grid}>
+        <div className={styles.col}>
+          <section className={styles.hero} aria-labelledby="vehicle-name">
+            <div className={styles.heroHeader}>
+              <div>
+                <h1 id="vehicle-name" className={styles.vehicleName}>
+                  {vehicle.make} {vehicle.model}
+                </h1>
+                <p className={styles.vehicleSub}>
+                  {vehicle.year} · {vehicle.trim} · {fuelLabel}
+                </p>
               </div>
-            ))}
+              {catalogModel && (
+                <span className={styles.categoryBadge}>{CATEGORY_LABEL[catalogModel.category]}</span>
+              )}
+            </div>
 
-            <div className={styles.sectionTitle}>
-              <Gauge size={13} /> Mejor rendimiento
-            </div>
-            {spec.performanceTips.map((tip) => (
-              <div key={tip.title} className={styles.tipCard}>
-                <div className={styles.tipIcon}>{tip.icon}</div>
-                <div>
-                  <div className={styles.tipTitle}>{tip.title}</div>
-                  <div className={styles.tipDesc}>{tip.description}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+            <CarSilhouette />
 
-          <div className={styles.colRight}>
-            <div className={styles.sectionTitle}>
-            <Wrench size={13} /> Accesorios recomendados
-          </div>
-            {accessoryGroups.map((group) => (
-              <div key={group.title} className={styles.accessoryGroup}>
-                <p className={styles.accessoryGroupTitle}>{group.title}</p>
-                <div className={styles.chips}>
-                  {group.items.map((a) => (
-                    <Chip key={a}>{a}</Chip>
-                  ))}
-                </div>
+            <dl className={styles.metrics}>
+              <div className={styles.metric}>
+                <dt>Odómetro</dt>
+                <dd>{vehicle.currentKm === undefined ? 'Sin registrar' : formatKm(vehicle.currentKm)}</dd>
               </div>
-            ))}
+              <div className={styles.metric}>
+                <dt>Pendientes</dt>
+                <dd>{summary ? summary.pending : '—'}</dd>
+              </div>
+              <div className={styles.metric}>
+                <dt>Combustible</dt>
+                <dd>{fuelLabel}</dd>
+              </div>
+            </dl>
+            <Link to="/onboarding" className={styles.changeVehicle}>
+              <RefreshCw size={14} /> Cambiar de vehículo
+            </Link>
+          </section>
 
-            <div className={styles.sectionTitle}>
-              <Users size={13} /> {spec.communities.length > 1 ? 'Comunidades' : 'Comunidad'}
-            </div>
-            {spec.communities.map((c) => (
-              <a
-                key={c.name}
-                href={communitySearchUrl(c.name)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.communityCard}
-              >
-                <div className={styles.communityIcon}>
-                  <Users size={16} />
-                </div>
-                <div>
-                  <div className={styles.tipTitle}>{c.name}</div>
-                  <div className={styles.tipDesc}>{c.platform} · buscar grupo →</div>
-                </div>
-              </a>
-            ))}
+          <section className={styles.quoteCard}>
+            <h2 className={styles.quoteLabel}>
+              <Sparkles size={14} /> Tu carro en pocas palabras
+            </h2>
+            <p className={styles.quoteBody}>
+              {spec
+                ? spec.description
+                : 'Todavía no tenemos una ficha curada para este modelo. El mantenimiento sigue funcionando con recomendaciones generales.'}
+            </p>
+          </section>
+        </div>
 
-            <div className={styles.sectionTitle}>
-              <ClipboardList size={13} /> Datos clave
+        <div className={styles.col}>
+          <section>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Próximos servicios</h2>
+              {recommendations.length > 0 && (
+                <Link to="/mantenimiento" className={styles.seeAll}>
+                  Ver todos ({recommendations.length}) <ChevronRight size={14} />
+                </Link>
+              )}
             </div>
-            <div className={styles.specs}>
-              <div className={styles.spec}>
-                <div className={styles.specKey}>Combustible</div>
-                <div className={styles.specValue}>{fuelLabel}</div>
+
+            {recommendations.length === 0 ? (
+              <Link to="/mantenimiento" className={styles.serviceRow}>
+                <span className={styles.serviceIcon} aria-hidden="true">
+                  <Gauge size={18} />
+                </span>
+                <span className={styles.serviceText}>
+                  <span className={styles.serviceName}>Registra tu kilometraje</span>
+                  <span className={styles.serviceDue}>Con eso calculamos qué le toca a tu carro y cuándo.</span>
+                </span>
+                <ChevronRight size={18} className={styles.chevron} />
+              </Link>
+            ) : (
+              <ul className={styles.serviceList}>
+                {recommendations.slice(0, PREVIEW_COUNT).map((rec) => {
+                  const Icon = CATEGORY_ICON[rec.item.category];
+                  return (
+                    <li key={rec.item.id}>
+                      <Link to="/mantenimiento" className={styles.serviceRow}>
+                        <span className={styles.serviceIcon} aria-hidden="true">
+                          <Icon size={18} />
+                        </span>
+                        <span className={styles.serviceText}>
+                          <span className={styles.serviceName}>{rec.item.name}</span>
+                          <span className={styles.serviceDue}>{rec.dueReason}</span>
+                        </span>
+                        <Badge tone={PRIORITY_TONE[rec.priority]}>{PRIORITY_LABEL[rec.priority]}</Badge>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+
+          {spec && (
+            <section>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>
+                  <ClipboardList size={14} /> Datos clave
+                </h2>
               </div>
-              <div className={styles.spec}>
-                <div className={styles.specKey}>Aceite</div>
-                <div className={styles.specValue}>
-                  {spec.oilCapacity} · {spec.oilType}
+              <dl className={styles.specs}>
+                <div className={styles.spec}>
+                  <dt>Aceite</dt>
+                  <dd>
+                    {spec.oilCapacity} · {spec.oilType}
+                  </dd>
                 </div>
-              </div>
-              <div className={styles.spec}>
-                <div className={styles.specKey}>Gomas</div>
-                <div className={styles.specValue}>{spec.tireSize}</div>
-              </div>
-              <div className={styles.spec}>
-                <div className={styles.specKey}>Presión</div>
-                <div className={styles.specValue}>{spec.tirePressure}</div>
-              </div>
-            </div>
-          </div>
+                <div className={styles.spec}>
+                  <dt>Gomas</dt>
+                  <dd>{spec.tireSize}</dd>
+                </div>
+                <div className={styles.spec}>
+                  <dt>Presión</dt>
+                  <dd>{spec.tirePressure}</dd>
+                </div>
+                <div className={styles.spec}>
+                  <dt>Combustible</dt>
+                  <dd>{fuelLabel}</dd>
+                </div>
+              </dl>
+            </section>
+          )}
         </div>
       </div>
     </div>

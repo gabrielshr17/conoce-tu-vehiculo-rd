@@ -55,9 +55,11 @@ This is **not yet** a full three-tier app. Be precise about what exists:
 
 ## 2. Design-first
 
-`DESIGN.md` (repo root) is the design system: racing visual identity (black/red/carbon fiber),
-color tokens with verified WCAG AA contrast ratios, typography rule (Rajdhani for headings only,
-system font for body), component patterns, and formal `--space-*` / `--text-*` scales (base-8
+`DESIGN.md` (repo root) is the design system, derived from `design.pen` (Pencil file, "Gran
+Turismo" frames): slate/red identity, color tokens with verified WCAG AA contrast ratios (the pen's
+failing colors are corrected there — follow DESIGN.md, not raw pen hexes), typography roles
+(Space Grotesk display, Outfit labels, Inter body), component patterns, radius scale, and formal
+`--space-*` / `--text-*` scales (base-8
 spacing with a 4px half-step; a fixed set of font sizes — no more `12.5px`-style decimals). Read
 it before touching any UI file, and use its scale tokens rather than a literal px value for any
 new `padding`/`margin`/`gap`/`font-size` — the only exception is decorative geometry tied to a
@@ -78,14 +80,16 @@ specific element's own math (documented case-by-case in DESIGN.md §2).
 ```bash
 npm install       # deps
 npm run dev       # vite dev server (hot reload)
-npm test          # vitest run — 6 tests in src/core/maintenance/engine.test.ts
+npm test          # vitest run — 25 unit tests in src/core/**/*.test.ts
+npm run test:e2e  # playwright — 6 flows in e2e/*.e2e.ts (uses installed Chrome)
 npm run test:watch
 npm run lint      # oxlint (not ESLint/Prettier — see hooks below)
 npm run build     # tsc -b && vite build
 npm run preview   # preview the production build
 ```
 
-No Playwright/e2e suite exists yet. No `server/` test script exists yet.
+Playwright e2e lives in `e2e/` (files end in `.e2e.ts` so Vitest ignores them; it starts its
+own dev server on port 5199). No `server/` test script exists yet.
 
 `server/` has its own commands (run from `server/`, not the repo root):
 
@@ -130,13 +134,14 @@ racing visual redesign session — recorded here so the reasoning behind each is
 ## 7. Project Baseline
 
 - **Current status:** Frontend builds and runs clean (`npm run build`, `npm test` both green,
-  6/6 tests passing). `server/` compiles clean (`npm run build` in `server/`) and was smoke-
+  25/25 unit tests and 6/6 e2e flows passing). `server/` compiles clean (`npm run build` in `server/`) and was smoke-
   tested directly against the compiled `dist/index.js` (missing-token 400, invalid-token 401
   both verified).
 - **Verified features:** MVP M0–M5 complete (onboarding, profile, maintenance engine, history,
   responsive/WCAG AA polish) per README.md/MVP.md. Google Sign-In + welcome-email backend added
   after the MVP docs were written (not yet reflected in PLAN.md/MVP.md — those docs describe a
-  no-accounts MVP; the code has since added auth). Visual identity relaunched to racing
-  black/red/carbon-fiber theme, documented in DESIGN.md, including a formal spacing/typography
-  scale and an icon-library migration (§6).
+  no-accounts MVP; the code has since added auth). Visual identity relaunched twice:
+  first racing black/red/carbon fiber, then the "Gran Turismo" slate/red system from
+  `design.pen` (4 tabs incl. new `/consejos`), documented in DESIGN.md with formal spacing,
+  typography and radius scales and lucide icons (§6).
 - **Session objective:** _(update per session)_

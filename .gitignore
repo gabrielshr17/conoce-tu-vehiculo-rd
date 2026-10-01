@@ -24,3 +24,10 @@ prototipo/shots/full.png
 # OS junk
 Thumbs.db
 .DS_Store
+
+# Design reference photo (third-party imagery, not redistributable)
+generated.png
+
+# Playwright output
+test-results/
+playwright-report/

@@ -1,35 +1,42 @@
-/* Tokens de diseño — identidad racing (negro, rojo, fibra de carbono). Ver DESIGN.md. */
+/* Tokens de diseño — identidad Gran Turismo (pizarra, rojo carrera). Ver DESIGN.md. */
 :root {
-  --fondo: #0c0c0d;
-  --superficie: #1c1c1f;
-  --superficie-alta: #242427;
-  --linea: rgba(255, 255, 255, 0.1);
+  --fondo: #0b0e14;
+  --superficie: #131923;
+  --superficie-alta: #1c2433;
+  --superficie-hero: linear-gradient(180deg, #1a2230 0%, #101520 100%);
+  --barra: #101622;
+  --linea: #222d3e;
+  --linea-fuerte: #2a364d;
 
-  --tinta: #f2f2f0;
-  --gris: #9ca0a8; /* 7.3:1 sobre --fondo, 6.3:1 sobre --superficie */
+  --tinta: #f1f5f9;
+  --tinta-suave: #cbd5e1;
+  --gris: #94a3b8;
+  --gris-tenue: #8a98ae;
 
-  --rojo: #e10600; /* relleno: botones, barras, bordes — no usar como texto */
-  --rojo-osc: #8f0000; /* pressed/hover */
-  --rojo-brillante: #ff5b52; /* texto/íconos rojos sobre fondo oscuro (6.4:1 sobre --fondo) */
-  --rojo-tint: #2a1012; /* superficie roja oscura: chips, fila seleccionada */
+  --rojo: #e53935;
+  --rojo-relleno: #d32f2f;
+  --sobre-rojo: #ffffff;
+  --rojo-osc: #b71c1c;
+  --rojo-brillante: #ff6b6b;
+  --rojo-tint: #2a1618;
 
-  --amarillo: #ffc400;
-  --verde: #00c853;
-
-  --carbon-bg: linear-gradient(27deg, #202023 5px, transparent 5px) 0 5px,
-    linear-gradient(207deg, #202023 5px, transparent 5px) 10px 0px,
-    linear-gradient(27deg, #28282b 5px, transparent 5px) 0px 10px,
-    linear-gradient(207deg, #28282b 5px, transparent 5px) 10px 5px,
-    linear-gradient(90deg, #1a1a1c 10px, transparent 10px),
-    linear-gradient(#161618 25%, #131315 25%, #131315 50%, #161618 50%, #161618 75%, #131315 75%, #131315);
-  --carbon-size: 20px 20px;
+  --amarillo: #f59e0b;
+  --amarillo-tint: #2a1e10;
+  --amarillo-suave: #f3d9a4;
+  --verde: #10b981;
+  --verde-texto: #34d399;
+  --verde-tint: #10261e;
 
   --sombra: 0 12px 30px rgba(0, 0, 0, 0.45);
   --sombra-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
-  --sombra-rojo: 0 8px 18px rgba(225, 6, 0, 0.35);
-  --radio: 20px;
-  --radio-md: 14px;
+  --sombra-rojo: 0 8px 18px rgba(211, 47, 47, 0.35);
+  --radio-2xs: 6px;
+  --radio-xs: 8px;
   --radio-sm: 12px;
+  --radio-md: 14px;
+  --radio-lg: 18px;
+  --radio: 20px;
+  --radio-pill: 999px;
 
   /* Escala de espaciado — base-8 con un medio-paso en 4px. Todo padding/
      margin/gap del sistema se elige de esta lista, no de un valor suelto. */
@@ -58,8 +65,9 @@
   --text-3xl: 32px;
   --text-4xl: 40px;
 
-  --font: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
-  --font-display: 'Rajdhani', var(--font);
+  --font: 'Inter', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  --font-display: 'Space Grotesk', var(--font);
+  --font-label: 'Outfit', var(--font);
 }
 
 *,
@@ -101,4 +109,14 @@ textarea {
 :focus-visible {
   outline: 2px solid var(--rojo-brillante);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
