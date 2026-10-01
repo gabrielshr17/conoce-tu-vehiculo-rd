@@ -1,7 +1,5 @@
 export { Button } from './Button';
-export { Card } from './Card';
 export { Chip } from './Chip';
-export { ComingSoon } from './ComingSoon';
 export { DrFlag } from './DrFlag';
 export { GoogleIcon } from './GoogleIcon';
 export { PriorityCard } from './PriorityCard';
