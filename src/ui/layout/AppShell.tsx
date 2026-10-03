@@ -1,6 +1,7 @@
 import { Car, History, LogOut, ShieldCheck, Wrench } from 'lucide-react';
 import { useEffect } from 'react';
 import { NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import posthog, { posthogEnabled } from '../../lib/posthog.ts';
 import { sessionRepository, vehicleRepository } from '../../storage';
 import styles from './AppShell.module.css';
 import { useDocumentTitle } from './useDocumentTitle';
@@ -28,6 +29,10 @@ export function AppShell() {
   }
 
   function handleSignOut() {
+    if (posthogEnabled) {
+      posthog.capture('user_signed_out');
+      posthog.reset();
+    }
     sessionRepository.clear();
     navigate('/');
   }

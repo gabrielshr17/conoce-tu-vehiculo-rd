@@ -8,6 +8,8 @@ import { getSeasonalTip } from '../../core/maintenance/rdModifiers';
 import { summarizeRecommendations, type VehicleStatus } from '../../core/maintenance/summary';
 import { validateOdometer } from '../../core/odometer';
 import type { HistoryEntry, Priority, Recommendation, Vehicle } from '../../core/types';
+import posthog, { posthogEnabled } from '../../lib/posthog.ts';
+import { posthogLogger } from '../../lib/posthogLogs.ts';
 import { historyRepository, vehicleRepository } from '../../storage';
 import { Button, DrFlag, PRIORITY_LABEL, PriorityCard, Toast, TopBar } from '../../ui/components';
 import styles from './Maintenance.module.css';
@@ -51,6 +53,7 @@ export function Maintenance() {
     setKmInput('');
     setKmError(null);
     setEditingKm(false);
+    if (posthogEnabled) posthog.capture('odometer_saved');
   }
 
   function updateKmInput(value: string) {
@@ -116,6 +119,15 @@ export function Maintenance() {
     historyRepository.add(entry);
     setHistory((prev) => [...prev, entry]);
     setLastDone(entry);
+    if (posthogEnabled) {
+      const attributes = {
+        item_id: rec.item.id,
+        category: rec.item.category,
+        priority: rec.priority,
+      };
+      posthog.capture('maintenance_recommendation_completed', attributes);
+      posthogLogger.info('maintenance_recommendation_completed', attributes);
+    }
   }
 
   function undoLastDone() {
