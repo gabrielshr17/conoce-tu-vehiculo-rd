@@ -5,6 +5,7 @@ import { formatCurrency, formatKm } from '../../core/format';
 import { validateHistoryDraft, type HistoryDraftErrors } from '../../core/history/validate';
 import { MAINTENANCE_CATALOG } from '../../core/maintenance/catalog';
 import type { HistoryEntry, Vehicle } from '../../core/types';
+import posthog, { posthogEnabled } from '../../lib/posthog.ts';
 import { historyRepository, vehicleRepository } from '../../storage';
 import { Button, CATEGORY_ICON, SearchableList, TopBar } from '../../ui/components';
 import styles from './History.module.css';
@@ -130,6 +131,11 @@ export function History() {
       historyRepository.add(entry);
       setEntries((prev) => [...prev, entry]);
     }
+    if (posthogEnabled) {
+      posthog.capture(editingId ? 'maintenance_entry_updated' : 'maintenance_entry_created', {
+        item_id: matched?.id ?? 'other',
+      });
+    }
 
     // Si el registro trae el kilometraje más alto conocido, actualiza el odómetro.
     if (vehicle.currentKm === undefined || km > vehicle.currentKm) {
@@ -143,6 +149,7 @@ export function History() {
 
   function removeEntry(id: string) {
     historyRepository.remove(id);
+    if (posthogEnabled) posthog.capture('maintenance_entry_deleted');
     setEntries((prev) => prev.filter((e) => e.id !== id));
     setConfirmingId(null);
   }

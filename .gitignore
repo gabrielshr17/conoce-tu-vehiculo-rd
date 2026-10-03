@@ -31,3 +31,4 @@ generated.png
 # Playwright output
 test-results/
 playwright-report/
+.posthog-wizard-cache/

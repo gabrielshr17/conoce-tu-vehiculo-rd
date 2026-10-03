@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { signInWithGoogle } from '../../auth/google';
 import { sendWelcomeEmail } from '../../auth/welcomeEmail';
+import posthog, { posthogEnabled } from '../../lib/posthog.ts';
+import { posthogLogger } from '../../lib/posthogLogs.ts';
 import { sessionRepository, vehicleRepository } from '../../storage';
 import { Button, CarSilhouette, DrFlag, GoogleIcon } from '../../ui/components';
 import { useDocumentTitle } from '../../ui/layout/useDocumentTitle';
@@ -17,6 +19,11 @@ export function Welcome() {
   function handleGoogleSignIn() {
     signInWithGoogle((profile, accessToken) => {
       sessionRepository.save(profile);
+      if (posthogEnabled) {
+        posthog.identify(profile.id, { email: profile.email, name: profile.name });
+        posthog.capture('google_sign_in_completed');
+        posthogLogger.info('google_sign_in_completed');
+      }
       sendWelcomeEmail(accessToken);
       navigate(vehicleRepository.get() ? '/perfil' : '/onboarding');
     });

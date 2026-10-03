@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resolveVehicleSelection } from '../../core/vehicle';
 import { findCatalogModel, getMakes, getModelsByMake, getTrims, getYears } from '../../data/catalog';
+import posthog, { posthogEnabled } from '../../lib/posthog.ts';
+import { posthogLogger } from '../../lib/posthogLogs.ts';
 import { vehicleRepository } from '../../storage';
 import { Button, SearchableList, Stepper, TopBar } from '../../ui/components';
 import { useDocumentTitle } from '../../ui/layout/useDocumentTitle';
@@ -61,6 +63,11 @@ export function Onboarding() {
       new Date().toISOString(),
     );
     vehicleRepository.save(vehicle);
+    if (posthogEnabled) {
+      const setupType = existing ? 'updated' : 'created';
+      posthog.capture('vehicle_profile_saved', { setup_type: setupType });
+      posthogLogger.info('vehicle_profile_saved', { setup_type: setupType });
+    }
     navigate('/perfil');
   }
 
